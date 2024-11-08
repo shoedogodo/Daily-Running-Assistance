@@ -1,6 +1,4 @@
 {
   "usingComponents": {},
-  "window": {
-    "navigationBarTitleText": "天天乐跑"
-  }
+  "navigationBarTitleText": "天天乐跑主页"
 }
