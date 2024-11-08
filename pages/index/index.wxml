@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<scroll-view class="scrollarea" scroll-y type="list">
+<!-- <scroll-view class="scrollarea" scroll-y type="list">
   <view class="container">
     <view class="userinfo">
       <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
@@ -24,4 +24,20 @@
       <text class="user-motto">{{motto}}</text>
     </view>
   </view>
-</scroll-view>
+</scroll-view> -->
+
+<view class="container">
+  <view class="login-title">用户名登录</view>
+  <view class="input-container">
+    <input placeholder="请输入用户名" type="text" class="input-box" bindinput="bindUsernameInput" />
+  </view>
+  <view class="input-container">
+    <input placeholder="请输入密码" type="password" class="input-box" bindinput="bindPasswordInput" />
+  </view>
+  <button class="login-button" bindtap="onLogin">登录</button>
+  <button class="register-button" bindtap="onRegister">注册</button>
+  <button class="wx-login-button" open-type="getUserInfo" bindgetuserinfo="onWeChatLogin">
+    <image src="../../images/wechat-icon.png" class="wechat-icon" />
+    微信授权登录
+  </button>
+</view>
