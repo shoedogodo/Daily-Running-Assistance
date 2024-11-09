@@ -8,7 +8,7 @@
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "天天乐跑",
-    "navigationBarBackgroundColor": "#ffffff"
+    "navigationBarBackgroundColor": "#90e0ef"
   },
   "style": "v2",
   "componentFramework": "glass-easel",
