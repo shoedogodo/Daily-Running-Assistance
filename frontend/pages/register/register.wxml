@@ -11,4 +11,5 @@
     <input placeholder="请确认密码" type="password" class="input-box" />
   </view>
   <button class="register-button">注册</button>
+  <button class="back-button" bindtap="goBack">返回</button>
 </view>
