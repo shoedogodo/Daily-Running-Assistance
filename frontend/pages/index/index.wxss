@@ -67,7 +67,7 @@
     align-items: center;
     padding: 20rpx;
     height: 100vh;
-    background-color: #f2f2f2;
+    background-color: #0b0531;
 }
 
 .login-title {
@@ -75,7 +75,7 @@
     font-weight: bold;
     margin-top: 50rpx;
     margin-bottom: 50rpx;
-    color: #333;
+    color: #ddd;
 }
 
 .input-container {
@@ -90,7 +90,7 @@
     padding: 0 20rpx;
     border-radius: 20rpx;
     border: 1px solid #ddd;
-    background-color: #fff;
+    background-color: #0b0531;
     box-sizing: border-box;
 }
 
@@ -101,9 +101,11 @@
     margin-top: 10rpx;
     margin-bottom: 10rpx;
     border-radius: 20rpx;
-    border: none;
-    background-color: #009688;
-    color: #fff;
+    border-width: 2rpx;
+    border-color: #009688;
+    border-style: solid;
+    background-color: #0b0531;
+    color: #009688;
     font-size: 32rpx;
     font-weight: bold;
 }
@@ -113,7 +115,8 @@
 }
 
 .register-button {
-    background-color: #7aad49;
+    border-color: #7aad49;
+    color: #7aad49;
 }
 
 .wx-login-button {
@@ -125,8 +128,11 @@
     align-items: center;
     justify-content: center;
     border-radius: 20rpx;
-    background-color: #07c160;
-    color: #fff;
+    border-width: 2rpx;
+    border-color: #07c160;
+    border-style: solid;
+    background-color: #0b0531;
+    color: #07c160;
     font-size: 32rpx;
 }
 

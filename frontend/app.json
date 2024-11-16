@@ -3,7 +3,10 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/home/home",
-    "pages/register/register"
+    "pages/register/register",
+    "pages/group/group",
+    "pages/share/share",
+    "pages/my/my"
   ],
   "window": {
     "navigationBarTextStyle": "black",
