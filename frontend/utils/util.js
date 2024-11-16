@@ -1,3 +1,6 @@
+const server_URL = "https://localhost:3000";
+//const server_URL = "https://124.221.96.133";
+
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
