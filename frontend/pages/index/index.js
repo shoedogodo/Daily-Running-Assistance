@@ -20,7 +20,9 @@ Page({
   
     onLogin: function() {
       console.log(utilsPath.server_URL);
-      
+      wx.navigateTo({
+        url: '../home/home',
+      })
 
       wx.request({
         url: 'http://124.221.96.133:3000/api/login',

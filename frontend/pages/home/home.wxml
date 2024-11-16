@@ -10,7 +10,7 @@
   <map class="map" id="runningMap" show-location="true"></map>
   <button class="start-run-button" bindtap="startRun">开始跑步</button>
   <view class="tab-bar">
-    <navigator class="tab-item" url="../run/run">
+    <navigator class="tab-item" url="../home/home" style="color: #009688;">
       <image class="icon" src="/assets/run.png" />
       <text>跑步</text>
     </navigator>
