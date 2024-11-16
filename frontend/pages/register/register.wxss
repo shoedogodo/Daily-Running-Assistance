@@ -12,12 +12,14 @@
     font-size: 48rpx;
     font-weight: bold;
     margin-top: 50rpx;
+    margin-bottom: 50rpx;
     color: #333;
   }
   
   .input-container {
     width: 80%;
-    margin-top: 30rpx;
+    margin-top: 10rpx;
+    margin-bottom: 10rpx;
   }
   
   .input-box {
@@ -33,7 +35,8 @@
   .register-button {
     width: 80%;
     height: 80rpx;
-    margin-top: 40rpx;
+    margin-top: 100rpx;
+    margin-bottom: 20rpx;
     border-radius: 20rpx;
     border: none;
     background-color: #009688;
@@ -41,4 +44,16 @@
     font-size: 32rpx;
     font-weight: bold;
   }
-  
+
+  .back-button {
+    width: 80%;
+    height: 80rpx;
+    margin-top: 20rpx;
+    margin-bottom: 100rpx;
+    border-radius: 20rpx;
+    border: none;
+    background-color: #7aad49;
+    color: #fff;
+    font-size: 32rpx;
+    font-weight: bold;
+  }
