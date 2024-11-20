@@ -1,0 +1,90 @@
+/* pages/share/share.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  min-height: 95vh;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  padding: 10rpx 0;
+}
+
+.header-item{
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-size: 20px;
+}
+
+.post-list {
+  flex: 1;
+  padding: 10px;
+}
+
+.post {
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.post-text {
+  margin-top: 10px;
+}
+
+.post-interaction {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.comment-count, .like-count {
+  color: #888;
+}
+
+.new-post-button {
+  padding: 10px;
+  text-align: center;
+}
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  padding: 10rpx 0;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon {
+  width: 50rpx;
+  height: 50rpx;
+  margin-bottom: 5rpx;
+}

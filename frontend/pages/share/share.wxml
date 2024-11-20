@@ -1,0 +1,44 @@
+<!--pages/share/share.wxml-->
+<view class="container">
+  <view class="header">
+    <navigator class="header-item" url="../share/share" style="color:rgb(47, 77, 121);">
+      <text>论坛</text>
+    </navigator>
+    <navigator class="header-item" url="../AIchat/AIchat">
+      <text>助手</text>
+    </navigator>
+  </view>
+  
+  <view class="post-list">
+    <view class="post" wx:for="{{posts}}" wx:key="index">
+      <image class="post-image" src="{{item.image}}" />
+      <text class="post-text">{{item.text}}</text>
+      <view class="post-interaction">
+        <text class="comment-count">💬 {{item.commentCount}}</text>
+        <text class="like-count">❤️ {{item.likeCount}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="new-post-button">
+    <button>+</button>
+  </view>
+  <view class="tab-bar">
+    <navigator class="tab-item" url="../home/home">
+      <image class="icon" src="/assets/run.png" />
+      <text>跑步</text>
+    </navigator>
+    <navigator class="tab-item" url="../group/group">
+      <image class="icon" src="/assets/group.png" />
+      <text>一起跑</text>
+    </navigator>
+    <navigator class="tab-item" url="../share/share" style="color:#009688">
+      <image class="icon" src="/assets/share.png" />
+      <text>分享</text>
+    </navigator>
+    <navigator class="tab-item" url="../my/my">
+      <image class="icon" src="/assets/my.png" />
+      <text>我的</text>
+    </navigator>
+  </view>
+</view>
