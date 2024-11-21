@@ -1,24 +1,38 @@
-// run app on port 8000
-// https://cloud.mongodb.com/v2/673812e4d253332a8d51b4ad#/metrics/replicaSet/673813dd6b1f2165970205ae/explorer/sample_mflix/embedded_movies/find
-
 const express = require('express');
 const mongoose = require('mongoose');
+const Product = require('./models/product.model.js');
+const productRoute = require('./routes/product.route.js');
 const app = express();
 
-// access database with Admin User: Username-DatabaseAccess Password-DatabaseAccess
-const uri = 'mongodb+srv://DatabaseAccess:DatabaseAccess@ttlp-cluster.5ftd2.mongodb.net/?retryWrites=true&w=majority&appName=TTLP-Cluster';
+//middleware
+app.use(express.json()); // allows API requests sent with JSON input
+
+//routes
+app.use("/api/products", productRoute)
+
+app.get('/', (request, response) => {
+    response.send('Hello from Node API Server Updated');
+});
+
+
+// access Mongo Atlas database, Cluster ttlp-cluster, Database: TTLP-Data; 
+// with Admin User: Username-DatabaseAccess Password-DatabaseAccess
+const uri = 'mongodb+srv://DatabaseAccess:DatabaseAccess@ttlp-cluster.5ftd2.mongodb.net/TTLP-Data?retryWrites=true&w=majority&appName=TTLP-Cluster';
+
 
 async function connect() {
     try {
         await mongoose.connect(uri);
-        console.log('Connected to MongoDB');
+        console.log('Connected to MongoDB Database');
+
+        app.listen(3000, () => {
+            console.log('App available on http://localhost:3000'); // run server only after connected to database
+        });
+
     } catch (error) {
+        console.log('Connection failed')
         console.error(error);
     }
 }
 
 connect();
-
-app.listen(8000, () => {
-    console.log('Server started on port 8000');
-});
