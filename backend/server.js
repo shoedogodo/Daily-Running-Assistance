@@ -1,14 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Product = require('./models/product.model.js');
+const User = require('./models/user.model.js');
 const productRoute = require('./routes/product.route.js');
+const userRoute = require('./routes/user.route.js');
 const app = express();
 
 //middleware
 app.use(express.json()); // allows API requests sent with JSON input
 
 //routes
-app.use("/api/products", productRoute)
+app.use("/api/products", productRoute);
+app.use("/api/users", userRoute);
 
 app.get('/', (request, response) => {
     response.send('Hello from Node API Server Updated');
@@ -25,8 +28,11 @@ async function connect() {
         await mongoose.connect(uri);
         console.log('Connected to MongoDB Database');
 
-        app.listen(3000, () => {
-            console.log('App available on http://localhost:3000'); // run server only after connected to database
+        const host = '0.0.0.0';  // Listens on all interfaces
+        const port = 8000;  // You can specify the port if you want
+        
+        app.listen(port, host, () => {
+            console.log(`App available on http://${host}:${port}`);
         });
 
     } catch (error) {
