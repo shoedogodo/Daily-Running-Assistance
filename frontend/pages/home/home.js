@@ -20,6 +20,12 @@ Page({
      * 页面的生命周期函数--页面加载时调用
      */
     onLoad() {
+        //格式化日期 xxxx/xx/xx
+        const date = new Date();
+        this.setData({
+            formattedDate : utils.formatDate(date),     
+        });
+
         this.mapCtx = wx.createMapContext('map');
         wx.getLocation({
             type: 'gcj02', // 使用中国国内的坐标系

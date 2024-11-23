@@ -39,7 +39,7 @@
 
 .map {
   width: 100%;
-  height: 600rpx;
+  height: 800rpx;
   margin-top: 20rpx;
 }
 
