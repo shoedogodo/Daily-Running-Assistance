@@ -14,7 +14,8 @@
     "pages/register/register",
     "pages/group/group",
     "pages/share/share",
-    "pages/my/my"
+    "pages/my/my",
+    "pages/AIchat/AIchat"
   ],
   "window": {
     "navigationBarTextStyle": "black",
