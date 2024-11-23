@@ -6,6 +6,23 @@ Page({
    */
   data: {
 
+    data: {
+      posts: [
+        {
+          image: '/path/to/first/image.jpg',
+          text: '#我要减肥#俗话说7分吃3分练，每日搭配营养健身餐。',
+          commentCount: 334,
+          likeCount: 334
+        },
+        {
+          image: '/path/to/second/image.jpg',
+          text: '#小器械大作用#哑铃增肌入门的最好选择。',
+          commentCount: 200,
+          likeCount: 411
+        },
+      ]
+    }
+
   },
 
   /**

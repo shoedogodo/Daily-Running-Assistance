@@ -1,1 +1,87 @@
+
 /* pages/my/my.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 90vh; /* 使容器至少和视口一样高 */
+  padding: 20rpx;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  background-color: #e0e0ff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.username {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.record-button {
+  background-color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.contact {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666666;
+}
+
+.icons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.icon {
+  font-size: 24px;
+  color: #666666;
+}
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  padding: 10rpx 0;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 为当前选中的标签添加样式 */
+.tab-item:active {
+  color: #009688;
+}
+
+.icon {
+  width: 50rpx;
+  height: 50rpx;
+  margin-bottom: 5rpx;
+}
+

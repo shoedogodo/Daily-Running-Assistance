@@ -1,7 +1,4 @@
-// pages/group/group.js
-
-const util = require('../../utils/util.js');
-
+// pages/AIchat/AIchat.js
 Page({
 
   /**
@@ -9,21 +6,12 @@ Page({
    */
   data: {
 
-    formattedDate : ''
-
-
-
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
-    const date = new Date();
-    this.setData({
-      formattedDate: util.formatDate(date)
-    });
 
   },
 

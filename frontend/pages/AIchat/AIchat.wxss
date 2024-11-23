@@ -1,5 +1,4 @@
-
-/* pages/share/share.wxss */
+/* pages/AIchat/AIchat.wxss */
 .container {
   display: flex;
   flex-direction: column;
@@ -89,4 +88,3 @@
   height: 50rpx;
   margin-bottom: 5rpx;
 }
-
