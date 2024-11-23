@@ -9,6 +9,17 @@ const app = express();
 //middleware
 app.use(express.json()); // allows API requests sent with JSON input
 
+mongoose.connect('mongodb://DatabaseAccess:DatabaseAccess@localhost:27017', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => {
+    console.log('Connected to MongoDB!');
+})
+.catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+});
+
 //routes
 app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);
@@ -17,28 +28,8 @@ app.get('/', (request, response) => {
     response.send('Hello from Node API Server Updated');
 });
 
-
-// access Mongo Atlas database, Cluster ttlp-cluster, Database: TTLP-Data; 
-// with Admin User: Username-DatabaseAccess Password-DatabaseAccess
-const uri = 'mongodb+srv://DatabaseAccess:DatabaseAccess@ttlp-cluster.5ftd2.mongodb.net/TTLP-Data?retryWrites=true&w=majority&appName=TTLP-Cluster';
-
-
-async function connect() {
-    try {
-        await mongoose.connect(uri);
-        console.log('Connected to MongoDB Database');
-
-        const host = '0.0.0.0';  // Listens on all interfaces
-        const port = 8000;  // You can specify the port if you want
-        
-        app.listen(port, host, () => {
-            console.log(`App available on http://${host}:${port}`);
-        });
-
-    } catch (error) {
-        console.log('Connection failed')
-        console.error(error);
-    }
-}
-
-connect();
+// Set your desired port
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
