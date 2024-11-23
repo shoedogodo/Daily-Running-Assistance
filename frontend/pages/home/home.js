@@ -24,6 +24,7 @@ Page({
         wx.getLocation({
             type: 'gcj02', // 使用中国国内的坐标系
             success: (res) => { // 获取位置成功时的回调
+                console.log('获取位置成功')
                 this.setData({
                     latitude: res.latitude,
                     longitude: res.longitude,
@@ -31,11 +32,11 @@ Page({
                 });
             },
             fail: (error) => { // 获取位置失败时的回调
-              console.error('获取位置失败', error);
-              wx.showToast({
-                title: '无法获取位置信息',
-                icon: 'none',
-              });
+                console.error('获取位置失败', error);
+                wx.showToast({
+                    title: '无法获取位置信息',
+                    icon: 'none',
+                });
             },
         });
     },
@@ -45,9 +46,11 @@ Page({
             running:!this.data.running
         })
         if(this.data.running==true){
+            console.log("开始跑步")
             this.interval=setInterval(this.record.bind(this), this.data.interval);
         }
         else{
+            console.log("暂停/结束跑步")
             clearInterval(this.interval);
         }
     },
@@ -60,9 +63,9 @@ Page({
         this.setData({
           seconds:this.data.seconds+this.data.interval/1000
         })
-        if (this.data.seconds % 3 !== 0) {
-            return;
-        }
+        // if (this.data.seconds % 3 !== 0) {
+        //     return;
+        // }
         wx.getLocation({
           type: 'gcj02',
         }).then(res=>{
@@ -79,11 +82,12 @@ Page({
             //根据上一次标记点和当前标记点计算距离，超出5m添加标记
             pace = utils.getDistance(lastMarker.latitude, lastMarker.longitude,newMarker.latitude, newMarker.longitude);
             pace=parseFloat(pace.toFixed(1))
-            if(pace > 5){
+            if(pace > 1){
                 markers.push(newMarker);
                 console.log("dot");
             }else{
                 pace = 0;
+                console.log("here")
             }
           }else{
             markers.push(newMarker);
@@ -103,27 +107,30 @@ Page({
         })
     },
 
-    translateMarker:function(e) {
-        let that = this;
-        // 使用 data 中已有的数据进行回放轨迹
-        let ii = 0;
+    translateMarker: function (e) {
         let markers = this.data.markers;
-        console.log(markers.length)
+        console.log(markers.length);
+    
         // 确保有足够的标记点可以进行回放
-        if (ii >= markers.length) {
-            console.log('所有标记点已经完成回放');
+        if (markers.length < 2) {
+            console.log('标记点不足以进行回放');
             return;
         }
     
-        let translateNextMarker = () => {
-            if (ii >= markers.length) {
+        let ii = 0;
+        const that = this;
+    
+        // 使用循环而不是递归进行标记点的回放
+        const replayTrack = () => {
+            if (ii >= markers.length - 1) {
                 console.log('所有标记点已经完成回放');
                 return;
             }
+    
             let markerId = markers[ii].id;
             let destination = {
                 longitude: markers[ii + 1].longitude,
-                latitude: markers[ii + 1].latitude
+                latitude: markers[ii + 1].latitude,
             };
     
             // 根据两个标记点之间的距离，计算移动的持续时间
@@ -134,7 +141,7 @@ Page({
                 markers[ii + 1].longitude
             ) * 5;
     
-            // 使用 MapContext.translateMarker 实现踱迹回放
+            // 使用 MapContext.translateMarker 实现轨迹回放
             that.mapCtx.translateMarker({
                 markerId: markerId, // 当前标记点
                 destination: destination, // 要移动到的下一个标记点
@@ -143,14 +150,18 @@ Page({
                 success(res) {
                     // 更新 ii 的值，准备移动到下一个标记点
                     ii += 1;
-                    translateNextMarker();
+                    // 调用下一次标记点的移动
+                    replayTrack();
                 },
                 fail(err) {
                     console.log('fail', err);
-                }
+                },
             });
         };
-        translateNextMarker();
-    }    
+    
+        // 启动回放
+        replayTrack();
+    }
+    
 
 });

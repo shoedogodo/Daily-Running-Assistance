@@ -29,7 +29,7 @@ const formatNumber = n => {
 function toRadians(d){
     return d*Math.PI/180
   }
-//利用两点的经度，维度计算两点距离
+//利用两点的经度，纬度计算两点距离
 function getDistance(lat1,lng1,lat2,lng2){
     const R=6378137 //赤道半径
     let dis=0
