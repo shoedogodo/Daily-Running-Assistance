@@ -1,4 +1,5 @@
 <!--pages/my/my.wxml-->
+
 <view class="container">
   <view class="profile">
     <text class="username">天天乐跑user</text>
@@ -27,3 +28,4 @@
     </navigator>
   </view>
 </view>
+

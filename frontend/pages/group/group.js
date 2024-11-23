@@ -1,22 +1,30 @@
 // pages/group/group.js
+
 const util = require('../../utils/util.js');
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+
     formattedDate : ''
+
+
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+
     const date = new Date();
     this.setData({
       formattedDate: util.formatDate(date)
     });
+
   },
 
   /**

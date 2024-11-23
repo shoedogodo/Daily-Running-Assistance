@@ -1,66 +1,156 @@
-// pages/home/home.js
+const utils = require('../../utils/util')
+
 Page({
+    /**
+     * 页面的初始数据
+     */
+    data: {
+      meters: 0, // 里程，单位米
+      seconds: 0, // 时间，单位秒
+      latitude: 39.9050, // 纬度
+      longitude: 116.4070, // 经度
+      running: false, // 是否开始
+      interval: 1000, // 定位更新间隔，单位毫秒
+      markers: [], // 标记
+      showMap: false, // 控制地图是否显示
+      polyline: [], // 路线
+    },
+  
+    /**
+     * 页面的生命周期函数--页面加载时调用
+     */
+    onLoad() {
+        this.mapCtx = wx.createMapContext('map');
+        wx.getLocation({
+            type: 'gcj02', // 使用中国国内的坐标系
+            success: (res) => { // 获取位置成功时的回调
+                this.setData({
+                    latitude: res.latitude,
+                    longitude: res.longitude,
+                    showMap: true,
+                });
+            },
+            fail: (error) => { // 获取位置失败时的回调
+              console.error('获取位置失败', error);
+              wx.showToast({
+                title: '无法获取位置信息',
+                icon: 'none',
+              });
+            },
+        });
+    },
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
+    startRun:function(e){
+        this.setData({
+            running:!this.data.running
+        })
+        if(this.data.running==true){
+            this.interval=setInterval(this.record.bind(this), this.data.interval);
+        }
+        else{
+            clearInterval(this.interval);
+        }
+    },
 
-  },
+    record(){
+        //没有开始跑步就不记录
+        if(!this.data.running){
+            return
+        }
+        this.setData({
+          seconds:this.data.seconds+this.data.interval/1000
+        })
+        if (this.data.seconds % 3 !== 0) {
+            return;
+        }
+        wx.getLocation({
+          type: 'gcj02',
+        }).then(res=>{
+          //当前标记位置信息
+          let newMarker={
+            latitude:res.latitude,
+            longitude:res.longitude,
+            id:this.data.markers.length + 1
+          } 
+          let markers = Array.isArray(this.data.markers) ? this.data.markers : [];
+          let pace = 0;
+          if(markers.length>0){
+            let lastMarker=markers.slice(-1)[0]
+            //根据上一次标记点和当前标记点计算距离，超出5m添加标记
+            pace = utils.getDistance(lastMarker.latitude, lastMarker.longitude,newMarker.latitude, newMarker.longitude);
+            pace=parseFloat(pace.toFixed(1))
+            if(pace > 5){
+                markers.push(newMarker);
+                console.log("dot");
+            }else{
+                pace = 0;
+            }
+          }else{
+            markers.push(newMarker);
+          }
+          this.setData({
+            latitude: res.latitude,
+            longitude: res.longitude,
+            markers,
+            polyline: [{
+              points: markers.length > 0 ? markers.map(marker => ({ latitude: marker.latitude, longitude: marker.longitude })) : [],
+              color: "#FFA500",
+              width: 5,
+              dottedLine: false,
+            }],
+            meters:this.data.meters+pace,
+          })
+        })
+    },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
+    translateMarker:function(e) {
+        let that = this;
+        // 使用 data 中已有的数据进行回放轨迹
+        let ii = 0;
+        let markers = this.data.markers;
+        console.log(markers.length)
+        // 确保有足够的标记点可以进行回放
+        if (ii >= markers.length) {
+            console.log('所有标记点已经完成回放');
+            return;
+        }
+    
+        let translateNextMarker = () => {
+            if (ii >= markers.length) {
+                console.log('所有标记点已经完成回放');
+                return;
+            }
+            let markerId = markers[ii].id;
+            let destination = {
+                longitude: markers[ii + 1].longitude,
+                latitude: markers[ii + 1].latitude
+            };
+    
+            // 根据两个标记点之间的距离，计算移动的持续时间
+            let duration = utils.getDistance(
+                markers[ii].latitude,
+                markers[ii].longitude,
+                markers[ii + 1].latitude,
+                markers[ii + 1].longitude
+            ) * 5;
+    
+            // 使用 MapContext.translateMarker 实现踱迹回放
+            that.mapCtx.translateMarker({
+                markerId: markerId, // 当前标记点
+                destination: destination, // 要移动到的下一个标记点
+                autoRotate: false, // 关闭旋转
+                duration: duration, // 动画时长
+                success(res) {
+                    // 更新 ii 的值，准备移动到下一个标记点
+                    ii += 1;
+                    translateNextMarker();
+                },
+                fail(err) {
+                    console.log('fail', err);
+                }
+            });
+        };
+        translateNextMarker();
+    }    
 
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
-})
+});

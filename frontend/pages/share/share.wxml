@@ -1,4 +1,5 @@
 <!--pages/share/share.wxml-->
+
 <view class="container">
   <view class="header">
     <navigator class="header-item" url="../share/share" style="color:rgb(47, 77, 121);">

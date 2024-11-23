@@ -34,10 +34,10 @@
   <view class="input-container">
     <input placeholder="请输入密码" type="password" class="input-box" bindinput="bindPasswordInput" />
   </view>
-  <button class="login-button" bindtap="onLogin">登录</button>
-  <button class="register-button" bindtap="onRegister">注册</button>
-  <button class="wx-login-button" open-type="getUserInfo" bindgetuserinfo="onWeChatLogin">
-    <image src="../../images/wechat-icon.png" class="wechat-icon" />
+  <button class="login-button" bindtap="onLogin" type="plain">登录</button>
+  <button class="register-button" bindtap="onRegister" type="plain">注册</button>
+  <button class="wx-login-button" open-type="getUserInfo" bindgetuserinfo="onWeChatLogin" type="plain">
+    <image src="../../images/wechat-icon.jpeg" class="wechat-icon" />
     微信授权登录
   </button>
 </view>
