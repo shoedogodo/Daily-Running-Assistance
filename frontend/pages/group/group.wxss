@@ -49,8 +49,6 @@
   background-color: #009688;
   border-radius: 40rpx;
   color: #fff;
-  text-align: center;
-  line-height: 80rpx;
   margin-top: 30rpx;
 }
 
@@ -60,8 +58,6 @@
   background-color: #7aad49;
   border-radius: 40rpx;
   color: #fff;
-  text-align: center;
-  line-height: 80rpx;
   margin-top: 30rpx;
 }
 
