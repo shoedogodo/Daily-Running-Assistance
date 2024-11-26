@@ -30,7 +30,7 @@
             <text>分享</text>
         </navigator>
         <navigator class="tab-item" url="../my/my">
-            <image class="icon" src="../../images/home-icon.png" />
+            <image class="icon" src="../../images/my-icon.png" />
             <text>我的</text>
         </navigator>
     </view>
