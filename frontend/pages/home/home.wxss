@@ -4,54 +4,62 @@
     flex-direction: column;
     align-items: center;
     padding: 20rpx;
-  }
-  
-  .user-info {
+}
+
+.user-info {
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
     padding: 10rpx;
-  }
-  
-  .profile-pic {
+}
+
+.profile-pic {
     width: 100rpx;
     height: 100rpx;
     border-radius: 50%;
     margin-right: 20rpx;
-  }
-  
-  .user-text {
+}
+
+.user-text {
     display: flex;
     flex-direction: column;
-  }
-  
-  .username {
+}
+
+.username {
     font-size: 36rpx;
     font-weight: bold;
-  }
-  
-  .date {
+}
+
+.date {
     font-size: 28rpx;
     color: #999;
-  }
-  
-  .map {
+}
+
+.map {
     width: 100%;
-    height: 660rpx;
+    height: 800rpx;
     margin-top: 20rpx;
-  }
-  
-  .run-button {
+}
+
+.run-button {
     width: 80%;
     height: 80rpx;
     background-color: #d0c838;
     border-radius: 40rpx;
     color: #fff;
     margin: 10rpx;
-  }
-  
-  .tab-bar {
+}
+
+.start-button {
+    background-color: #009688;
+}
+
+.track-button {
+    background-color: #7aad49;
+}
+
+.tab-bar {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -61,16 +69,16 @@
     background-color: #fff;
     border-top: 1px solid #ccc;
     padding: 10rpx 0;
-  }
-  
-  .tab-item {
+}
+
+.tab-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .icon {
+}
+
+.icon {
     width: 50rpx;
     height: 50rpx;
     margin-bottom: 5rpx;
-  }
+}

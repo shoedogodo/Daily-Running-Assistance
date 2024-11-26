@@ -26,19 +26,19 @@
   </view>
   <view class="tab-bar">
     <navigator class="tab-item" url="../home/home">
-      <image class="icon" src="/assets/run.png" />
+      <image class="icon" src="../../images/home-icon.png" />
       <text>跑步</text>
     </navigator>
     <navigator class="tab-item" url="../group/group">
-      <image class="icon" src="/assets/group.png" />
+      <image class="icon" src="../../images/group-icon.png" />
       <text>一起跑</text>
     </navigator>
     <navigator class="tab-item" url="../share/share" style="color:#009688">
-      <image class="icon" src="/assets/share.png" />
+      <image class="icon" src="../../images/share-icon.png" />
       <text>分享</text>
     </navigator>
     <navigator class="tab-item" url="../my/my">
-      <image class="icon" src="/assets/my.png" />
+      <image class="icon" src="../../images/my-icon.png" />
       <text>我的</text>
     </navigator>
   </view>

@@ -22,16 +22,51 @@ const getUser = async (req, res) => {
     }
 }
 
-// API: Create a new User, load in JSON body
-const createUser = async (req, res) => {
+// API: Register a new User, load in JSON body
+const registerUser = async (req, res) => {
     try {
-        const user = await User.create(req.body);
-        res.status(200).json(user);
+        const { username, password } = req.body;
+
+        // Check if the username already exists
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return res.status(400).json({ message: "Username already exists" });
+        }
+
+        // Create a new user
+        const newUser = await User.create({ username, password });
+        res.status(200).json(newUser);
     } catch (error) {
-        console.log()
-        res.status(500).json({message: error.message});
+        console.error(error);
+        res.status(500).json({ message: error.message });
     }
-}
+};
+
+const loginUser = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Check if the username exists
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Verify the password
+        const isPasswordValid = user.password === password; // Adjust if using hashed passwords
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: "Invalid password" });
+        }
+
+        // If valid, return success response
+        res.status(200).json({ message: "Login successful", user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 
 // API: Update User based on ID, load in JSON body
 const updateUser = async (req, res) => {
@@ -69,11 +104,11 @@ const deleteUser = async (req, res) => {
     }
 }
 
-
 module.exports = {
     getUsers,
     getUser,
-    createUser,
+    registerUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    loginUser
 }
