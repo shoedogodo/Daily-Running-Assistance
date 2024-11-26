@@ -2,7 +2,7 @@
 
 <view class="container">
   <view class="user-info">
-    <image class="profile-pic" src="/assets/profile-pic.jpg" />
+    <image class="profile-pic" src="" />
     <view class="user-text">
       <text class="username">天天乐跑user</text>
       <text class="date">{{formattedDate}}</text>
