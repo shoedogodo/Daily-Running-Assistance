@@ -8,7 +8,7 @@
       <text class="date">{{formattedDate}}</text>
     </view>
   </view>
-  <map class="map" id="runningMap" show-location="true"></map>
+  <map class="map" id="map" show-location="true"></map>
   <button class="create-run-group" bindtap="createGroup">创建房间</button>
   <button class="join-run-group" bindtap="joinGroup">加入房间</button>
   <view class="tab-bar">
