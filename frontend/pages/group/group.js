@@ -17,6 +17,7 @@ Page({
         markers: [], // 标记
         showMap: false, // 控制地图是否显示
         polyline: [], // 路线
+        userName: '', // 用户名
     },
 
   /**
@@ -50,6 +51,13 @@ Page({
                 });
             },
         });
+
+        const userName = wx.getStorageSync('userName');
+        if(userName){
+            this.setData({
+                userName: userName, 
+            });
+        }
     },
 
   
