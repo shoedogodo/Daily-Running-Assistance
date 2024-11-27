@@ -68,6 +68,10 @@
 
 .new-post-button button {
     background-color: #009688;
+    display: flexbox;
+    font-size: 25px;
+    color: white;
+    bottom: 15px;
 }
 
 .tab-bar {

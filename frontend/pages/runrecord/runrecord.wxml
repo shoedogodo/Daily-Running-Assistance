@@ -1,0 +1,15 @@
+<!--pages/runrecord/runrecord.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">我的跑步记录</text>
+  </view>
+  
+  <view class="record-list">
+    <block wx:for="{{records}}" wx:key="index">
+      <view class="record-item">
+        <image class="record-image" src="{{item.image}}" />
+        <text class="record-date">{{item.date}}</text>
+      </view>
+    </block>
+  </view>
+</view>
