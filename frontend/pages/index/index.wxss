@@ -92,6 +92,7 @@
     border: 1px solid #ddd;
     background-color: #0b0531;
     box-sizing: border-box;
+    color: #ddd;
 }
 
 .login-button,
