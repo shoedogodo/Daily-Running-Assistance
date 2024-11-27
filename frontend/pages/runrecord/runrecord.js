@@ -1,32 +1,18 @@
-// pages/my/my.js
+// pages/runrecord/runrecord.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-      userName: '', // 用户名
-  },
 
-  /**
-   * 跳转我的跑步记录页面
-   */
-  navigateToRecord: function() {
-    wx.navigateTo({
-      url: '../runrecord/runrecord' // 确保路径正确
-    });
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    const userName = wx.getStorageSync('userName');
-    if(userName){
-        this.setData({
-            userName: userName, 
-        });
-    }
+
   },
 
   /**

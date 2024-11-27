@@ -15,7 +15,9 @@
     "pages/group/group",
     "pages/share/share",
     "pages/my/my",
-    "pages/AIchat/AIchat"
+    "pages/AIchat/AIchat",
+    "pages/post/post",
+    "pages/runrecord/runrecord"
   ],
   "window": {
     "navigationBarTextStyle": "black",

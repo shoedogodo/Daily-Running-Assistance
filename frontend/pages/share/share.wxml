@@ -2,7 +2,7 @@
 
 <view class="container">
   <view class="header">
-    <navigator class="header-item" url="../share/share" style="color:rgb(47, 77, 121);">
+    <navigator class="header-item" url="../share/share" style="color:rgb(34, 180, 95);">
       <text>论坛</text>
     </navigator>
     <navigator class="header-item" url="../AIchat/AIchat">
@@ -22,7 +22,7 @@
   </view>
   
   <view class="new-post-button">
-    <button>+</button>
+    <button bindtap="navigateToPost">+</button>
   </view>
   <view class="tab-bar">
     <navigator class="tab-item" url="../home/home">
