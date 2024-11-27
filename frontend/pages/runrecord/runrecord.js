@@ -1,4 +1,4 @@
-// pages/my/my.js
+// pages/runrecord/runrecord.js
 Page({
 
   /**
@@ -6,15 +6,6 @@ Page({
    */
   data: {
 
-  },
-
-  /**
-   * 跳转我的跑步记录页面
-   */
-  navigateToRecord: function() {
-    wx.navigateTo({
-      url: '../runrecord/runrecord' // 确保路径正确
-    });
   },
 
   /**

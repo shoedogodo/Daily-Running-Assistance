@@ -33,38 +33,6 @@
   padding: 10px;
 }
 
-.post {
-  margin-bottom: 20px;
-  border: 1px solid #e0e0e0;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.post-image {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
-
-.post-text {
-  margin-top: 10px;
-}
-
-.post-interaction {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.comment-count, .like-count {
-  color: #888;
-}
-
-.new-post-button {
-  padding: 10px;
-  text-align: center;
-}
-
 .tab-bar {
   position: fixed;
   bottom: 0;
@@ -87,4 +55,80 @@
   width: 50rpx;
   height: 50rpx;
   margin-bottom: 5rpx;
+}
+
+.chat-container {
+  flex-grow: 1;
+  display: flex;
+  width: 100%;
+  position: fixed;
+  top: 30px;
+  bottom: 100px;
+}
+
+.chat-box {
+  flex-grow: 1;
+  padding: 10px;
+  background-color: #fff;
+  overflow-y: auto; /* 确保可以滚动 */
+}
+
+.message {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-start; /* 默认向左对齐 */
+}
+
+/* 用户消息 */
+.message.from-user {
+  justify-content: flex-end; /* 用户消息向右对齐 */
+}
+
+/* AI消息 */
+.message.from-ai {
+  justify-content: flex-start; /* AI消息向左对齐 */
+}
+
+.message-content {
+  padding: 8px 12px;
+  background-color: #e6e6e6;
+  border-radius: 4px;
+  max-width: 70%;
+}
+
+/* 用户消息样式 */
+.message.from-user .message-content {
+  background-color: #3fa597;
+  color: white;
+}
+
+.input-area {
+  width: 100%;
+  position: fixed;
+  display: flex;
+  bottom: 50px;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 10px;
+  background-color: #f0f0f0;
+}
+
+.clear-button {
+  height: 40px;
+  max-width: 18vw;
+  background-color: rgb(90, 15, 84);
+  color: white;
+}
+
+.input-message {
+  flex-grow: 1;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.send-button {
+  height: 40px;
+  max-width: 30vw;
+  background-color: #3fa597;
+  color: white;
 }

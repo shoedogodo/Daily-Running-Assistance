@@ -1,0 +1,24 @@
+<!--pages/post/post.wxml-->
+<view class="container">
+  <view class="post-editor">
+    <input class="title-input" placeholder="输入标题" />
+
+    <view class="separator"></view> <!-- 添加分隔线 -->
+
+    <textarea class="content-textarea" placeholder="输入正文" />
+
+    <view class="image-upload-area">
+      <!-- 这里将显示上传的图片 -->
+      <view class="image-preview" wx:if="{{imagePreview.length > 0}}">
+        <block wx:for="{{imagePreview}}" wx:key="{{item}}" wx:for-index="idx">
+          <view class="image-container" bindlongpress="showDeleteModal" data-index="{{idx}}">
+            <image class="image-preview-item" src="{{item}}" />
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <button class="image-upload-button" bindtap="uploadImage">插入图片</button>
+    <button class="publish-button" bindtap="publishPost">发布</button>
+  </view>
+</view>

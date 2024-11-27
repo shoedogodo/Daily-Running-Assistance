@@ -3,7 +3,7 @@
 <view class="container">
   <view class="profile">
     <text class="username">天天乐跑user</text>
-    <button class="record-button">我的跑步记录</button>
+    <button class="record-button" bindtap="navigateToRecord">我的跑步记录</button>
   </view>
   
   <view class="contact">
