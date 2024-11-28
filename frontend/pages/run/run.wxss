@@ -1,0 +1,25 @@
+/* pages/run/run.wxss */
+.tab-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    padding: 10rpx 0;
+}
+
+.tab-item {
+    width: 187.5rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon {
+    width: 50rpx;
+    height: 50rpx;
+    margin-bottom: 5rpx;
+}

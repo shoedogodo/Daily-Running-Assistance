@@ -13,7 +13,7 @@
   <button class="join-run-group" bindtap="joinGroup">加入房间</button>
   <view class="tab-bar">
     <navigator class="tab-item" url="../home/home">
-      <image class="icon" src="../../images/home-icon.png" />
+      <image class="icon" src="../../images/run-icon.png" />
       <text>跑步</text>
     </navigator>
     <navigator class="tab-item" url="../group/group"  style="color: #009688;">

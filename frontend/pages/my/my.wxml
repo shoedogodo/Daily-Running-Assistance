@@ -1,30 +1,29 @@
 <!--pages/my/my.wxml-->
 
 <view class="container">
-  <view class="profile">
-    <text class="username">{{userName}}</text>
-    <button class="record-button">我的跑步记录</button>
-  </view>
-  <view class="contact">
-    <text>联系我们：jiayz22@mails.tsinghua.edu.cn</text>
-  </view>
-  <view class="tab-bar">
-    <navigator class="tab-item" url="../home/home">
-      <image class="icon" src="../../images/home-icon.png" />
-      <text>跑步</text>
-    </navigator>
-    <navigator class="tab-item" url="../group/group">
-      <image class="icon" src="../../images/group-icon.png" />
-      <text>一起跑</text>
-    </navigator>
-    <navigator class="tab-item" url="../share/share" >
-      <image class="icon" src="../../images/share-icon.png" />
-      <text>分享</text>
-    </navigator>
-    <navigator class="tab-item" url="../my/my" style="color:#009688">
-      <image class="icon" src="../../images/my-icon.png" />
-      <text>我的</text>
-    </navigator>
-  </view>
+    <view class="profile">
+        <text class="username">{{userName}}</text>
+        <button class="record-button">我的跑步记录</button>
+    </view>
+    <view class="contact">
+        <text>联系我们：jiayz22@mails.tsinghua.edu.cn</text>
+    </view>
+    <view class="tab-bar">
+        <navigator class="tab-item" url="../home/home">
+            <image class="icon" src="../../images/run-icon.png" />
+            <text>跑步</text>
+        </navigator>
+        <navigator class="tab-item" url="../group/group">
+            <image class="icon" src="../../images/group-icon.png" />
+            <text>一起跑</text>
+        </navigator>
+        <navigator class="tab-item" url="../share/share">
+            <image class="icon" src="../../images/share-icon.png" />
+            <text>分享</text>
+        </navigator>
+        <navigator class="tab-item" url="../my/my" style="color:#009688">
+            <image class="icon" src="../../images/my-icon.png" />
+            <text>我的</text>
+        </navigator>
+    </view>
 </view>
-
