@@ -1,4 +1,4 @@
-// pages/AIchat/AIchat.js
+// pages/runrecord/runrecord.js
 Page({
 
   /**

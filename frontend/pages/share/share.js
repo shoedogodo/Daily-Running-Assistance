@@ -26,6 +26,14 @@ Page({
   },
 
   /**
+   * 跳转编辑帖子页面
+   */
+  navigateToPost: function() {
+    wx.navigateTo({
+      url: '../post/post'
+    });
+  },
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {

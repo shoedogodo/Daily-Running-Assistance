@@ -1,0 +1,42 @@
+<!--pages/run/run.wxml-->
+<view class="container">
+
+    <view>
+        <navigator class="button" url="../single/single">
+            <view>
+                <image src="../../images/run-icon.png" class="pic" />
+            </view>
+            <view>
+                <text>单人跑步</text>
+            </view>
+        </navigator>
+        <navigator class="button" url="../multiple/multiple">
+            <view>
+                <image src="../../images/group-icon.png" class="pic" />
+            </view>
+            <view>
+                <text>多人跑步</text>
+            </view>
+        </navigator>
+    </view>
+
+    <view class="tab-bar">
+        <navigator class="tab-item" url="" style="color: #009688;">
+            <image class="icon" src="../../images/run-icon.png" />
+            <text>跑步</text>
+        </navigator>
+        <navigator class="tab-item" url="../share/share">
+            <image class="icon" src="../../images/share-icon.png" />
+            <text>分享</text>
+        </navigator>
+        <navigator class="tab-item" url="../chat/chat">
+            <image class="icon" src="../../images/chat-icon.png" />
+            <text>助手</text>
+        </navigator>
+        <navigator class="tab-item" url="../my/my">
+            <image class="icon" src="../../images/my-icon.png" />
+            <text>我的</text>
+        </navigator>
+    </view>
+
+</view>

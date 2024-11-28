@@ -68,6 +68,10 @@
 
 .new-post-button button {
     background-color: #009688;
+    display: flexbox;
+    font-size: 25px;
+    color: white;
+    bottom: 15px;
 }
 
 .tab-bar {
@@ -77,12 +81,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    background-color: #fff;
+    background-color: #f8f8f8;
     border-top: 1px solid #ccc;
     padding: 10rpx 0;
 }
 
 .tab-item {
+    width: 187.5rpx;
     display: flex;
     flex-direction: column;
     align-items: center;

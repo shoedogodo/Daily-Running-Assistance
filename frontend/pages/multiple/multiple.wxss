@@ -1,4 +1,4 @@
-/* pages/home/home.wxss */
+/* pages/group/group.wxss */
 .container {
     display: flex;
     flex-direction: column;
@@ -42,21 +42,22 @@
     margin-top: 20rpx;
 }
 
-.run-button {
+.create-run-group {
     width: 80%;
     height: 80rpx;
-    background-color: #d0c838;
+    background-color: #009688;
     border-radius: 40rpx;
     color: #fff;
-    margin: 10rpx;
+    margin-top: 30rpx;
 }
 
-.start-button {
-    background-color: #009688;
-}
-
-.track-button {
+.join-run-group {
+    width: 80%;
+    height: 80rpx;
     background-color: #7aad49;
+    border-radius: 40rpx;
+    color: #fff;
+    margin-top: 30rpx;
 }
 
 .tab-bar {
@@ -66,12 +67,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    background-color: #fff;
+    background-color: #f8f8f8;
     border-top: 1px solid #ccc;
     padding: 10rpx 0;
 }
 
 .tab-item {
+    width: 187.5rpx;
     display: flex;
     flex-direction: column;
     align-items: center;

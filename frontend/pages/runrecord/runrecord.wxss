@@ -1,0 +1,37 @@
+/* pages/runrecord/runrecord.wxss */
+
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.record-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.record-item {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.record-image {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+}
+
+.record-date {
+  font-size: 16px;
+}

@@ -3,7 +3,7 @@
     <view class="user-info">
         <image class="profile-pic" src="" />
         <view class="user-text">
-            <text class="username">天天乐跑user</text>
+            <text class="username">{{userName}}</text>
             <text class="date">{{formattedDate}}</text>
         </view>
     </view>
@@ -17,17 +17,17 @@
 
 
     <view class="tab-bar">
-        <navigator class="tab-item" url="../home/home" style="color: #009688;">
-            <image class="icon" src="../../images/home-icon.png" />
+        <navigator class="tab-item" url="../run/run" style="color: #009688;">
+            <image class="icon" src="../../images/run-icon.png" />
             <text>跑步</text>
-        </navigator>
-        <navigator class="tab-item" url="../group/group">
-            <image class="icon" src="../../images/group-icon.png" />
-            <text>一起跑</text>
         </navigator>
         <navigator class="tab-item" url="../share/share">
             <image class="icon" src="../../images/share-icon.png" />
             <text>分享</text>
+        </navigator>
+        <navigator class="tab-item" url="../chat/chat">
+            <image class="icon" src="../../images/chat-icon.png" />
+            <text>助手</text>
         </navigator>
         <navigator class="tab-item" url="../my/my">
             <image class="icon" src="../../images/my-icon.png" />
