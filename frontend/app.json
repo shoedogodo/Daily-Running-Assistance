@@ -9,13 +9,14 @@
   },
   "pages": [
     "pages/index/index",
-    "pages/logs/logs",
-    "pages/home/home",
     "pages/register/register",
-    "pages/group/group",
+    "pages/logs/logs",
+    "pages/run/run",
+    "pages/single/single",
+    "pages/multiple/multiple",
     "pages/share/share",
+    "pages/chat/chat",
     "pages/my/my",
-    "pages/AIchat/AIchat",
     "pages/post/post",
     "pages/runrecord/runrecord"
   ],

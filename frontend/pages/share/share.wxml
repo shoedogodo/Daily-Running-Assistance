@@ -1,45 +1,46 @@
 <!--pages/share/share.wxml-->
 
 <view class="container">
-  <view class="header">
-    <navigator class="header-item" url="../share/share" style="color:rgb(34, 180, 95);">
-      <text>论坛</text>
-    </navigator>
-    <navigator class="header-item" url="../AIchat/AIchat">
-      <text>助手</text>
-    </navigator>
-  </view>
-  
-  <view class="post-list">
-    <view class="post" wx:for="{{posts}}" wx:key="index">
-      <image class="post-image" src="{{item.image}}" />
-      <text class="post-text">{{item.text}}</text>
-      <view class="post-interaction">
-        <text class="comment-count">💬 {{item.commentCount}}</text>
-        <text class="like-count">❤️ {{item.likeCount}}</text>
-      </view>
+    <view class="header">
+        <navigator class="header-item" url="../share/share" style="color:rgb(34, 180, 95);">
+            <text>论坛</text>
+        </navigator>
+        <navigator class="header-item" url="../AIchat/AIchat">
+            <text>助手</text>
+        </navigator>
     </view>
-  </view>
-  
-  <view class="new-post-button">
-    <button bindtap="navigateToPost">+</button>
-  </view>
-  <view class="tab-bar">
-    <navigator class="tab-item" url="../home/home">
-      <image class="icon" src="../../images/home-icon.png" />
-      <text>跑步</text>
-    </navigator>
-    <navigator class="tab-item" url="../group/group">
-      <image class="icon" src="../../images/group-icon.png" />
-      <text>一起跑</text>
-    </navigator>
-    <navigator class="tab-item" url="../share/share" style="color:#009688">
-      <image class="icon" src="../../images/share-icon.png" />
-      <text>分享</text>
-    </navigator>
-    <navigator class="tab-item" url="../my/my">
-      <image class="icon" src="../../images/my-icon.png" />
-      <text>我的</text>
-    </navigator>
-  </view>
+
+    <view class="post-list">
+        <view class="post" wx:for="{{posts}}" wx:key="index">
+            <image class="post-image" src="{{item.image}}" />
+            <text class="post-text">{{item.text}}</text>
+            <view class="post-interaction">
+                <text class="comment-count">💬 {{item.commentCount}}</text>
+                <text class="like-count">❤️ {{item.likeCount}}</text>
+            </view>
+        </view>
+    </view>
+
+    <view class="new-post-button">
+        <button bindtap="navigateToPost">+</button>
+    </view>
+
+    <view class="tab-bar">
+        <navigator class="tab-item" url="../run/run">
+            <image class="icon" src="../../images/run-icon.png" />
+            <text>跑步</text>
+        </navigator>
+        <navigator class="tab-item" url="" style="color: #009688;">
+            <image class="icon" src="../../images/share-icon.png" />
+            <text>分享</text>
+        </navigator>
+        <navigator class="tab-item" url="../chat/chat">
+            <image class="icon" src="../../images/chat-icon.png" />
+            <text>助手</text>
+        </navigator>
+        <navigator class="tab-item" url="../my/my">
+            <image class="icon" src="../../images/my-icon.png" />
+            <text>我的</text>
+        </navigator>
+    </view>
 </view>

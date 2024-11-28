@@ -1,0 +1,91 @@
+/* pages/home/home.wxss */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20rpx;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 10rpx;
+}
+
+.profile-pic {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    margin-right: 20rpx;
+}
+
+.user-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    font-size: 36rpx;
+    font-weight: bold;
+}
+
+.date {
+    font-size: 28rpx;
+    color: #999;
+}
+
+.map {
+    width: 100%;
+    height: 1000rpx;
+    margin-top: 20rpx;
+}
+
+/* 按钮容器 */
+.button-container {
+    display: flex;
+    justify-content: space-between; /* 水平分布两个按钮 */
+    position: absolute;
+    bottom: 200rpx; /* 距离底部的距离 */
+    left: 0;
+    right: 0;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+}
+
+/* 通用按钮样式 */
+.run-button {
+    width: 200rpx;
+    height: 80rpx;
+    background-color: #d0c838;
+    border-radius: 40rpx;
+    color: #fff;
+    margin: 10rpx;
+}
+
+/* 开始按钮样式 */
+.start-button {
+    background-color: #009688;
+    /* no need for left: 100rpx, flex will take care of positioning */
+}
+
+/* 回放按钮样式 */
+.track-button {
+    background-color: #7aad49;
+    /* no need for right: 100rpx, flex will take care of positioning */
+}
+
+.counter{
+    background-color: #90e0ef;
+    opacity: 1;
+    position: fixed;
+    top: 40rpx;
+    right: 20rpx;
+    display: flex;
+    flex-direction: column;
+}
+
+.counter text{
+    display: block;
+}

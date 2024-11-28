@@ -1,15 +1,19 @@
-<!--pages/my/my.wxml-->
+<!--pages/multiple/multiple.wxml-->
 
 <view class="container">
-    <view class="profile">
-        <text class="username">{{userName}}</text>
-        <button class="record-button">我的跑步记录</button>
+    <view class="user-info">
+        <image class="profile-pic" src="" />
+        <view class="user-text">
+            <text class="username">{{userName}}</text>
+            <text class="date">{{formattedDate}}</text>
+        </view>
     </view>
-    <view class="contact">
-        <text>联系我们：jiayz22@mails.tsinghua.edu.cn</text>
-    </view>
+    <map class="map" id="map" show-location="true"></map>
+    <button class="create-run-group" bindtap="createGroup">创建房间</button>
+    <button class="join-run-group" bindtap="joinGroup">加入房间</button>
+
     <view class="tab-bar">
-        <navigator class="tab-item" url="../run/run">
+        <navigator class="tab-item" url="../run/run" style="color: #009688;">
             <image class="icon" src="../../images/run-icon.png" />
             <text>跑步</text>
         </navigator>
@@ -21,9 +25,10 @@
             <image class="icon" src="../../images/chat-icon.png" />
             <text>助手</text>
         </navigator>
-        <navigator class="tab-item" url="" style="color: #009688;">
+        <navigator class="tab-item" url="../my/my">
             <image class="icon" src="../../images/my-icon.png" />
             <text>我的</text>
         </navigator>
     </view>
+
 </view>

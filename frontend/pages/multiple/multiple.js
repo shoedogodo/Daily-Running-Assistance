@@ -1,4 +1,4 @@
-// pages/group/group.js
+// pages/multiple/multiple.js
 
 const util = require('../../utils/util.js');
 
