@@ -38,12 +38,25 @@
 
 .map {
     width: 100%;
-    height: 800rpx;
+    height: 1000rpx;
     margin-top: 20rpx;
 }
 
+/* 按钮容器 */
+.button-container {
+    display: flex;
+    justify-content: space-between; /* 水平分布两个按钮 */
+    position: absolute;
+    bottom: 200rpx; /* 距离底部的距离 */
+    left: 0;
+    right: 0;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+}
+
+/* 通用按钮样式 */
 .run-button {
-    width: 80%;
+    width: 200rpx;
     height: 80rpx;
     background-color: #d0c838;
     border-radius: 40rpx;
@@ -51,35 +64,28 @@
     margin: 10rpx;
 }
 
+/* 开始按钮样式 */
 .start-button {
     background-color: #009688;
+    /* no need for left: 100rpx, flex will take care of positioning */
 }
 
+/* 回放按钮样式 */
 .track-button {
     background-color: #7aad49;
+    /* no need for right: 100rpx, flex will take care of positioning */
 }
 
-.tab-bar {
+.counter{
+    background-color: #90e0ef;
+    opacity: 1;
     position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    background-color: #f8f8f8;
-    border-top: 1px solid #ccc;
-    padding: 10rpx 0;
-}
-
-.tab-item {
-    width: 187.5rpx;
+    top: 40rpx;
+    right: 20rpx;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
-.icon {
-    width: 50rpx;
-    height: 50rpx;
-    margin-bottom: 5rpx;
+.counter text{
+    display: block;
 }
