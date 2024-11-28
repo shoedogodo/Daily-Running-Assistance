@@ -2,8 +2,22 @@
 <view class="container">
 
     <view>
-        <navigator class="button" url="../single/single">单人跑步</navigator>
-        <navigator class="button" url="../multiple/multiple">多人跑步</navigator>
+        <navigator class="button" url="../single/single">
+            <view>
+                <image src="../../images/run-icon.png" class="pic" />
+            </view>
+            <view>
+                <text>单人跑步</text>
+            </view>
+        </navigator>
+        <navigator class="button" url="../multiple/multiple">
+            <view>
+                <image src="../../images/group-icon.png" class="pic" />
+            </view>
+            <view>
+                <text>多人跑步</text>
+            </view>
+        </navigator>
     </view>
 
     <view class="tab-bar">

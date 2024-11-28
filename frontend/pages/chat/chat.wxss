@@ -1,134 +1,114 @@
 /* pages/AIchat/AIchat.wxss */
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20rpx;
-  min-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20rpx;
+    min-height: 95vh;
 }
 
 .header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  background-color: #fff;
-  border-top: 1px solid #ccc;
-  padding: 10rpx 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    padding: 10rpx 0;
 }
 
-.header-item{
-  display: flex;
-  align-items: center;
+.header-item {
+    display: flex;
+    align-items: center;
 }
 
 .title {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .post-list {
-  flex: 1;
-  padding: 10px;
-}
-
-.tab-bar {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  background-color: #fff;
-  border-top: 1px solid #ccc;
-  padding: 10rpx 0;
-}
-
-.tab-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.icon {
-  width: 50rpx;
-  height: 50rpx;
-  margin-bottom: 5rpx;
+    flex: 1;
+    padding: 10px;
 }
 
 .chat-container {
-  flex-grow: 1;
-  display: flex;
-  width: 100%;
-  position: fixed;
-  top: 30px;
-  bottom: 100px;
+    flex-grow: 1;
+    display: flex;
+    width: 100%;
+    position: fixed;
+    top: 30px;
+    bottom: 100px;
 }
 
 .chat-box {
-  flex-grow: 1;
-  padding: 10px;
-  background-color: #fff;
-  overflow-y: auto; /* 确保可以滚动 */
+    flex-grow: 1;
+    padding: 10px;
+    background-color: #fff;
+    overflow-y: auto;
+    /* 确保可以滚动 */
 }
 
 .message {
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: flex-start; /* 默认向左对齐 */
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-start;
+    /* 默认向左对齐 */
 }
 
 /* 用户消息 */
 .message.from-user {
-  justify-content: flex-end; /* 用户消息向右对齐 */
+    justify-content: flex-end;
+    /* 用户消息向右对齐 */
 }
 
 /* AI消息 */
 .message.from-ai {
-  justify-content: flex-start; /* AI消息向左对齐 */
+    justify-content: flex-start;
+    /* AI消息向左对齐 */
 }
 
 .message-content {
-  padding: 8px 12px;
-  background-color: #e6e6e6;
-  border-radius: 4px;
-  max-width: 70%;
+    padding: 8px 12px;
+    background-color: #e6e6e6;
+    border-radius: 4px;
+    max-width: 70%;
 }
 
 /* 用户消息样式 */
 .message.from-user .message-content {
-  background-color: #3fa597;
-  color: white;
+    background-color: #3fa597;
+    color: white;
 }
 
 .input-area {
-  width: 100%;
-  position: fixed;
-  display: flex;
-  bottom: 50px;
-  flex-direction: row;
-  align-items: center;
-  padding-bottom: 10px;
-  background-color: #f0f0f0;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    bottom: 50px;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 10px;
+    background-color: #f0f0f0;
 }
 
 .clear-button {
-  height: 40px;
-  max-width: 18vw;
-  background-color: rgb(90, 15, 84);
-  color: white;
+    height: 40px;
+    max-width: 18vw;
+    background-color: rgb(90, 15, 84);
+    color: white;
 }
 
 .input-message {
-  flex-grow: 1;
-  height: 40px;
-  margin-right: 10px;
+    flex-grow: 1;
+    height: 40px;
+    margin-right: 10px;
 }
 
 .send-button {
-  height: 40px;
-  max-width: 30vw;
-  background-color: #3fa597;
-  color: white;
+    height: 40px;
+    max-width: 30vw;
+    background-color: #3fa597;
+    color: white;
 }
