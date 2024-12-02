@@ -31,8 +31,6 @@
 } */
 
 .container {
-    display: flex;
-    flex-direction: column;
     height: 100vh; /* 设置容器高度为视口高度 */
 }
 
