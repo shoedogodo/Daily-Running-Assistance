@@ -13,16 +13,18 @@
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
-    background-color: #e0e0ff;
+    width: 200px;
+    background-color: #3bbeb1;
     padding: 20px;
     border-radius: 10px;
 }
 
-.avatar {
+.profile-pic {
     width: 80px;
     height: 80px;
     border-radius: 50%;
     margin-bottom: 10px;
+    margin-top: -10px;
 }
 
 .username {
@@ -30,12 +32,50 @@
     margin-bottom: 10px;
 }
 
-.record-button {
-    background-color: #ffffff;
+.modal-content {
+    padding: 20px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.modal-footer button {
+    padding: 10px;
+    background-color: #007aff;
+    color: white;
     border: none;
-    padding: 10px 20px;
     border-radius: 5px;
-    font-size: 16px;
+}
+
+.menu-bar {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin: 3px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+    background-color:lightcyan;
+}
+
+
+.logout-button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .contact {
