@@ -2,9 +2,53 @@
 
 <view class="container">
     <view class="profile">
+        <image class="profile-pic" src = "../../images/my-icon.png"/>
         <text class="username">{{userName}}</text>
-        <button class="record-button">我的跑步记录</button>
     </view>
+    
+    <!-- 新增的菜单栏 -->
+    <view class="menu-bar">
+        <navigator class="menu-item" bindtap="navigateToRecord">
+            <text>跑步记录</text>
+        </navigator>
+        <navigator class="menu-item" bindtap="showModal" data-action="nickname">
+            <text>修改昵称</text>
+        </navigator>
+        <navigator class="menu-item" bindtap="showModal" data-action="avatar">
+            <text>修改头像</text>
+        </navigator>
+        <navigator class="menu-item" bindtap="showModal" data-action="profile">
+            <text>个人信息</text>
+        </navigator>
+    </view>
+    
+    <!-- 弹窗组件 -->
+    <modal wx:if="{{showModal}}" title="">
+        <view class="modal-content">
+            <block wx:if="{{currentAction === 'nickname'}}">
+                <input type="text" placeholder="请输入新昵称" bindinput="inputNickname"/>
+            </block>
+            <block wx:if="{{currentAction === 'avatar'}}">
+                <picker mode="image" bindchange="chooseAvatar">
+                    <view>选择头像</view>
+                </picker>
+            </block>
+            <block wx:if="{{currentAction === 'profile'}}">
+                <text>用户名: {{userName}}</text>
+                <text>昵称: {{nickname}}</text>
+            </block>
+        </view>
+        <view class="modal-footer">
+            <button bindtap="hideModal">取消</button>
+            <block wx:if="{{currentAction !== 'profile'}}">
+                <button bindtap="confirmAction">确定</button>
+            </block>
+        </view>
+    </modal>
+
+    <!-- 退出登录按钮 -->
+    <button class="logout-button" bindtap="logout">退出登录</button>
+
     <view class="contact">
         <text>联系我们：jiayz22@mails.tsinghua.edu.cn</text>
     </view>
