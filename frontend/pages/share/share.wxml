@@ -1,14 +1,6 @@
 <!--pages/share/share.wxml-->
 
 <view class="container">
-    <view class="header">
-        <navigator class="header-item" url="../share/share" style="color:rgb(34, 180, 95);">
-            <text>论坛</text>
-        </navigator>
-        <navigator class="header-item" url="../AIchat/AIchat">
-            <text>助手</text>
-        </navigator>
-    </view>
 
     <view class="post-list">
         <view class="post" wx:for="{{posts}}" wx:key="index">

@@ -13,16 +13,18 @@
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
-    background-color: #e0e0ff;
+    width: 200px;
+    background-color: #3bbeb1;
     padding: 20px;
     border-radius: 10px;
 }
 
-.avatar {
+.profile-pic {
     width: 80px;
     height: 80px;
     border-radius: 50%;
     margin-bottom: 10px;
+    margin-top: -10px;
 }
 
 .username {
@@ -30,12 +32,122 @@
     margin-bottom: 10px;
 }
 
-.record-button {
-    background-color: #ffffff;
+.modal-content {
+    padding: 20px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.modal-footer button {
+    padding: 10px;
+    background-color: #007aff;
+    color: white;
     border: none;
-    padding: 10px 20px;
     border-radius: 5px;
-    font-size: 16px;
+}
+
+.menu-bar {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin: 3px;
+    border-bottom: 1px solid lightcyan;
+    font-weight: bold;
+    background-color:lightcyan;
+}
+
+/* 自定义弹窗样式 */
+.modal-back {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明背景，可以调整透明度 */
+}
+
+.custom-modal {
+    position: relative;
+    margin-top: 60%;
+    margin-left: 10%;
+    width: 80%;
+    height: 30%;
+    border: 1px solid black;
+    border-radius: 1em;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 300px;
+}
+
+/* 自定义弹窗底部按钮栏样式 */
+.modal-footer {
+    display: flex;
+    width: 80%;
+    justify-content: flex-end; /* 将按钮推向右边 */
+    align-items: center; /* 垂直居中 */
+    padding: 10px; /* 内边距 */
+    background-color: #f8f8f8; /* 背景颜色 */
+  }
+  
+  /* 自定义弹窗按钮样式 */
+  .modal-footer button {
+    margin-left: 10px; /* 按钮之间的间隔 */
+    padding: 8px 16px; /* 按钮内边距 */
+    background-color: #007aff; /* 按钮背景颜色 */
+    color: white; /* 按钮文字颜色 */
+    border: none; /* 无边框 */
+    border-radius: 5px; /* 圆角边框 */
+    line-height: 1.5; /* 行高 */
+    font-size: 16px; /* 字体大小 */
+    cursor: pointer; /* 鼠标悬停时的光标 */
+  }
+  
+  /* 取消按钮样式，可以根据需要调整 */
+  .modal-footer button.cancel {
+    background-color: #cccccc; /* 取消按钮背景颜色 */
+    color: black; /* 取消按钮文字颜色 */
+  }
+
+.image-preview-item {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    width: 80px; /* 图片预览的宽度 */
+    height: 80px; /* 图片预览的高度 */
+    margin-right: 10px;
+    margin-bottom: 5px;
+    object-fit: cover; /* 保持图片比例 */
+}
+
+.logout-button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgb(107, 158, 154);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .contact {

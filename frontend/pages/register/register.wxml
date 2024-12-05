@@ -1,15 +1,15 @@
 <!--pages/register/register.wxml-->
 <view class="container">
-  <view class="register-title">注册新用户</view>
-  <view class="input-container">
-    <input placeholder="请输入用户名" type="text" class="input-box"  bindinput="onUsernameInput"/>
-  </view>
-  <view class="input-container">
-    <input placeholder="请输入密码" type="password" class="input-box" bindinput="onPasswordInput"/>
-  </view>
-  <view class="input-container">
-    <input placeholder="请确认密码" type="password" class="input-box" bindinput="onConfirmPasswordInput"/>
-  </view>
-  <button class="register-button" bindtap="onRegister">注册</button>
-  <button class="back-button" bindtap="goBack">返回</button>
+    <view class="register-title">注册新用户</view>
+    <view class="input-container">
+        <input placeholder="请输入用户名" type="text" class="input-box" bindinput="onUsernameInput" />
+    </view>
+    <view class="input-container">
+        <input placeholder="请输入密码" type="password" class="input-box" bindinput="onPasswordInput" />
+    </view>
+    <view class="input-container">
+        <input placeholder="请确认密码" type="password" class="input-box" bindinput="onConfirmPasswordInput" />
+    </view>
+    <button class="register-button" bindtap="onRegister">注册</button>
+    <button class="back-button" bindtap="goBack">返回</button>
 </view>
