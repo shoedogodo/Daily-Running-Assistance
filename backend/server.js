@@ -1,8 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Product = require('./models/product.model.js');
 const User = require('./models/user.model.js');
-const productRoute = require('./routes/product.route.js');
 const userRoute = require('./routes/user.route.js');
 const app = express();
 
@@ -21,7 +19,6 @@ mongoose.connect('mongodb://DatabaseAccess:DatabaseAccess@localhost:27017', {
 });
 
 //routes
-app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);
 
 app.get('/', (request, response) => {
