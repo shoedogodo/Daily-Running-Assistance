@@ -1,14 +1,6 @@
-<!--pages/AIchat/AIchat.wxml-->
+<!--pages/chat/chat.wxml-->
 
 <view class="container">
-    <view class="header">
-        <navigator class="header-item" url="../share/share">
-            <text>论坛</text>
-        </navigator>
-        <navigator class="header-item" url="../AIchat/AIchat" style="color:rgb(34, 180, 95);">
-            <text>助手</text>
-        </navigator>
-    </view>
 
     <view class="chat-container">
         <scroll-view class="chat-box" scroll-y="true">

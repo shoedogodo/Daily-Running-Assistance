@@ -21,33 +21,40 @@
             <text>个人信息</text>
         </navigator>
     </view>
-    
+
     <!-- 弹窗组件 -->
-    <modal wx:if="{{showModal}}" title="">
+    <view class="modal-back" wx:if="{{showModal}}">
+    <view class="custom-modal" >
         <view class="modal-content">
             <block wx:if="{{currentAction === 'nickname'}}">
-                <input type="text" placeholder="请输入新昵称" bindinput="inputNickname"/>
+                <input type="text" placeholder="请输入新昵称" bindinput="inputNickname" />
             </block>
             <block wx:if="{{currentAction === 'avatar'}}">
-                <picker mode="image" bindchange="chooseAvatar">
-                    <view>选择头像</view>
-                </picker>
+                <view class="image-preview" wx:if="{{imagePreview.length > 0}}">
+                    <block wx:for="{{imagePreview}}" wx:key="{{item}}" wx:for-index="idx">
+                        <view class="image-container" bindlongpress="showDeleteModal" data-index="{{idx}}">
+                            <image class="image-preview-item" src="{{item}}" />
+                        </view>
+                    </block>
+                </view>
+                <view bindtap="chooseAvatar">选择头像</view>
             </block>
             <block wx:if="{{currentAction === 'profile'}}">
-                <text>用户名: {{userName}}</text>
-                <text>昵称: {{nickname}}</text>
+                <view><text>用户名: {{userName}}</text></view>
+                <view><text>昵称: {{nickname}}</text></view>
             </block>
         </view>
         <view class="modal-footer">
-            <button bindtap="hideModal">取消</button>
+            <button bindtap="onModalSuccess">确定</button>
             <block wx:if="{{currentAction !== 'profile'}}">
-                <button bindtap="confirmAction">确定</button>
+                <button bindtap="onModalFail">取消</button>
             </block>
         </view>
-    </modal>
+    </view>
+    </view>
 
     <!-- 退出登录按钮 -->
-    <button class="logout-button" bindtap="logout">退出登录</button>
+    <button class="logout-button" bindtap="onLogout">退出登录</button>
 
     <view class="contact">
         <text>联系我们：jiayz22@mails.tsinghua.edu.cn</text>
