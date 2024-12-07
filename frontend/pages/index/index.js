@@ -1,5 +1,3 @@
-const utilsPath = require('../../utils/util.js'); // Path: frontend/utils/util.js
-
 Page({
     data: {
         username: '',
@@ -40,7 +38,7 @@ Page({
         const data = { username, password };
 
         wx.request({
-            url: 'http://124.221.96.133:8000/api/users/login', 
+            url: global.utils.getAPI(global.utils.serverURL, '/api/users/login'),
             method: 'POST',
             data: JSON.stringify(data),
             header: {

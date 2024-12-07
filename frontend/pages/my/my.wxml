@@ -3,7 +3,7 @@
 <view class="container">
     <view class="profile">
         <image class="profile-pic" src = "../../images/my-icon.png"/>
-        <text class="username">{{userName}}</text>
+        <text class="username">{{nickname}}</text>
     </view>
     
     <!-- 新增的菜单栏 -->

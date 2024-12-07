@@ -8,7 +8,8 @@ Page({
         showModal: false,
         currentAction: '',
         avatarUrl: '',
-        nickname: '', // 从用户信息中获取的昵称
+        tempNickname: '',
+        nickname: 'nickname_not_updated', // 从用户信息中获取的昵称
         userName: '', // 从用户信息中获取的用户名
         imagePreview: [], // 用于存储图片预览的数组
         unique: 0, // 添加一个唯一标识符，用于wx:key
@@ -41,8 +42,10 @@ Page({
      *  */ 
     inputNickname: function (e) {
         this.setData({
-            nickname: e.detail.value
+            //nickname: e.detail.value
+            tempNickname: e.detail.value
         });
+        console.log(tempNickname);
     },
 
     /**
