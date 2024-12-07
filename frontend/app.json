@@ -18,7 +18,8 @@
     "pages/chat/chat",
     "pages/my/my",
     "pages/post/post",
-    "pages/runrecord/runrecord"
+    "pages/runrecord/runrecord",
+    "pages/singlerecord/singlerecord"
   ],
   "window": {
     "navigationBarTextStyle": "black",
