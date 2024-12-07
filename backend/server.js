@@ -1,3 +1,5 @@
+const multer = require('multer');
+const Grid = require('gridfs-stream');
 const express = require('express');
 const mongoose = require('mongoose');
 const User = require('./models/user.model.js');
@@ -17,6 +19,20 @@ mongoose.connect('mongodb://DatabaseAccess:DatabaseAccess@localhost:27017', {
 .catch((err) => {
     console.error('Error connecting to MongoDB:', err);
 });
+
+// MongoDB connection
+const mongoURI = 'mongodb://DatabaseAccess:DatabaseAccess@localhost:27017';
+const conn = mongoose.createConnection(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+let gfs;
+conn.once('open', () => {
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+});
+
+// Create storage engine
+const storage = new multer.memoryStorage();
+const upload = multer({ storage });
 
 //routes
 app.use("/api/users", userRoute);

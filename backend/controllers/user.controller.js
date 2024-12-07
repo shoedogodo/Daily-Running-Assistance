@@ -42,7 +42,7 @@ const registerUser = async (req, res) => {
         }
 
         // Create a new user
-        const newUser = await User.create({ username, password});
+        const newUser = await User.create({ username, password, nickname: username});
         res.status(200).json(newUser);
     } catch (error) {
         console.error(error);
@@ -128,6 +128,65 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const updateProfilePicture = async (req, res) => {
+    try {
+        const { username } = req.params;  // Get username from request parameters
+
+        // Find the user by username
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Handle file upload
+        upload.single('profilePicture')(req, res, async (err) => {
+            if (err) {
+                return res.status(500).json({ message: err.message });
+            }
+
+            // Create a write stream to GridFS
+            const writestream = gfs.createWriteStream({
+                filename: `${Date.now()}-${req.file.originalname}`,
+                content_type: req.file.mimetype
+            });
+
+            // Write the file buffer to GridFS
+            writestream.write(req.file.buffer);
+            writestream.end();
+
+            writestream.on('close', async (file) => {
+                // Update the user's profile picture with the file ID
+                user.profilePicture = file._id;
+                await user.save();
+
+                res.status(200).json({ message: "Profile picture updated successfully", user });
+            });
+
+            writestream.on('error', (err) => {
+                res.status(500).json({ message: err.message });
+            });
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+// API: Edit User's nickname
+const editNickname = async (req, res) => {
+    try {
+        const { username, nickname } = req.body;  // Assuming username and nickname are in the request body
+        // Find the user by username
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        // Update the user's nickname
+        user.nickname = nickname;
+        await user.save();
+        res.status(200).json({ message: "Nickname updated successfully", user });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 module.exports = {
     getUsers,
@@ -135,5 +194,7 @@ module.exports = {
     registerUser,
     updateUser,
     deleteUser,
-    loginUser
+    loginUser,
+    updateProfilePicture,
+    editNickname
 }
