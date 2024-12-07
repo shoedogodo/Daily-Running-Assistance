@@ -1,4 +1,5 @@
 const utilsPath = require('../../utils/util.js'); // Path: frontend/utils/util.js
+const app = require('../../app.js');
 
 Page({
     data: {
@@ -40,7 +41,8 @@ Page({
         const data = { username, password };
 
         wx.request({
-            url: 'http://124.221.96.133:8000/api/users/login', 
+            //url: 'http://124.221.96.133:8000/api/users/login', 
+            url: 'http://124.221.96.133:8000/api/users/loginTest',
             method: 'POST',
             data: JSON.stringify(data),
             header: {
@@ -48,11 +50,16 @@ Page({
             },
             success(res) {
                 if (res.statusCode === 200) {
+                    const token = res.data.token;
+                    const username = res.data.username;
+
+                    wx.setStorageSync('token', token);
+                    wx.setStorageSync('username', username);
+
                     wx.showToast({
                         title: '登录成功!',
                         icon: 'none',
                     });
-                    wx.setStorageSync('userName', username);
                     wx.navigateTo({
                         url: '../run/run'
                     });
@@ -108,3 +115,4 @@ Page({
         }
     }
 });
+

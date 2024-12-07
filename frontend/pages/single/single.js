@@ -1,4 +1,5 @@
 const utils = require('../../utils/util')
+const app = require('../../app.js');
 
 Page({
     /**
@@ -21,6 +22,7 @@ Page({
      * 页面的生命周期函数--页面加载时调用
      */
     onLoad() {
+      app.tokenCheck();
         //格式化日期 xxxx/xx/xx
         const date = new Date();
         this.setData({

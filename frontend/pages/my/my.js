@@ -1,4 +1,6 @@
 // pages/my/my.js
+const app = require('../../app.js');
+
 Page({
 
   /**
@@ -21,6 +23,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    wx.showToast({
+      title: 'tokencheck',
+      icon: 'none'
+    });
+
+    setTimeout(function() {        app.tokenCheck();    }, 3000); // 等待1000毫秒（1秒）后执行
+    
     const userName = wx.getStorageSync('userName');
     if(userName){
         this.setData({
@@ -76,5 +85,6 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  }  
 })
+

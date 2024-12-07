@@ -68,7 +68,10 @@ Page({
                     wx.showToast({
                         title: 'Registration Successful!',
                     });
-                    wx.navigateBack();
+                    setTimeout(function() {
+                      wx.navigateBack();
+                  }, 1000); // 等待1000毫秒（1秒）后执行
+                    //wx.navigateBack();
                 } else {
                     wx.showToast({
                         title: 'Registration Failed',
