@@ -1,6 +1,8 @@
 Page({
     data: {
         username: '',
+        nickname: '',
+        profilepicture:'',
         password: ''
     },
   
@@ -51,6 +53,9 @@ Page({
                         icon: 'none',
                     });
                     wx.setStorageSync('userName', username);
+                    const nicknameFetch = res.data.user.nickname; // Adjust this depending on your response structure
+                    wx.setStorageSync('nickname', nicknameFetch);
+                    //console.log('nickname fetched: ' + wx.getStorageSync('nickname'));
                     wx.navigateTo({
                         url: '../run/run'
                     });

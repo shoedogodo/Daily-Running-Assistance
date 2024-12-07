@@ -27,7 +27,7 @@
     <view class="custom-modal" >
         <view class="modal-content">
             <block wx:if="{{currentAction === 'nickname'}}">
-                <input type="text" placeholder="请输入新昵称" bindinput="inputNickname" />
+                <input type="text" placeholder="请输入新昵称" bindinput="inputNickname" value="{{nicknameInput}}"/>
             </block>
             <block wx:if="{{currentAction === 'avatar'}}">
                 <view class="image-preview" wx:if="{{imagePreview.length > 0}}">

@@ -8,11 +8,12 @@ Page({
         showModal: false,
         currentAction: '',
         avatarUrl: '',
-        tempNickname: '',
+        nicknameInput: '',
         nickname: 'nickname_not_updated', // 从用户信息中获取的昵称
         userName: '', // 从用户信息中获取的用户名
         imagePreview: [], // 用于存储图片预览的数组
         unique: 0, // 添加一个唯一标识符，用于wx:key
+        profilepicture:''
     },
 
     /**
@@ -40,12 +41,11 @@ Page({
     /**
      * 获取输入的新昵称
      *  */ 
+
     inputNickname: function (e) {
         this.setData({
-            //nickname: e.detail.value
-            tempNickname: e.detail.value
+            nicknameInput: e.detail.value
         });
-        console.log(tempNickname);
     },
 
     /**
@@ -80,6 +80,81 @@ Page({
      */
     onModalSuccess: function () {
         if (this.data.currentAction === 'nickname') {
+            const newNickname = this.data.nicknameInput;
+            const username = wx.getStorageSync('userName');
+
+            // Check if the nickname is not empty
+            if (newNickname.trim() !== '') {
+                // Update the page's nickname
+                this.setData({
+                    nickname: newNickname
+                });
+    
+                const nickname = newNickname;
+                // Optionally, you could save it to storage or call an API to persist it
+                wx.setStorageSync('nickname', newNickname);
+                // stil need to call API
+                // Call the editNickname API
+                wx.request({
+                    url: global.utils.getAPI(global.utils.serverURL, '/api/users/update/nickname'),
+                    method: 'PUT',
+                    data: { username, nickname },  // Sending username and newNickname in the request body
+                    header: {
+                        'Content-Type': 'application/json',
+                    },
+                    success(res) {
+                        console.log(username);
+                        console.log(nickname);
+                        // Log the response to see the actual server response
+                        console.log('Response:', res.data);
+
+                        if (res.statusCode === 200) {
+                            wx.showToast({
+                                title: '修改昵称成功!',
+                                icon: 'none',
+                            });
+                            console.log('Nickname updated successfully');
+                        } else if (res.statusCode === 404) {
+                            wx.showToast({
+                                title: '用户不存在',
+                                icon: 'none',
+                            });
+                            console.log('404 error: User not found');
+                        } else {
+                            wx.showToast({
+                                title: 'API error',
+                                icon: 'none',
+                            });
+                            console.log('API error: Unexpected response status');
+                        }
+                    },
+                    fail(err) {
+                        wx.showToast({
+                            title: 'Network Error',
+                            icon: 'none',
+                        });
+                        console.error('Network Error:', err);  // Log the full error object for better debugging
+                    },
+                });
+
+            
+                // Show a success message
+                wx.showToast({
+                    title: '昵称已更新',
+                    icon: 'success'
+                });
+
+                // Close the modal (if applicable)
+                this.setData({
+                    currentAction: ''  // Reset the action to close the modal
+                });
+            } else {
+                wx.showToast({
+                    title: '请输入有效的昵称',
+                    icon: 'none'
+                });
+            }
+            
             // 执行修改昵称的逻辑
             console.log('新昵称:', this.data.nickname);
         } else if (this.data.currentAction === 'avatar') {
@@ -105,9 +180,11 @@ Page({
      */
     onLoad(options) {
         const userName = wx.getStorageSync('userName');
+        const nickname = wx.getStorageSync('nickname');
         if (userName) {
             this.setData({
                 userName: userName,
+                nickname: nickname
             });
         }
     },
