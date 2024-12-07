@@ -10,17 +10,25 @@ const getUsers = async (req, res) => {
     }
 }
 
-// API: Get User based on ID
+// API: Get User based on username
 const getUser = async (req, res) => {
     try {
-        const {id} = req.params;
-        const user = await User.findById(id);
-        res.status(200).json(user);
+        const { username } = req.params;  // Get username from request parameters
+
+        // Find the user by username
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json(user);  // Return the found user
 
     } catch (error) {
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message });
     }
-}
+};
+
 
 // API: Register a new User, load in JSON body
 const registerUser = async (req, res) => {
@@ -34,7 +42,7 @@ const registerUser = async (req, res) => {
         }
 
         // Create a new user
-        const newUser = await User.create({ username, password });
+        const newUser = await User.create({ username, password});
         res.status(200).json(newUser);
     } catch (error) {
         console.error(error);
@@ -68,41 +76,58 @@ const loginUser = async (req, res) => {
 
 
 
-// API: Update User based on ID, load in JSON body
 const updateUser = async (req, res) => {
     try {
-        const {id} = req.params;
-        const user = await User.findByIdAndUpdate(id, req.body);
+        const { username, password } = req.body;  // Assuming username and password are in the request body
+
+        // Find the user by username
+        const user = await User.findOne({ username });
 
         if (!user) {
-            return res.status(404).json({message: "User not found"});
+            return res.status(404).json({ message: "User not found" });
         }
 
-        const updatedUser = await User.findById(id);
-        res.status(200).json(updatedUser); //and return entire update
+        // Check if the password matches the user's existing password
+        if (user.password !== password) {
+            return res.status(400).json({ message: "Invalid password" });
+        }
 
+        // If the username and password are correct, proceed to update the user
+        // Update user info based on the request body (excluding username and password)
+        const updatedUser = await User.findOneAndUpdate({ username }, req.body, { new: true });
+
+        res.status(200).json(updatedUser); // Return the updated user
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
-}
+};
 
-// API: delete a user based on ID
+// API: delete a user based on username after verifying password
 const deleteUser = async (req, res) => {
     try {
-        const {id} = req.params;
-        const user = await User.findByIdAndDelete(id);
+        const { username, password } = req.body;  // Get username and password from request body
+
+        // Find the user by username
+        const user = await User.findOne({ username });
 
         if (!user) {
-            return res.status(404).json({message: "User not found"});
+            return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json({message: "User deleted successfully"});
+        // Check if the password matches the user's existing password
+        if (user.password !== password) {
+            return res.status(400).json({ message: "Invalid password" });
+        }
 
+        // If the username and password are correct, proceed to delete the user
+        await User.findOneAndDelete({ username });
+
+        res.status(200).json({ message: "User deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-    catch (error) {
-        res.status(500).json({message: error.message});
-    }
-}
+};
+
 
 module.exports = {
     getUsers,

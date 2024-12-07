@@ -1,0 +1,36 @@
+/* pages/singlerecord/singlerecord.wxss */
+.container {
+    height: 100vh;
+    padding-bottom: 120rpx;
+}
+
+.map {
+    width: 100%;
+    margin: 0 0;
+    flex-grow: 1;
+}
+
+.statistics {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    margin: 30rpx 20rpx;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    margin: 10rpx 0;
+}
+
+.stat-label {
+    font-size: 40rpx;
+    color: #333333;
+}
+
+.stat-value {
+    font-size: 40rpx;
+    font-weight: bold;
+    color: #333333;
+}

@@ -124,61 +124,67 @@ Page({
         })
     },
 
-    translateMarker: function (e) {
-        let markers = this.data.markers;
-        console.log(markers.length);
-
-        // 确保有足够的标记点可以进行回放
-        if (markers.length < 2) {
-            console.log('标记点不足以进行回放');
-            return;
-        }
-
-        let ii = 0;
-        const that = this;
-
-        // 使用循环而不是递归进行标记点的回放
-        const replayTrack = () => {
-            if (ii >= markers.length - 1) {
-                console.log('所有标记点已经完成回放');
-                return;
-            }
-
-            let markerId = markers[ii].id;
-            let destination = {
-                longitude: markers[ii + 1].longitude,
-                latitude: markers[ii + 1].latitude,
-            };
-
-            // 根据两个标记点之间的距离，计算移动的持续时间
-            let duration = utils.getDistance(
-                markers[ii].latitude,
-                markers[ii].longitude,
-                markers[ii + 1].latitude,
-                markers[ii + 1].longitude
-            ) * 5;
-
-            // 使用 MapContext.translateMarker 实现轨迹回放
-            that.mapCtx.translateMarker({
-                markerId: markerId, // 当前标记点
-                destination: destination, // 要移动到的下一个标记点
-                autoRotate: false, // 关闭旋转
-                duration: duration, // 动画时长
-                success(res) {
-                    // 更新 ii 的值，准备移动到下一个标记点
-                    ii += 1;
-                    // 调用下一次标记点的移动
-                    replayTrack();
-                },
-                fail(err) {
-                    console.log('fail', err);
-                },
-            });
-        };
-
-        // 启动回放
-        replayTrack();
+    endRun: function (e) {
+        wx.navigateTo({
+            url: '../singlerecord/singlerecord',
+        })
     }
+
+    // translateMarker: function (e) {
+    //     let markers = this.data.markers;
+    //     console.log(markers.length);
+
+    //     // 确保有足够的标记点可以进行回放
+    //     if (markers.length < 2) {
+    //         console.log('标记点不足以进行回放');
+    //         return;
+    //     }
+
+    //     let ii = 0;
+    //     const that = this;
+
+    //     // 使用循环而不是递归进行标记点的回放
+    //     const replayTrack = () => {
+    //         if (ii >= markers.length - 1) {
+    //             console.log('所有标记点已经完成回放');
+    //             return;
+    //         }
+
+    //         let markerId = markers[ii].id;
+    //         let destination = {
+    //             longitude: markers[ii + 1].longitude,
+    //             latitude: markers[ii + 1].latitude,
+    //         };
+
+    //         // 根据两个标记点之间的距离，计算移动的持续时间
+    //         let duration = utils.getDistance(
+    //             markers[ii].latitude,
+    //             markers[ii].longitude,
+    //             markers[ii + 1].latitude,
+    //             markers[ii + 1].longitude
+    //         ) * 5;
+
+    //         // 使用 MapContext.translateMarker 实现轨迹回放
+    //         that.mapCtx.translateMarker({
+    //             markerId: markerId, // 当前标记点
+    //             destination: destination, // 要移动到的下一个标记点
+    //             autoRotate: false, // 关闭旋转
+    //             duration: duration, // 动画时长
+    //             success(res) {
+    //                 // 更新 ii 的值，准备移动到下一个标记点
+    //                 ii += 1;
+    //                 // 调用下一次标记点的移动
+    //                 replayTrack();
+    //             },
+    //             fail(err) {
+    //                 console.log('fail', err);
+    //             },
+    //         });
+    //     };
+
+    //     // 启动回放
+    //     replayTrack();
+    // }
 
 
 });

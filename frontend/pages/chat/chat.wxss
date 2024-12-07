@@ -95,9 +95,10 @@
 
 .clear-button {
     height: 40px;
-    max-width: 18vw;
+    max-width: 15vw;
     background-color: rgb(90, 15, 84);
     color: white;
+    padding-left: 2%;
 }
 
 .input-message {
