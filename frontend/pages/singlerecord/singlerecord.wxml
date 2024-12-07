@@ -1,0 +1,49 @@
+<!--pages/singlerecord/singlerecord.wxml-->
+<view class="container">
+    <!-- 地图展示 -->
+    <map class="map" id="map" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" polyline="{{polyline}}"></map>
+
+    <!-- 统计信息展示 -->
+    <view class="statistics">
+        <view class="stat-item">
+            <text class="stat-label">开始时间：</text>
+            <text class="stat-value">{{starttime}}</text>
+        </view>
+        <view class="stat-item">
+            <text class="stat-label">结束时间：</text>
+            <text class="stat-value">{{endtime}}</text>
+        </view>
+        <view class="stat-item">
+            <text class="stat-label">路程：</text>
+            <text class="stat-value">{{meters}}m</text>
+        </view>
+        <view class="stat-item">
+            <text class="stat-label">用时：</text>
+            <text class="stat-value">{{seconds}}s</text>
+        </view>
+        <view class="stat-item">
+            <text class="stat-label">配速：</text>
+            <text class="stat-value">{{pace}}</text>
+        </view>
+    </view>
+
+    <!-- 底栏 -->
+    <view class="tab-bar">
+        <navigator class="tab-item" url="../run/run" style="color: #009688;">
+            <image class="icon" src="../../images/run-icon.png" />
+            <text>跑步</text>
+        </navigator>
+        <navigator class="tab-item" url="../share/share">
+            <image class="icon" src="../../images/share-icon.png" />
+            <text>分享</text>
+        </navigator>
+        <navigator class="tab-item" url="../chat/chat">
+            <image class="icon" src="../../images/chat-icon.png" />
+            <text>助手</text>
+        </navigator>
+        <navigator class="tab-item" url="../my/my">
+            <image class="icon" src="../../images/my-icon.png" />
+            <text>我的</text>
+        </navigator>
+    </view>
+</view>
