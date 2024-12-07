@@ -1,3 +1,4 @@
+// pages/single/single.js
 const utils = require('../../utils/util')
 
 Page({
@@ -15,6 +16,17 @@ Page({
         showMap: false, // 控制地图是否显示
         polyline: [], // 路线
         userName: '', // 用户名
+        paceFormatted: '', // 格式化配速输出
+        startTime: '' // 开始跑步时间
+    },
+
+    formatPace: function () {
+        const pace = (this.data.meters === 0) ? 0 : Math.round(this.data.seconds * 1000 / this.data.meters);
+        const minutes = Math.floor(pace / 60);
+        const seconds = (pace % 60).toString().padStart(2, '0');
+        this.setData({
+            paceFormatted: `${minutes}'${seconds}"`
+        });
     },
 
     /**
@@ -54,6 +66,7 @@ Page({
             });
         }
 
+        this.formatPace();
     },
 
     startRun: function (e) {
@@ -63,6 +76,11 @@ Page({
         if (this.data.running == true) {
             console.log("开始跑步")
             this.interval = setInterval(this.record.bind(this), this.data.interval);
+            if (this.data.startTime === '') {
+                this.setData({
+                    startTime: new Date().toISOString()
+                });
+            }
         } else {
             console.log("暂停/结束跑步")
             clearInterval(this.interval);
@@ -96,7 +114,7 @@ Page({
                 //根据上一次标记点和当前标记点计算距离，超出5m添加标记
                 pace = utils.getDistance(lastMarker.latitude, lastMarker.longitude, newMarker.latitude, newMarker.longitude);
                 pace = parseFloat(pace.toFixed(1))
-                if (pace > 1) {
+                if (pace > 5) {
                     markers.push(newMarker);
                     console.log("dot");
                 } else {
@@ -121,70 +139,61 @@ Page({
                 }],
                 meters: this.data.meters + pace,
             })
+            this.formatPace();
         })
     },
 
     endRun: function (e) {
-        wx.navigateTo({
-            url: '../singlerecord/singlerecord',
-        })
+        // 如果轨迹点数少于两点，直接返回
+        if (this.data.markers.length < 2) {
+            console.log("你没有开始跑步！");
+            return;
+        }
+
+        // 停止记录
+        this.setData({
+            running: false
+        });
+        clearInterval(this.interval);
+
+        // 准备发送给后端的数据
+        const runData = {
+            data: {
+                meters: this.data.meters,
+                seconds: this.data.seconds,
+                latitude: this.data.latitude,
+                longitude: this.data.longitude,
+                running: false,
+                markers: this.data.markers,
+                start: this.data.startTime, 
+                end: new Date().toISOString()
+            }
+        };
+
+        // 发送请求到后端
+        wx.request({
+            url: 'http://124.221.96.133:8000/api/users/sendRunData', 
+            method: 'POST',
+            data: runData,
+            header: {
+                'content-type': 'application/json',
+            },
+            success: (res) => {
+                console.log('跑步数据上传成功:', res);
+                // 上传成功后跳转到记录页面
+                wx.navigateTo({
+                    url: '../singlerecord/singlerecord',
+                });
+            },
+            fail: (error) => {
+                console.error('跑步数据上传失败:', error);
+                wx.showToast({
+                    title: '数据上传失败，请重试',
+                    icon: 'none',
+                    duration: 2000
+                });
+            }
+        });
     }
-
-    // translateMarker: function (e) {
-    //     let markers = this.data.markers;
-    //     console.log(markers.length);
-
-    //     // 确保有足够的标记点可以进行回放
-    //     if (markers.length < 2) {
-    //         console.log('标记点不足以进行回放');
-    //         return;
-    //     }
-
-    //     let ii = 0;
-    //     const that = this;
-
-    //     // 使用循环而不是递归进行标记点的回放
-    //     const replayTrack = () => {
-    //         if (ii >= markers.length - 1) {
-    //             console.log('所有标记点已经完成回放');
-    //             return;
-    //         }
-
-    //         let markerId = markers[ii].id;
-    //         let destination = {
-    //             longitude: markers[ii + 1].longitude,
-    //             latitude: markers[ii + 1].latitude,
-    //         };
-
-    //         // 根据两个标记点之间的距离，计算移动的持续时间
-    //         let duration = utils.getDistance(
-    //             markers[ii].latitude,
-    //             markers[ii].longitude,
-    //             markers[ii + 1].latitude,
-    //             markers[ii + 1].longitude
-    //         ) * 5;
-
-    //         // 使用 MapContext.translateMarker 实现轨迹回放
-    //         that.mapCtx.translateMarker({
-    //             markerId: markerId, // 当前标记点
-    //             destination: destination, // 要移动到的下一个标记点
-    //             autoRotate: false, // 关闭旋转
-    //             duration: duration, // 动画时长
-    //             success(res) {
-    //                 // 更新 ii 的值，准备移动到下一个标记点
-    //                 ii += 1;
-    //                 // 调用下一次标记点的移动
-    //                 replayTrack();
-    //             },
-    //             fail(err) {
-    //                 console.log('fail', err);
-    //             },
-    //         });
-    //     };
-
-    //     // 启动回放
-    //     replayTrack();
-    // }
-
 
 });
