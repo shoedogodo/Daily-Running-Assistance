@@ -183,6 +183,7 @@ const editNickname = async (req, res) => {
         user.nickname = nickname;
         await user.save();
         res.status(200).json({ message: "Nickname updated successfully", user });
+        //console.log(nickname);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
