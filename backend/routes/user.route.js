@@ -1,18 +1,22 @@
 const express = require("express");
 const User = require("../models/user.model");
 const router = express.Router();
-const {getUsers, getUser, registerUser, updateUser, deleteUser, loginUser, updateProfilePicture, editNickname} = require("../controllers/user.controller");
+const userController = require("../controllers/user.controller");
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-router.get('/', getUsers);
-router.get('/:username', getUser);
+router.get('/', userController.getUsers);
+router.get('/:username', userController.getUser);
 
-router.post('/', registerUser);
-router.post('/login', loginUser);
+router.post('/', userController.registerUser);
+router.post('/login', userController.loginUser);
 
-router.put('/update', updateUser);
-router.delete('/delete', deleteUser);
+router.put('/update', userController.updateUser);
+router.delete('/delete', userController.deleteUser);
 
-router.put('/update/profilePicture/', updateProfilePicture);
-router.put('/update/nickname', editNickname);
+router.put('/update/nickname', userController.editNickname);
+router.put('/update/profilepic', upload.single('profilePicture'), userController.uploadProfilePicture);
+router.get('/profilepic/:username', userController.getProfilePicture);
 
 module.exports = router;

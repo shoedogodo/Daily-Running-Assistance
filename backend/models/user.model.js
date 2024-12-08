@@ -19,7 +19,13 @@ const UserSchema = mongoose.Schema({
     password:{ type: String, required: [true, "Please enter password"]},
 
     nickname: { type: String, default: null },
-    profilepic: { type: String, default: null }, // Assuming this is a URL or file path to the profile picture
+    
+    //profilepic: { type: String, default: null }, // Assuming this is a URL or file path to the profile picture
+    profilePicture: {
+        type: mongoose.Schema.Types.ObjectId,  // References the GridFS file ID
+        ref: 'uploads.files',
+        default: null
+    },
 
     data: { type: RunDataSchema, default: {} }, // Embeds the dataSchema
     record: { type: [mongoose.Schema.Types.Mixed], default: [] } // Array of mixed type, can be any structure

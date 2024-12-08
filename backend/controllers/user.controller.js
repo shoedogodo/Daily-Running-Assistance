@@ -1,4 +1,14 @@
+const mongoose = require('mongoose');
 const User = require('../models/user.model'); 
+
+// Initialize GridFS
+let gfs;
+const conn = mongoose.connection;
+conn.once('open', () => {
+    gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: 'uploads'
+    });
+});
 
 // API: Get all Users
 const getUsers = async (req, res) => {
@@ -128,48 +138,6 @@ const deleteUser = async (req, res) => {
     }
 };
 
-const updateProfilePicture = async (req, res) => {
-    try {
-        const { username } = req.params;  // Get username from request parameters
-
-        // Find the user by username
-        const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        // Handle file upload
-        upload.single('profilePicture')(req, res, async (err) => {
-            if (err) {
-                return res.status(500).json({ message: err.message });
-            }
-
-            // Create a write stream to GridFS
-            const writestream = gfs.createWriteStream({
-                filename: `${Date.now()}-${req.file.originalname}`,
-                content_type: req.file.mimetype
-            });
-
-            // Write the file buffer to GridFS
-            writestream.write(req.file.buffer);
-            writestream.end();
-
-            writestream.on('close', async (file) => {
-                // Update the user's profile picture with the file ID
-                user.profilePicture = file._id;
-                await user.save();
-
-                res.status(200).json({ message: "Profile picture updated successfully", user });
-            });
-
-            writestream.on('error', (err) => {
-                res.status(500).json({ message: err.message });
-            });
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
 // API: Edit User's nickname
 const editNickname = async (req, res) => {
     try {
@@ -189,6 +157,69 @@ const editNickname = async (req, res) => {
     }
 };
 
+// Upload profile picture
+const uploadProfilePicture = async (req, res) => {
+    try {
+        const { username } = req.body;
+        if (!req.file) {
+            return res.status(400).json({ message: "No file uploaded" });
+        }
+
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Delete old profile picture if it exists
+        if (user.profilePicture) {
+            try {
+                await gfs.delete(new mongoose.Types.ObjectId(user.profilePicture));
+            } catch (error) {
+                console.log('Error deleting old profile picture:', error);
+            }
+        }
+
+        // Create upload stream
+        const uploadStream = gfs.openUploadStream(username + '-profile-picture', {
+            contentType: req.file.mimetype
+        });
+
+        // Write file to GridFS
+        uploadStream.end(req.file.buffer);
+
+        // Update user's profilePicture field with the new file ID
+        user.profilePicture = uploadStream.id;
+        await user.save();
+
+        res.status(200).json({ message: "Profile picture uploaded successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get profile picture
+const getProfilePicture = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ username });
+
+        if (!user || !user.profilePicture) {
+            return res.status(404).json({ message: "Profile picture not found" });
+        }
+
+        // Create download stream
+        const downloadStream = gfs.openDownloadStream(new mongoose.Types.ObjectId(user.profilePicture));
+
+        // Set the proper content type
+        res.set('Content-Type', 'image/jpeg');
+
+        // Pipe the file to the response
+        downloadStream.pipe(res);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getUsers,
     getUser,
@@ -196,6 +227,7 @@ module.exports = {
     updateUser,
     deleteUser,
     loginUser,
-    updateProfilePicture,
-    editNickname
+    editNickname,
+    uploadProfilePicture,
+    getProfilePicture
 }
