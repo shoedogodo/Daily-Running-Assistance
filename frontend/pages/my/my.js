@@ -8,10 +8,43 @@ Page({
         showModal: false,
         currentAction: '',
         avatarUrl: '',
-        nickname: '', // 从用户信息中获取的昵称
+        nicknameInput: '',
+        nickname: 'nickname_not_updated', // 从用户信息中获取的昵称
         userName: '', // 从用户信息中获取的用户名
         imagePreview: [], // 用于存储图片预览的数组
         unique: 0, // 添加一个唯一标识符，用于wx:key
+        
+        profilePicUrl: '',
+        tempImagePath: '', // Add this to store temporary image path
+        defaultPicUrl: '../../images/my-icon.png'
+    },
+
+    updateProfilePicDisplay(userName) {
+        // First check if we have a profile picture URL
+        const profilePicUrl = global.api.getProfilePicture(userName);
+        
+        // Verify if the profile picture exists
+        wx.request({
+            url: profilePicUrl,
+            method: 'HEAD',  // Use HEAD request to check if file exists
+            success: (res) => {
+                if (res.statusCode === 200) {
+                    this.setData({
+                        profilePicUrl: profilePicUrl
+                    });
+                } else {
+                    this.setData({
+                        profilePicUrl: this.data.defaultPicUrl
+                    });
+                }
+            },
+            fail: () => {
+                // If request fails, use default picture
+                this.setData({
+                    profilePicUrl: this.data.defaultPicUrl
+                });
+            }
+        });
     },
 
     /**
@@ -31,17 +64,19 @@ Page({
         });
     },
     
-    hideModal: function () {
+    hideModal: function() {
         this.setData({
-            showModal: false
+            showModal: false,
+            currentAction: ''
         });
     },
     /**
      * 获取输入的新昵称
      *  */ 
+
     inputNickname: function (e) {
         this.setData({
-            nickname: e.detail.value
+            nicknameInput: e.detail.value
         });
     },
 
@@ -49,26 +84,40 @@ Page({
      * 选择头像，并进行显示，限定一张
      * TODO: 上传到服务器
      */
-    chooseAvatar: function (e) {
-        // 处理选择头像的逻辑
-        const that = this; // 保存当前页面的this引用
-        wx.chooseImage({
-        count: 1,
-        sizeType: ['compressed'],
-        sourceType: ['album', 'camera'],
-        success: function(res) {
-            if (!Array.isArray(that.data.imagePreview)) {
-            that.setData({ imagePreview: [] }); // 确保imagePreview是数组
-            }
-            // 使用that引用页面data，避免this指向问题
-            
-            const newImages = that.data.imagePreview.concat(res.tempFilePaths);
-            that.setData({
-                imagePreview: [res.tempFilePaths[0]],
+    chooseAvatar: function(e) {
+        const userName = wx.getStorageSync('userName');
+        if (!userName) {
+            wx.showToast({
+                title: '请先登录',
+                icon: 'none',
+                duration: 2000
             });
+            return;
         }
+
+        wx.chooseImage({
+            count: 1,
+            sizeType: ['compressed'],
+            sourceType: ['album', 'camera'],
+            success: (res) => {
+                const tempFilePath = res.tempFilePaths[0];
+                
+                // Store the temporary file path and show modal
+                this.setData({
+                    tempImagePath: tempFilePath,
+                    showModal: true,
+                    currentAction: 'avatar'
+                });
+            },
+            fail: (err) => {
+                console.error('Failed to choose image:', err);
+                wx.showToast({
+                    title: '选择图片失败',
+                    icon: 'none',
+                    duration: 2000
+                });
+            }
         });
-        console.log('选择的头像索引:', e.detail.index);
     },
 
     /**
@@ -77,15 +126,95 @@ Page({
      */
     onModalSuccess: function () {
         if (this.data.currentAction === 'nickname') {
+            const newNickname = this.data.nicknameInput;
+            const username = wx.getStorageSync('userName');
+
+            // Check if the nickname is not empty
+            if (newNickname.trim() !== '') {
+                // Update the page's nickname
+                this.setData({
+                    nickname: newNickname
+                });
+    
+                const nickname = newNickname;
+                
+                // Call the editNickname API
+                global.api.updateNickname(username, nickname)
+                    .then(() => {
+                        // Optional: Additional actions after successful nickname update
+                        wx.showToast({
+                            title: '昵称已更新',
+                            icon: 'success'
+                        });
+                    })
+                    .catch((error) => {
+                        // Handle update errors if needed
+                        console.error('Nickname update failed:', error);
+                    });
+
+                // Close the modal (if applicable)
+                this.setData({
+                    currentAction: ''  // Reset the action to close the modal
+                });
+            } else {
+                wx.showToast({
+                    title: '请输入有效的昵称',
+                    icon: 'none'
+                });
+            }
+            
             // 执行修改昵称的逻辑
             console.log('新昵称:', this.data.nickname);
-        } else if (this.data.currentAction === 'avatar') {
-            // 执行修改头像的逻辑
+        } 
+        
+        else if (this.data.currentAction === 'avatar' && this.data.tempImagePath) {
+            const userName = wx.getStorageSync('userName');
+            
+            wx.showLoading({
+                title: '上传中...'
+            });
+
+            global.api.updateProfilePicture(userName, this.data.tempImagePath)
+                .then(() => {
+                    // Get the new profile picture URL
+                    const newProfilePicUrl = global.api.getProfilePicture(userName);
+                    
+                    this.setData({
+                        profilePicUrl: newProfilePicUrl + '?t=' + new Date().getTime()
+                    });
+                    
+                    wx.showToast({
+                        title: '头像已更新',
+                        icon: 'success',
+                        duration: 2000
+                    });
+                })
+                .catch((error) => {
+                    wx.showToast({
+                        title: error.message || '上传失败',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                })
+                .finally(() => {
+                    wx.hideLoading();
+                    this.setData({
+                        tempImagePath: ''
+                    });
+                });
         }
+
+
         this.hideModal();
     },
 
     onModalFail: function() {
+        // Clear the temporary image path if user cancels
+        if (this.data.currentAction === 'avatar') {
+            this.setData({
+                tempImagePath: ''
+            });
+        }
         console.log('用户点击了取消');
         this.hideModal();
     },
@@ -102,9 +231,16 @@ Page({
      */
     onLoad(options) {
         const userName = wx.getStorageSync('userName');
+        const nickname = wx.getStorageSync('nickname');
+
         if (userName) {
+            // Get the profile picture URL using your API function
+            const profilePicUrl = global.api.getProfilePicture(userName);
+            
             this.setData({
                 userName: userName,
+                nickname: nickname,
+                profilePicUrl: profilePicUrl || this.data.defaultPicUrl
             });
         }
     },

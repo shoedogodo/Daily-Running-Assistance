@@ -1,6 +1,11 @@
 // app.js
+
 App({
   onLaunch() {
+    // Set up a global reference to utils
+    global.utils = require('./utils/util.js');
+    global.api = require('./utils/api.js');
+
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())

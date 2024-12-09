@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const RunDataSchema = mongoose.Schema({
     meters: { type: Number, default: 0 },
     seconds: { type: Number, default: 0 },
+    pace: {type: Number, default: 0},
     latitude: { type: Number, default: 0, required: true },
     longitude: { type: Number, default: 0, required: true },
     running: { type: Boolean, default: false },
@@ -18,10 +19,27 @@ const UserSchema = mongoose.Schema({
     password:{ type: String, required: [true, "Please enter password"]},
 
     nickname: { type: String, default: null },
-    profilepic: { type: String, default: null }, // Assuming this is a URL or file path to the profile picture
+    
+    //profilepic: { type: String, default: null }, // Assuming this is a URL or file path to the profile picture
+    profilePicture: {
+        type: mongoose.Schema.Types.ObjectId,  // References the GridFS file ID
+        ref: 'uploads.files',
+        default: null
+    },
 
     data: { type: RunDataSchema, default: {} }, // Embeds the dataSchema
     record: { type: [mongoose.Schema.Types.Mixed], default: [] } // Array of mixed type, can be any structure
+});
+
+// Ensure all fields are included in the JSON response
+UserSchema.set('toJSON', {
+    transform: (doc, ret, options) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        delete ret.password; // Optionally remove the password field
+        return ret;
+    }
 });
 
 const User = mongoose.model("User", UserSchema);
