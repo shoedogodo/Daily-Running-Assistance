@@ -3,7 +3,12 @@
 <view class="container">
     <view class="profile">
         <!-- <image class="profile-pic" src = "../../images/my-icon.png"/> -->
-        <image class="profile-pic" src="{{profilePicUrl || defaultPicUrl}}" mode="aspectFill"/>
+        <image 
+            class="profile-pic" 
+            src="{{profilePicUrl || defaultPicUrl}}" 
+            mode="aspectFill"
+            binderror="handleImageError"
+        />
         <text class="username">{{nickname}}</text>
     </view>
     

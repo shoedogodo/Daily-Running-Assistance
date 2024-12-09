@@ -14,7 +14,7 @@ Page({
         imagePreview: [], // 用于存储图片预览的数组
         unique: 0, // 添加一个唯一标识符，用于wx:key
         
-        profilePicUrl: '',
+        profilePicUrl: '../../images/my-icon.png',
         tempImagePath: '', // Add this to store temporary image path
         defaultPicUrl: '../../images/my-icon.png'
     },
@@ -23,27 +23,35 @@ Page({
         // First check if we have a profile picture URL
         const profilePicUrl = global.api.getProfilePicture(userName);
         
-        // Verify if the profile picture exists
+        // If the URL is null/undefined/empty, use default immediately
+        if (!profilePicUrl) {
+            this.setData({
+                profilePicUrl: this.data.defaultPicUrl
+            });
+            return;
+        }
+        
+        // Verify if the URL is accessible
         wx.request({
             url: profilePicUrl,
-            method: 'HEAD',  // Use HEAD request to check if file exists
+            method: 'HEAD',
             success: (res) => {
-                if (res.statusCode === 200) {
-                    this.setData({
-                        profilePicUrl: profilePicUrl
-                    });
-                } else {
-                    this.setData({
-                        profilePicUrl: this.data.defaultPicUrl
-                    });
-                }
+                this.setData({
+                    profilePicUrl: res.statusCode === 200 ? profilePicUrl : this.data.defaultPicUrl
+                });
             },
             fail: () => {
-                // If request fails, use default picture
                 this.setData({
                     profilePicUrl: this.data.defaultPicUrl
                 });
             }
+        });
+    },
+
+
+    handleImageError(e) {
+        this.setData({
+            profilePicUrl: this.data.defaultPicUrl
         });
     },
 
@@ -233,14 +241,46 @@ Page({
         const userName = wx.getStorageSync('userName');
         const nickname = wx.getStorageSync('nickname');
 
-        if (userName) {
-            // Get the profile picture URL using your API function
+        try {
+            // Get the profile picture URL
             const profilePicUrl = global.api.getProfilePicture(userName);
             
+            // If the URL is null/undefined/empty, use default
+            if (!profilePicUrl) {
+                this.setData({
+                    userName: userName,
+                    nickname: nickname,
+                    profilePicUrl: this.data.defaultPicUrl
+                });
+                return;
+            }
+    
+            // Verify if the URL is accessible
+            wx.request({
+                url: profilePicUrl,
+                method: 'HEAD',
+                success: (res) => {
+                    this.setData({
+                        userName: userName,
+                        nickname: nickname,
+                        profilePicUrl: res.statusCode === 200 ? profilePicUrl : this.data.defaultPicUrl
+                    });
+                },
+                fail: () => {
+                    this.setData({
+                        userName: userName,
+                        nickname: nickname,
+                        profilePicUrl: this.data.defaultPicUrl
+                    });
+                }
+            });
+            
+        } catch (error) {
+            console.error('Failed to get profile picture:', error);
             this.setData({
                 userName: userName,
                 nickname: nickname,
-                profilePicUrl: profilePicUrl || this.data.defaultPicUrl
+                profilePicUrl: this.data.defaultPicUrl
             });
         }
     },
