@@ -16,7 +16,7 @@ router.put('/update', userController.updateUser);
 router.delete('/delete', userController.deleteUser);
 
 router.put('/update/nickname', userController.editNickname);
-router.put('/update/profilepic', upload.single('profilePicture'), userController.uploadProfilePicture);
+router.post('/update/profilepic', upload.single('profilePicture'), userController.uploadProfilePicture);
 router.get('/profilepic/:username', userController.getProfilePicture);
 
 module.exports = router;

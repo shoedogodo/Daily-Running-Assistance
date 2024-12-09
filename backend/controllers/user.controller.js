@@ -162,11 +162,13 @@ const uploadProfilePicture = async (req, res) => {
     try {
         const { username } = req.body;
         if (!req.file) {
+            console.log('No file uploaded');
             return res.status(400).json({ message: "No file uploaded" });
         }
 
         const user = await User.findOne({ username });
         if (!user) {
+            console.log('User not found');
             return res.status(404).json({ message: "User not found" });
         }
 
