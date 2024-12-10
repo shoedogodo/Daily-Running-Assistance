@@ -125,6 +125,17 @@ Page({
     },
 
     endRun: function (e) {
+        console.log('meters: ' + this.data.meters);
+        console.log('seconds: ' + this.data.seconds);
+        console.log('latitude: ' + this.data.latitude);
+        console.log('longitude: ' + this.data.longitude);
+        console.log('running: ' + this.data.running);
+        console.log('interval: ' + this.data.interval);
+        console.log('markers: ' + this.data.markers);
+        console.log('showMap: ' + this.data.showMap);
+        console.log('polyline: ' + this.data.polyline);
+        console.log('userName: ' + this.data.userName);
+
         wx.navigateTo({
             url: '../singlerecord/singlerecord',
         })

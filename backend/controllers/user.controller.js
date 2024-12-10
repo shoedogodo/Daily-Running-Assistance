@@ -222,6 +222,212 @@ const getProfilePicture = async (req, res) => {
     }
 };
 
+const saveRunRecord = async (req, res) => {
+    try {
+        const { username, runRecord } = req.body;
+        
+        // Find and update atomically to prevent race conditions
+        const user = await User.findOneAndUpdate(
+            { username },
+            { $inc: { lastRunId: 1 } },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Create new record with the incremented ID
+        const newRecord = {
+            ...runRecord,
+            runId: user.lastRunId,
+            timestamp: new Date()
+        };
+
+        // Add to records array and clear current run data
+        await User.findOneAndUpdate(
+            { username },
+            {
+                $push: { record: newRecord },
+                $set: { data: {} }
+            }
+        );
+
+        res.status(200).json({ 
+            message: "Run record saved successfully", 
+            record: newRecord 
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get specific run record by ID
+const getRunRecordById = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const recordId = parseInt(req.params.recordId);
+        
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const record = user.record.find(r => r.runId === recordId);
+        if (!record) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
+        res.status(200).json(record);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get all run records
+const getRunRecords = async (req, res) => {
+    try {
+        const { username } = req.params;
+        
+        // Find the user
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Optional: Add query parameters for pagination
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+
+        const records = user.record.slice(startIndex, endIndex);
+        const total = user.record.length;
+
+        res.status(200).json({
+            records,
+            pagination: {
+                total,
+                page,
+                pages: Math.ceil(total / limit)
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Upload current run data
+const updateRunData = async (req, res) => {
+    try {
+        const { username, runData } = req.body;
+        
+        // Find the user
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Update the user's current run data
+        user.data = {
+            ...user.data,
+            ...runData,
+        };
+
+        await user.save();
+        res.status(200).json({ message: "Run data updated successfully", data: user.data });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get current run data
+const getCurrentRunData = async (req, res) => {
+    try {
+        const { username } = req.params;
+        
+        // Find the user
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json(user.data);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+// Update run record
+const updateRunRecord = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const recordId = parseInt(req.params.recordId);
+        const updateData = req.body;
+        
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const recordIndex = user.record.findIndex(r => r.runId === recordId);
+        if (recordIndex === -1) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
+        // Update the record while preserving the ID
+        user.record[recordIndex] = {
+            ...updateData,
+            runId: recordId  // Preserve the original ID
+        };
+
+        await user.save();
+
+        res.status(200).json({
+            message: "Record updated successfully",
+            record: user.record[recordIndex]
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Delete run record
+const deleteRunRecord = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const recordId = parseInt(req.params.recordId);
+        
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const recordIndex = user.record.findIndex(r => r.runId === recordId);
+        if (recordIndex === -1) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
+        // Remove the record
+        user.record.splice(recordIndex, 1);
+
+        // Reindex remaining records
+        user.record = user.record.map((record, index) => ({
+            ...record,
+            runId: index + 1
+        }));
+
+        await user.save();
+
+        res.status(200).json({
+            message: "Record deleted successfully"
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getUsers,
     getUser,
@@ -231,5 +437,14 @@ module.exports = {
     loginUser,
     editNickname,
     uploadProfilePicture,
-    getProfilePicture
+    getProfilePicture,
+
+    saveRunRecord,
+    getRunRecordById,
+    getCurrentRunData,
+    updateRunRecord,
+    updateRunData,
+    deleteRunRecord,
+    getRunRecords
+
 }
