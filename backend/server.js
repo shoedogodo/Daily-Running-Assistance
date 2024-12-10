@@ -9,7 +9,8 @@ const app = express();
 app.use(express.json());
 
 // MongoDB connection
-const mongoURI = 'mongodb://DatabaseAccess:DatabaseAccess@localhost:27017';
+const mongoURI = 'mongodb://DatabaseAccess:DatabaseAccess@127.0.0.1:27017?authSource=admin';
+
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
