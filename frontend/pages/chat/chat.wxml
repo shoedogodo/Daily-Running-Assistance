@@ -1,30 +1,29 @@
-<!--pages/AIchat/AIchat.wxml-->
+<!--pages/chat/chat.wxml-->
 
 <view class="container">
-    <view class="header">
-        <navigator class="header-item" url="../share/share">
-            <text>论坛</text>
-        </navigator>
-        <navigator class="header-item" url="../AIchat/AIchat" style="color:rgb(34, 180, 95);">
-            <text>助手</text>
-        </navigator>
+    <view class = "header">
+        <text class="username">{{userName}}</text>
+
+        <button class="clear-button" bindtap="clearMessages">
+            <image class="clear-icon" src="../../images/clear-icon.png" />
+        </button>
     </view>
 
+    
     <view class="chat-container">
         <scroll-view class="chat-box" scroll-y="true">
             <!-- 消息列表 -->
-            <view class="message {{item.fromUser ? 'from-user' : 'from-ai'}}" wx:for="{{messages}}" wx:key="index">
-                <text class="message-content">{{item.text}}</text>
+            <view class="message {{item.role === 'user' ? 'from-user' : 'from-ai'}}" wx:for="{{messages}}" wx:key="index">
+                <text class="message-content">{{item.content}}</text>
             </view>
         </scroll-view>
     </view>
 
     <view class="input-area">
-        <button class="clear-button" bindtap="clearMessages">
-            <text>clear</text>
+        <input class="input-message" placeholder=" 输入您的问题" value="{{messeageInput}}" bindinput="inputMessage" />
+        <button class="send-button" bindtap="sendMessage">
+            <image class="send-icon" src="../../images/send-icon.png" />
         </button>
-        <input class="input-message" placeholder="输入您的问题" value="{{messeageInput}}" bindinput="inputMessage" />
-        <button class="send-button" bindtap="sendMessage">发送</button>
     </view>
 
     <view class="tab-bar">

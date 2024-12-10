@@ -57,7 +57,7 @@ Page({
 
         // Proceed with HTTP request if validation passes
         wx.request({
-            url: 'http://124.221.96.133:8000/api/users', // Replace with your server endpoint
+            url: global.utils.getAPI(global.utils.serverURL, '/api/users'),
             method: 'POST',
             data: { username, password },
             header: {

@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 const utilsPath = require('../../utils/util.js'); // Path: frontend/utils/util.js
 const app = require('../../app.js');
 
+=======
+>>>>>>> c1ce8ddb5912f88b3aa9454769ab718344da960d
 Page({
     data: {
         username: '',
+        nickname: '',
+        profilepicture:'',
         password: ''
     },
   
@@ -41,8 +46,7 @@ Page({
         const data = { username, password };
 
         wx.request({
-            //url: 'http://124.221.96.133:8000/api/users/login', 
-            url: 'http://124.221.96.133:8000/api/users/loginTest',
+            url: global.utils.getAPI(global.utils.serverURL, '/api/users/login'),
             method: 'POST',
             data: JSON.stringify(data),
             header: {
@@ -60,6 +64,10 @@ Page({
                         title: '登录成功!',
                         icon: 'none',
                     });
+                    wx.setStorageSync('userName', username);
+                    const nicknameFetch = res.data.user.nickname; // Adjust this depending on your response structure
+                    wx.setStorageSync('nickname', nicknameFetch);
+                    //console.log('nickname fetched: ' + wx.getStorageSync('nickname'));
                     wx.navigateTo({
                         url: '../run/run'
                     });

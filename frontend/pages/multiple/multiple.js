@@ -42,7 +42,7 @@ Page({
                     showMap: true,
                 });
                 // 更新地图中心位置
-                this.mapCtx.moveToLocation();
+                // this.mapCtx.moveToLocation();
             },
             fail: (error) => { // 获取位置失败时的回调
                 console.error('获取位置失败', error);

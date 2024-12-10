@@ -1,12 +1,6 @@
 /* pages/group/group.wxss */
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20rpx;
-}
 
-.user-info {
+/* .user-info {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -34,12 +28,23 @@
 .date {
     font-size: 28rpx;
     color: #999;
+} */
+
+.container {
+    height: 100vh;
+    /* 设置容器高度为视口高度 */
 }
 
 .map {
     width: 100%;
-    height: 800rpx;
-    margin-top: 20rpx;
+    height: 1000rpx;
+    margin-top: 0;
+    flex: 1;
+}
+
+.button-box {
+    position: absolute;
+    bottom: 200rpx;
 }
 
 .create-run-group {
@@ -58,29 +63,4 @@
     border-radius: 40rpx;
     color: #fff;
     margin-top: 30rpx;
-}
-
-.tab-bar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    background-color: #f8f8f8;
-    border-top: 1px solid #ccc;
-    padding: 10rpx 0;
-}
-
-.tab-item {
-    width: 187.5rpx;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.icon {
-    width: 50rpx;
-    height: 50rpx;
-    margin-bottom: 5rpx;
 }

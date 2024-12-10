@@ -13,15 +13,33 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    background-color: #fff;
+    justify-content: space-between;
+    background-color: transparent;
     border-top: 1px solid #ccc;
-    padding: 10rpx 0;
+    border-bottom:10px solid ;
+    padding: 5rpx 0;
 }
 
-.header-item {
-    display: flex;
-    align-items: center;
+.username{
+    font-size: 20px;
+    color: rgb(78, 73, 73);
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+.clear-button {
+    right: -30%;
+    height: 35px;
+    max-width: 45px;
+    background-color: white;
+    color: white;
+    padding-left: 3%;
+}
+
+.clear-icon{
+    width: 30px;
+    height: 30px;
+    padding-bottom: 5rpx;
 }
 
 .title {
@@ -38,7 +56,7 @@
     display: flex;
     width: 100%;
     position: fixed;
-    top: 30px;
+    top: 40px;
     bottom: 100px;
 }
 
@@ -93,12 +111,7 @@
     background-color: #f0f0f0;
 }
 
-.clear-button {
-    height: 40px;
-    max-width: 18vw;
-    background-color: rgb(90, 15, 84);
-    color: white;
-}
+
 
 .input-message {
     flex-grow: 1;
@@ -108,7 +121,14 @@
 
 .send-button {
     height: 40px;
-    max-width: 30vw;
-    background-color: #3fa597;
+    max-width: min-content;
+    background-color: white;
     color: white;
+    padding-right: 5%;
+}
+
+.send-icon{
+    width: 30px;
+    height: 30px;
+    padding-right: 5rpx;
 }
