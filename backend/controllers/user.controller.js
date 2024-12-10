@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const User = require('../models/user.model'); 
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'secret_key'; 
+// 获取环境变量中的密钥
+const SECRET_KEY = process.env.SECRET_KEY;
 
 // Initialize GridFS
 let gfs;
@@ -53,13 +54,23 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ message: "Username already exists" });
         }
 
+        // 记录用户的登录时间
+        const loginTime = new Date();
+
         // Create a new user
-<<<<<<< HEAD
-        const newUser = await User.create({ username, password});
-=======
         const newUser = await User.create({ username, password, nickname: username});
->>>>>>> c1ce8ddb5912f88b3aa9454769ab718344da960d
-        res.status(200).json(newUser);
+
+        // Generate a token for the new user
+        const token = jwt.sign({
+            id: newUser._id,
+            username: newUser.username,
+            loginTime: loginTime.toISOString() // 将登录时间添加到token的payload中
+        }, SECRET_KEY, {
+            expiresIn: '2h' // 设置token过期时间
+        });
+
+
+        res.status(200).json({ message: "Register successful", token , newUser });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
@@ -82,8 +93,20 @@ const loginUser = async (req, res) => {
             return res.status(401).json({ message: "Invalid password" });
         }
 
+        // 记录用户的登录时间
+        const loginTime = new Date();
+
+        // Generate a token for the new user
+        const token = jwt.sign({
+            id: user._id,
+            username: user.username,
+            loginTime: loginTime.toISOString() // 将登录时间添加到token的payload中
+        }, SECRET_KEY, {
+            expiresIn: '2h' // 设置token过期时间
+        });
+
         // If valid, return success response
-        res.status(200).json({ message: "Login successful", user });
+        res.status(200).json({ message: "Login successful", token, user });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
@@ -144,38 +167,6 @@ const deleteUser = async (req, res) => {
     }
 };
 
-<<<<<<< HEAD
-
-
-const registerUserTest = async (req, res) => {
-    try {
-        const { username, password } = req.body;
-
-        // Check if the username already exists
-        const existingUser = await User.findOne({ username });
-        if (existingUser) {
-            return res.status(400).json({ message: "Username already exists" });
-        }
-
-        // 记录用户的登录时间
-        const loginTime = new Date();
-
-        // Create a new user
-        const newUser = await User.create({ username, password });
-
-        // Generate a token for the new user
-        const token = jwt.sign({
-            id: newUser._id,
-            username: newUser.username,
-            loginTime: loginTime.toISOString() // 将登录时间添加到token的payload中
-        }, SECRET_KEY, {
-            expiresIn: '1min' // 设置token过期时间
-        });
-        
-        res.status(200).json({ message: "Login successful", token , newUser });
-    } catch (error) {
-        console.error(error);
-=======
 // API: Edit User's nickname
 const editNickname = async (req, res) => {
     try {
@@ -191,19 +182,10 @@ const editNickname = async (req, res) => {
         res.status(200).json({ message: "Nickname updated successfully", user });
         //console.log(nickname);
     } catch (error) {
->>>>>>> c1ce8ddb5912f88b3aa9454769ab718344da960d
         res.status(500).json({ message: error.message });
     }
 };
 
-<<<<<<< HEAD
-
-const loginUserTest = async (req, res) => {
-    try {
-        const { username, password } = req.body;
-
-        // Check if the username exists
-=======
 // Upload profile picture
 const uploadProfilePicture = async (req, res) => {
     try {
@@ -315,36 +297,11 @@ const getRunRecordById = async (req, res) => {
         const { username } = req.params;
         const recordId = parseInt(req.params.recordId);
         
->>>>>>> c1ce8ddb5912f88b3aa9454769ab718344da960d
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-<<<<<<< HEAD
-        // Verify the password
-        const isPasswordValid = user.password === password; // Adjust if using hashed passwords
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: "Invalid password" });
-        }
-
-        // 记录用户的登录时间
-        const loginTime = new Date();
-
-        // Generate a token for the new user
-        const token = jwt.sign({
-            id: user._id,
-            username: user.username,
-            loginTime: loginTime.toISOString() // 将登录时间添加到token的payload中
-        }, SECRET_KEY, {
-            expiresIn: '1min' // 设置token过期时间
-        });
-        
-        // If valid, return success response
-        res.status(200).json({ message: "Login successful", token, user });
-    } catch (error) {
-        console.error(error);
-=======
         const record = user.record.find(r => r.runId === recordId);
         if (!record) {
             return res.status(404).json({ message: "Record not found" });
@@ -352,7 +309,6 @@ const getRunRecordById = async (req, res) => {
 
         res.status(200).json(record);
     } catch (error) {
->>>>>>> c1ce8ddb5912f88b3aa9454769ab718344da960d
         res.status(500).json({ message: error.message });
     }
 };
@@ -538,8 +494,6 @@ module.exports = {
     deleteUser,
     loginUser,
 
-    loginUserTest,
-    registerUserTest,
     tokenCheck,
 
     editNickname,

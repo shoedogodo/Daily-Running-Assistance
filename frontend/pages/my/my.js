@@ -21,7 +21,6 @@ Page({
         defaultPicUrl: '../../images/my-icon.png'
     },
 
-<<<<<<< HEAD
   /**
    * 跳转我的跑步记录页面
    */
@@ -30,23 +29,7 @@ Page({
       url: '../runrecord/runrecord' // 确保路径正确
     });
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-    wx.showToast({
-      title: 'tokencheck',
-      icon: 'none'
-    });
-
-    setTimeout(function() {        app.tokenCheck();    }, 3000); // 等待1000毫秒（1秒）后执行
     
-    const userName = wx.getStorageSync('userName');
-    if(userName){
-        this.setData({
-            userName: userName, 
-=======
     updateProfilePicDisplay(userName) {
         // First check if we have a profile picture URL
         const profilePicUrl = global.api.getProfilePicture(userName);
@@ -73,7 +56,6 @@ Page({
                     profilePicUrl: this.data.defaultPicUrl
                 });
             }
->>>>>>> c1ce8ddb5912f88b3aa9454769ab718344da960d
         });
     },
 
@@ -266,52 +248,8 @@ Page({
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad(options) {
-        const userName = wx.getStorageSync('userName');
-        const nickname = wx.getStorageSync('nickname');
-
-        try {
-            // Get the profile picture URL
-            const profilePicUrl = global.api.getProfilePicture(userName);
-            
-            // If the URL is null/undefined/empty, use default
-            if (!profilePicUrl) {
-                this.setData({
-                    userName: userName,
-                    nickname: nickname,
-                    profilePicUrl: this.data.defaultPicUrl
-                });
-                return;
-            }
-    
-            // Verify if the URL is accessible
-            wx.request({
-                url: profilePicUrl,
-                method: 'HEAD',
-                success: (res) => {
-                    this.setData({
-                        userName: userName,
-                        nickname: nickname,
-                        profilePicUrl: res.statusCode === 200 ? profilePicUrl : this.data.defaultPicUrl
-                    });
-                },
-                fail: () => {
-                    this.setData({
-                        userName: userName,
-                        nickname: nickname,
-                        profilePicUrl: this.data.defaultPicUrl
-                    });
-                }
-            });
-            
-        } catch (error) {
-            console.error('Failed to get profile picture:', error);
-            this.setData({
-                userName: userName,
-                nickname: nickname,
-                profilePicUrl: this.data.defaultPicUrl
-            });
-        }
+    onLoad(options) {  
+      app.tokenCheck(); 
     },
 
     /**
@@ -362,59 +300,4 @@ Page({
     onShareAppMessage() {
 
     }
-<<<<<<< HEAD
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }  
 })
-
-=======
-})
->>>>>>> c1ce8ddb5912f88b3aa9454769ab718344da960d

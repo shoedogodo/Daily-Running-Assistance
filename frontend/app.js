@@ -26,11 +26,8 @@ App({
 function tokenCheck() {   
   const token = wx.getStorageSync('token'); // 从本地存储中获取 token
 
-  console.log(token);//
-
   if (!token) {
       // 如果 token 不存在，则跳转到登录页面
-      console.log('notoken');
       wx.redirectTo({
           url: '../index/index'
       });
@@ -49,13 +46,11 @@ function tokenCheck() {
             // 如果 token 验证成功
             console.log('Token 验证成功');
         } else {
-          console.log(res.statusCode);
+            console.log(res.statusCode);
             //token 验证失败
-          
-
             console.error('Token 验证失败: 登录过期或无效');
             wx.redirectTo({
-              url: '../index/index?message=登录过期，请重新登录'
+                url: '../index/index?message=登录过期，请重新登录'
             });
         }
       },

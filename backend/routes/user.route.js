@@ -17,6 +17,9 @@ router.post('/', userController.registerUser);
 // login user
 router.post('/login', userController.loginUser);
 
+// check token
+router.post('/tokenCheck', userController.tokenCheck);
+
 // update user details based on id
 router.put('/update', userController.updateUser);
 // delete user based on id

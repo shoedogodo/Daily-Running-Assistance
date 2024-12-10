@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 const utilsPath = require('../../utils/util.js'); // Path: frontend/utils/util.js
 const app = require('../../app.js');
 
-=======
->>>>>>> c1ce8ddb5912f88b3aa9454769ab718344da960d
 Page({
     data: {
         username: '',
@@ -125,8 +122,6 @@ Page({
 
     onLoad(options) {
       const token = wx.getStorageSync('token'); // 从本地存储中获取 token
-
-      console.log(token);//
     
       if (token) {
           console.log('token');
@@ -145,6 +140,13 @@ Page({
                     url: '../run/run'
                 });
               } 
+              else{
+                wx.showToast({
+                  title: '登录过期或无效\n请重新登陆',
+                  icon:'error',
+                });
+                setTimeout(function() {}, 1500);
+              }
             },
             fail(err) {
                 console.error('获取受保护数据失败:', err);

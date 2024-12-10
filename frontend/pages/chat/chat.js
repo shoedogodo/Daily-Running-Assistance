@@ -90,14 +90,6 @@ Page({
         });
     },
 
-<<<<<<< HEAD
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-    app.tokenCheck();
-  },
-=======
     clearMessages: function () {
         // 清除聊天记录
         this.setData({
@@ -120,7 +112,6 @@ Page({
             });
         }
     },
->>>>>>> c1ce8ddb5912f88b3aa9454769ab718344da960d
 
     /**
      * 生命周期函数--监听页面初次渲染完成
