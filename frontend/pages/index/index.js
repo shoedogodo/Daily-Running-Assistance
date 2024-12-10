@@ -121,6 +121,41 @@ Page({
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-    }
+    },
+
+    onLoad(options) {
+      const token = wx.getStorageSync('token'); // 从本地存储中获取 token
+
+      console.log(token);//
+    
+      if (token) {
+          console.log('token');
+          wx.request({
+            url: 'http://124.221.96.133:8000/api/users/tokenCheck', 
+            method: 'POST',
+            header: {
+                'Authorization': `Bearer ${token}`, // 在头部添加 token 用于身份验证
+                'Content-Type': 'application/json', 
+            },
+            success(res) {
+              if (res.statusCode === 200) {
+                  // 如果 token 验证成功
+                  console.log('Token 验证成功');
+                  wx.navigateTo({
+                    url: '../run/run'
+                });
+              } 
+            },
+            fail(err) {
+                console.error('获取受保护数据失败:', err);
+                // 网络错误或其他问题，处理错误
+                wx.showToast({
+                    title: '网络错误或服务器无响应',
+                    icon: 'none'
+                });
+            },
+        });
+      }
+    },
 });
 

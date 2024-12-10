@@ -23,9 +23,7 @@ App({
   }
 })
 
-function tokenCheck() { 
-  console.log('here');//
-  
+function tokenCheck() {   
   const token = wx.getStorageSync('token'); // 从本地存储中获取 token
 
   console.log(token);//
@@ -53,6 +51,8 @@ function tokenCheck() {
         } else {
           console.log(res.statusCode);
             //token 验证失败
+          
+
             console.error('Token 验证失败: 登录过期或无效');
             wx.redirectTo({
               url: '../index/index?message=登录过期，请重新登录'

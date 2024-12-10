@@ -169,7 +169,7 @@ const registerUserTest = async (req, res) => {
             username: newUser.username,
             loginTime: loginTime.toISOString() // 将登录时间添加到token的payload中
         }, SECRET_KEY, {
-            expiresIn: '30min' // 设置token过期时间
+            expiresIn: '1min' // 设置token过期时间
         });
         
         res.status(200).json({ message: "Login successful", token , newUser });
@@ -337,7 +337,7 @@ const getRunRecordById = async (req, res) => {
             username: user.username,
             loginTime: loginTime.toISOString() // 将登录时间添加到token的payload中
         }, SECRET_KEY, {
-            expiresIn: '30min' // 设置token过期时间
+            expiresIn: '1min' // 设置token过期时间
         });
         
         // If valid, return success response
