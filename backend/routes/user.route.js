@@ -30,12 +30,13 @@ router.post('/update/profilepic', upload.single('profilePicture'), userControlle
 router.get('/profilepic/:username', userController.getProfilePicture);
 
 // Run data routes
-router.put('/run/data', userController.updateRunData);
-router.post('/run/record', userController.saveRunRecord);
-router.get('/run/data/:username', userController.getCurrentRunData);
-router.get('/run/records/:username', userController.getRunRecords);
-router.get('/run/records/:username/:recordId', userController.getRunRecordById);
-router.put('/run/records/:username/:recordId', userController.updateRunRecord);
-router.delete('/run/records/:username/:recordId', userController.deleteRunRecord);
+router.put('/run/data', userController.updateRunData); // update CURRENT run data
+router.get('/run/data/:username', userController.getCurrentRunData); // get CURRENT run data
+
+router.post('/run/record', userController.saveRunRecord); // update entire run log
+//router.put('/run/records/:username/:recordId', userController.updateRunRecord); // update run record by id
+router.get('/run/records/:username', userController.getRunRecords); // get all run records
+router.get('/run/records/:username/:recordId', userController.getRunRecordById); // get run record by id
+router.delete('/run/records/:username/:recordId', userController.deleteRunRecord); // delete run record by id
 
 module.exports = router;

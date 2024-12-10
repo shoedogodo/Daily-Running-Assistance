@@ -202,6 +202,219 @@ function getProfilePicture(username) {
     return url;
 }
 
+// Update current run data
+function updateRunData(username, runData) {
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: global.utils.getAPI(global.utils.serverURL, '/api/users/run/data'),
+            method: 'PUT',
+            data: { username, runData },
+            header: {
+                'Content-Type': 'application/json',
+            },
+            success(res) {
+                if (res.statusCode === 200) {
+                    resolve(res.data);
+                } else if (res.statusCode === 404) {
+                    wx.showToast({
+                        title: '用户不存在',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                    reject(new Error('User not found'));
+                } else {
+                    wx.showToast({
+                        title: '更新失败',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                    reject(new Error('Failed to update run data'));
+                }
+            },
+            fail(err) {
+                wx.showToast({
+                    title: 'Network Error',
+                    icon: 'none',
+                    duration: 2000
+                });
+                console.error('Error updating run data:', err);
+                reject(err);
+            }
+        });
+    });
+}
+
+// Get current run data
+function getCurrentRunData(username) {
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: global.utils.getAPI(global.utils.serverURL, `/api/users/run/data/${username}`),
+            method: 'GET',
+            header: {
+                'Content-Type': 'application/json',
+            },
+            success(res) {
+                if (res.statusCode === 200) {
+                    resolve(res.data);
+                } else if (res.statusCode === 404) {
+                    reject(new Error('User not found'));
+                } else {
+                    reject(new Error('Failed to get run data'));
+                }
+            },
+            fail(err) {
+                console.error('Error getting run data:', err);
+                reject(err);
+            }
+        });
+    });
+}
+
+// Save completed run record
+function saveRunRecord(username, runRecord) {
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: global.utils.getAPI(global.utils.serverURL, '/api/users/run/record'),
+            method: 'POST',
+            data: { username, runRecord },
+            header: {
+                'Content-Type': 'application/json',
+            },
+            success(res) {
+                if (res.statusCode === 200) {
+                    wx.showToast({
+                        title: '保存成功!',
+                        icon: 'success',
+                        duration: 2000
+                    });
+                    resolve(res.data);
+                } else if (res.statusCode === 404) {
+                    wx.showToast({
+                        title: '用户不存在',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                    reject(new Error('User not found'));
+                } else {
+                    wx.showToast({
+                        title: '保存失败',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                    reject(new Error('Failed to save run record'));
+                }
+            },
+            fail(err) {
+                wx.showToast({
+                    title: 'Network Error',
+                    icon: 'none',
+                    duration: 2000
+                });
+                console.error('Error saving run record:', err);
+                reject(err);
+            }
+        });
+    });
+}
+
+// Get all run records with pagination
+function getRunRecords(username, page = 1, limit = 10) {
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: global.utils.getAPI(global.utils.serverURL, `/api/users/run/records/${username}?page=${page}&limit=${limit}`),
+            method: 'GET',
+            header: {
+                'Content-Type': 'application/json',
+            },
+            success(res) {
+                if (res.statusCode === 200) {
+                    resolve(res.data);
+                } else if (res.statusCode === 404) {
+                    reject(new Error('User not found'));
+                } else {
+                    reject(new Error('Failed to get run records'));
+                }
+            },
+            fail(err) {
+                console.error('Error getting run records:', err);
+                reject(err);
+            }
+        });
+    });
+}
+
+// Get specific run record by ID
+function getRunRecordById(username, recordId) {
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: global.utils.getAPI(global.utils.serverURL, `/api/users/run/records/${username}/${recordId}`),
+            method: 'GET',
+            header: {
+                'Content-Type': 'application/json',
+            },
+            success(res) {
+                if (res.statusCode === 200) {
+                    resolve(res.data);
+                } else if (res.statusCode === 404) {
+                    reject(new Error('Record not found'));
+                } else {
+                    reject(new Error('Failed to get run record'));
+                }
+            },
+            fail(err) {
+                console.error('Error getting run record:', err);
+                reject(err);
+            }
+        });
+    });
+}
+
+// Delete run record by ID
+function deleteRunRecord(username, recordId) {
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: global.utils.getAPI(global.utils.serverURL, `/api/users/run/records/${username}/${recordId}`),
+            method: 'DELETE',
+            header: {
+                'Content-Type': 'application/json',
+            },
+            success(res) {
+                if (res.statusCode === 200) {
+                    wx.showToast({
+                        title: '删除成功',
+                        icon: 'success',
+                        duration: 2000
+                    });
+                    resolve(res.data);
+                } else if (res.statusCode === 404) {
+                    wx.showToast({
+                        title: '记录不存在',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                    reject(new Error('Record not found'));
+                } else {
+                    wx.showToast({
+                        title: '删除失败',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                    reject(new Error('Failed to delete run record'));
+                }
+            },
+            fail(err) {
+                wx.showToast({
+                    title: 'Network Error',
+                    icon: 'none',
+                    duration: 2000
+                });
+                console.error('Error deleting run record:', err);
+                reject(err);
+            }
+        });
+    });
+}
+
 
 module.exports = {
     login,
@@ -209,5 +422,13 @@ module.exports = {
     updateNickname,
     updateProfilePicture,
     getProfilePicture,
+
+    updateRunData,
+    getCurrentRunData,
+    
+    saveRunRecord,
+    getRunRecords,
+    getRunRecordById,
+    deleteRunRecord,
 }
   

@@ -141,6 +141,124 @@ Page({
         })
     }
 
+    /* During run, update current data
+    async function updateCurrentRun() {
+        try {
+            const username = wx.getStorageSync('userName');
+            const currentRunData = {
+                distance: 5.2,
+                duration: 1800,
+                pace: "5:30",
+                // ... other run data
+            };
+            
+            await global.api.updateRunData(username, currentRunData);
+            console.log('Run data updated successfully');
+        } catch (error) {
+            console.error('Failed to update run data:', error);
+        }
+    }
+    */
+
+    /* // When run is complete, save a run into records[]
+    async function finishRun() {
+        try {
+            const username = wx.getStorageSync('userName');
+            const completedRun = {
+                distance: 5.2,
+                duration: 1800,
+                pace: "5:30",
+                route: [...routeCoordinates],
+                // ... other run data
+            };
+            
+            const result = await global.api.saveRunRecord(username, completedRun);
+            console.log('Run saved successfully:', result);
+        } catch (error) {
+            console.error('Failed to save run:', error);
+        }
+    }
+    */
+
+    /* Displaying run records
+    Page({
+        data: {
+            runRecords: [],
+            currentPage: 1,
+            hasMore: true
+        },
+
+        async onLoad() {
+            await this.loadRunRecords();
+        },
+
+        async loadRunRecords() {
+            try {
+                const username = wx.getStorageSync('userName');
+                const result = await global.api.getRunRecords(username, this.data.currentPage);
+                
+                this.setData({
+                    runRecords: [...this.data.runRecords, ...result.records],
+                    hasMore: this.data.currentPage < result.pagination.pages
+                });
+            } catch (error) {
+                console.error('Failed to load run records:', error);
+            }
+        },
+
+        async onReachBottom() {
+            if (this.data.hasMore) {
+                this.setData({ currentPage: this.data.currentPage + 1 });
+                await this.loadRunRecords();
+            }
+        }
+    });
+    */
+
+    /* Viewing detailed run records
+    Page({
+        data: {
+            runDetail: null
+        },
+
+        async onLoad(options) {
+            const { recordId } = options;
+            await this.loadRunDetail(recordId);
+        },
+
+        async loadRunDetail(recordId) {
+            try {
+                const username = wx.getStorageSync('userName');
+                const runDetail = await global.api.getRunRecordById(username, recordId);
+                
+                this.setData({ runDetail });
+            } catch (error) {
+                console.error('Failed to load run detail:', error);
+                wx.showToast({
+                    title: '加载失败',
+                    icon: 'none'
+                });
+            }
+        },
+
+        async deleteRecord() {
+            try {
+                const username = wx.getStorageSync('userName');
+                const { runDetail } = this.data;
+                
+                await global.api.deleteRunRecord(username, runDetail.runId);
+                
+                // Navigate back to history page
+                wx.navigateBack();
+            } catch (error) {
+                console.error('Failed to delete record:', error);
+            }
+        }
+    });
+    */
+
+
+
     // translateMarker: function (e) {
     //     let markers = this.data.markers;
     //     console.log(markers.length);

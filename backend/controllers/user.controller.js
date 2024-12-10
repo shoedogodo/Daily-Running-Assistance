@@ -430,21 +430,26 @@ const deleteRunRecord = async (req, res) => {
 
 module.exports = {
     getUsers,
-    getUser,
+    getUser, //deprecated
+    
     registerUser,
-    updateUser,
-    deleteUser,
     loginUser,
+
+    updateUser, // deprecated
+    deleteUser,
+
     editNickname,
+
     uploadProfilePicture,
     getProfilePicture,
 
-    saveRunRecord,
-    getRunRecordById,
-    getCurrentRunData,
-    updateRunRecord,
-    updateRunData,
-    deleteRunRecord,
-    getRunRecords
+    updateRunData, // updating CURRENT run data
+    getCurrentRunData, // getting CURRENT run data
+
+    saveRunRecord, // saving into run list
+    getRunRecordById, // getting specific run record
+    updateRunRecord, // updating run data
+    deleteRunRecord, // deleting individual run record
+    getRunRecords // get all run records
 
 }
