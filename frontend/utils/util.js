@@ -1,5 +1,17 @@
-const server_URL = "https://localhost:3000";
-//const server_URL = "https://124.221.96.133";
+//const serverURL = "http://localhost:8000"; //for local testing
+const serverURL = "http://124.221.96.133:8000"; //for deployment testing
+
+function getAPI(prefix, suffix) {
+    // Ensure the prefix ends with a slash and the suffix doesn't start with one
+    if (!prefix.endsWith('/')) {
+        prefix += '/';
+    }
+    if (suffix.startsWith('/')) {
+        suffix = suffix.substring(1);
+    }
+
+    return prefix + suffix;
+}
 
 const formatTime = date => {
   const year = date.getFullYear()
@@ -43,6 +55,8 @@ function getDistance(lat1,lng1,lat2,lng2){
 }
  
 module.exports = {
+  serverURL,
+  getAPI,  
   formatTime,
   formatDate,
   getDistance

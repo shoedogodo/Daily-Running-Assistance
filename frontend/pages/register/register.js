@@ -57,7 +57,7 @@ Page({
 
         // Proceed with HTTP request if validation passes
         wx.request({
-            url: 'http://124.221.96.133:8000/api/users', // Replace with your server endpoint
+            url: global.utils.getAPI(global.utils.serverURL, '/api/users'),
             method: 'POST',
             data: { username, password },
             header: {
@@ -68,7 +68,10 @@ Page({
                     wx.showToast({
                         title: 'Registration Successful!',
                     });
-                    wx.navigateBack();
+                    setTimeout(function() {
+                      wx.navigateBack();
+                  }, 1000); // 等待1000毫秒（1秒）后执行
+                    //wx.navigateBack();
                 } else {
                     wx.showToast({
                         title: 'Registration Failed',

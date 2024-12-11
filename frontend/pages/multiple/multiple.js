@@ -1,5 +1,5 @@
 // pages/multiple/multiple.js
-
+const app = require('../../app.js');
 const util = require('../../utils/util.js');
 
 Page({
@@ -24,6 +24,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
     onLoad(options) {
+      app.tokenCheck();
 
         const date = new Date();
         this.setData({
