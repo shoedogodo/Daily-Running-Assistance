@@ -124,7 +124,6 @@ Page({
       const token = wx.getStorageSync('token'); // 从本地存储中获取 token
     
       if (token) {
-          console.log('token');
           wx.request({
             url: 'http://124.221.96.133:8000/api/users/tokenCheck', 
             method: 'POST',
