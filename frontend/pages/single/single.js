@@ -1,3 +1,4 @@
+// pages/single/single.js
 const utils = require('../../utils/util')
 const app = require('../../app.js');
 
@@ -16,6 +17,17 @@ Page({
         showMap: false, // 控制地图是否显示
         polyline: [], // 路线
         userName: '', // 用户名
+        paceFormatted: '', // 格式化配速输出
+        startTime: '' // 开始跑步时间
+    },
+
+    formatPace: function () {
+        const pace = (this.data.meters === 0) ? 0 : Math.round(this.data.seconds * 1000 / this.data.meters);
+        const minutes = Math.floor(pace / 60);
+        const seconds = (pace % 60).toString().padStart(2, '0');
+        this.setData({
+            paceFormatted: `${minutes}'${seconds}"`
+        });
     },
 
     /**
@@ -56,6 +68,7 @@ Page({
             });
         }
 
+        this.formatPace();
     },
 
     startRun: function (e) {
@@ -65,6 +78,11 @@ Page({
         if (this.data.running == true) {
             console.log("开始跑步")
             this.interval = setInterval(this.record.bind(this), this.data.interval);
+            if (this.data.startTime === '') {
+                this.setData({
+                    startTime: new Date().toISOString()
+                });
+            }
         } else {
             console.log("暂停/结束跑步")
             clearInterval(this.interval);
@@ -98,7 +116,7 @@ Page({
                 //根据上一次标记点和当前标记点计算距离，超出5m添加标记
                 pace = utils.getDistance(lastMarker.latitude, lastMarker.longitude, newMarker.latitude, newMarker.longitude);
                 pace = parseFloat(pace.toFixed(1))
-                if (pace > 1) {
+                if (pace > 5) {
                     markers.push(newMarker);
                     console.log("dot");
                 } else {
@@ -123,10 +141,17 @@ Page({
                 }],
                 meters: this.data.meters + pace,
             })
+            this.formatPace();
         })
     },
 
     endRun: function (e) {
+
+        // 如果轨迹点数少于两点，直接返回
+        if (this.data.markers.length < 2) {
+            console.log("你没有开始跑步！");
+            return;
+        }
         console.log('meters: ' + this.data.meters);
         console.log('seconds: ' + this.data.seconds);
         console.log('latitude: ' + this.data.latitude);
@@ -317,5 +342,50 @@ Page({
     //     replayTrack();
     // }
 
+        // 停止记录
+        this.setData({
+            running: false
+        });
+        clearInterval(this.interval);
+
+        // 准备发送给后端的数据
+        const runData = {
+            data: {
+                meters: this.data.meters,
+                seconds: this.data.seconds,
+                latitude: this.data.latitude,
+                longitude: this.data.longitude,
+                running: false,
+                markers: this.data.markers,
+                start: this.data.startTime, 
+                end: new Date().toISOString()
+            }
+        };
+
+        // 发送请求到后端
+        wx.request({
+            url: 'http://124.221.96.133:8000/api/users/sendRunData', 
+            method: 'POST',
+            data: runData,
+            header: {
+                'content-type': 'application/json',
+            },
+            success: (res) => {
+                console.log('跑步数据上传成功:', res);
+                // 上传成功后跳转到记录页面
+                wx.navigateTo({
+                    url: '../singlerecord/singlerecord',
+                });
+            },
+            fail: (error) => {
+                console.error('跑步数据上传失败:', error);
+                wx.showToast({
+                    title: '数据上传失败，请重试',
+                    icon: 'none',
+                    duration: 2000
+                });
+            }
+        });
+    }
 
 });

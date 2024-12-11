@@ -1,34 +1,4 @@
-/* pages/home/home.wxss */
-
-/* .user-info {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    padding: 10rpx;
-} */
-
-/* .profile-pic {
-    width: 100rpx;
-    height: 100rpx;
-    border-radius: 50%;
-    margin-right: 20rpx;
-} */
-
-/* .user-text {
-    display: flex;
-    flex-direction: column;
-} */
-
-/* .username {
-    font-size: 36rpx;
-    font-weight: bold;
-} */
-
-/* .date {
-    font-size: 28rpx;
-    color: #999;
-} */
+/* pages/single/single.wxss */
 
 .container {
     height: 100vh; /* 设置容器高度为视口高度 */
@@ -51,11 +21,12 @@
     flex-direction: column;
     border-width: 0;
     margin: 0;
-    padding: 0;
+    padding: 10rpx;
 }
 
 .counter text{
     display: block;
+    margin: 5rpx;
 }
 
 .button-container {
