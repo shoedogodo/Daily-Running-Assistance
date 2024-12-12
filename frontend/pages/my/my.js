@@ -21,14 +21,14 @@ Page({
         defaultPicUrl: '../../images/my-icon.png'
     },
 
-  /**
-   * 跳转我的跑步记录页面
-   */
-  navigateToRecord: function() {
-    wx.navigateTo({
-      url: '../runrecord/runrecord' // 确保路径正确
-    });
-  },
+    /**
+     * 跳转我的跑步记录页面
+     */
+    navigateToRecord: function() {
+        wx.navigateTo({
+        url: '../runrecord/runrecord' // 确保路径正确
+        });
+    },
     
     updateProfilePicDisplay(username) {
         // First check if we have a profile picture URL
@@ -197,7 +197,7 @@ Page({
                 .then(() => {
                     // Get the new profile picture URL
                     const newProfilePicUrl = global.api.getProfilePicture(username);
-                    
+                    wx.setStorageSync('profilePicUrl', newProfilePicUrl)
                     this.setData({
                         profilePicUrl: newProfilePicUrl + '?t=' + new Date().getTime()
                     });
@@ -243,7 +243,10 @@ Page({
      * TODO: 待完成
      */
     onLogout: function(){
-        ;
+        wx.clearStorageSync('token');
+        wx.navigateTo({
+          url: '../index/index',
+        });
     },
     /**
      * 生命周期函数--监听页面加载
@@ -251,8 +254,12 @@ Page({
     onLoad(options) {  
       app.tokenCheck(); 
       const username = wx.getStorageSync('username');
+      const nickname = wx.getStorageSync('nickname');
+      const profilePicUrl = global.api.getProfilePicture(username);
       this.setData({
-        username: username
+        username: username,
+        nickname: nickname,
+        profilePicUrl: profilePicUrl
       });
     },
 
