@@ -19,9 +19,31 @@ Page({
         currentPointIndex: 0
     },
 
+    formatPace: function () {
+        const pace = (this.data.meters === 0) ? 0 : Math.round(this.data.seconds * 1000 / this.data.meters);
+        const minutes = Math.floor(pace / 60);
+        const seconds = (pace % 60).toString().padStart(2, '0');
+        this.setData({
+            pace: `${minutes}'${seconds}"`
+        });
+    },
+
     onLoad: function (options) {
-        // 从服务器获取数据
-        this.fetchRecordData();
+        // 获取数据
+        const app = getApp();
+        if (app.globalData.currentRunData) {
+            this.setData({
+                latitude: app.globalData.currentRunData.latitude,
+                longitude: app.globalData.currentRunData.longitude,
+                meters: app.globalData.currentRunData.meters,
+                seconds: app.globalData.currentRunData.seconds,
+                markers: app.globalData.currentRunData.markers,
+                starttime: app.globalData.currentRunData.start,
+                endtime: app.globalData.currentRunData.end,
+            });
+        }
+        this.formatPace();
+        
     },
 
     onUnload: function () {

@@ -150,6 +150,10 @@ Page({
         // 如果轨迹点数少于两点，直接返回
         if (this.data.markers.length < 2) {
             console.log("你没有开始跑步！");
+            wx.showToast({
+                title: '你没有开始跑步！',
+                icon: 'error'
+            })
             return;
         }
 
@@ -173,6 +177,10 @@ Page({
             }
         };
 
+        // 在把数据发送到后端之前，先将数据存进globalData
+        const app = getApp();
+        app.globalData.currentRunData = runData;
+
         // 发送请求到后端
         wx.request({
             url: 'http://124.221.96.133:8000/api/users/sendRunData',
@@ -194,6 +202,10 @@ Page({
                     title: '数据上传失败，请重试',
                     icon: 'none',
                     duration: 2000
+                });
+                // 上传失败后跳转到记录页面
+                wx.navigateTo({
+                    url: '../singlerecord/singlerecord',
                 });
             }
         });
