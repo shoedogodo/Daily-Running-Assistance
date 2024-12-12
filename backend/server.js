@@ -1,9 +1,18 @@
+require('dotenv').config();  // Add this at the top
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const User = require('./models/user.model.js');
 const userRoute = require('./routes/user.route.js');
 const app = express();
+
+// Add this logging to check if Node can see the SECRET_KEY
+console.log('Loaded SECRET_KEY:', process.env.SECRET_KEY);
+
+if (!process.env.SECRET_KEY) {
+    console.error('WARNING: SECRET_KEY is not set in Node process environment');
+}
+
 
 //middleware
 app.use(express.json());
