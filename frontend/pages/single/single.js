@@ -34,7 +34,7 @@ Page({
      * 页面的生命周期函数--页面加载时调用
      */
     onLoad() {
-      app.tokenCheck();
+        app.tokenCheck();
         //格式化日期 xxxx/xx/xx
         const date = new Date();
         this.setData({
@@ -150,197 +150,12 @@ Page({
         // 如果轨迹点数少于两点，直接返回
         if (this.data.markers.length < 2) {
             console.log("你没有开始跑步！");
+            wx.showToast({
+                title: '你没有开始跑步！',
+                icon: 'error'
+            })
             return;
         }
-        console.log('meters: ' + this.data.meters);
-        console.log('seconds: ' + this.data.seconds);
-        console.log('latitude: ' + this.data.latitude);
-        console.log('longitude: ' + this.data.longitude);
-        console.log('running: ' + this.data.running);
-        console.log('interval: ' + this.data.interval);
-        console.log('markers: ' + this.data.markers);
-        console.log('showMap: ' + this.data.showMap);
-        console.log('polyline: ' + this.data.polyline);
-        console.log('userName: ' + this.data.userName);
-
-        wx.navigateTo({
-            url: '../singlerecord/singlerecord',
-        })
-    }
-
-    /* During run, update current data
-    async function updateCurrentRun() {
-        try {
-            const username = wx.getStorageSync('userName');
-            const currentRunData = {
-                distance: 5.2,
-                duration: 1800,
-                pace: "5:30",
-                // ... other run data
-            };
-            
-            await global.api.updateRunData(username, currentRunData);
-            console.log('Run data updated successfully');
-        } catch (error) {
-            console.error('Failed to update run data:', error);
-        }
-    }
-    */
-
-    /* // When run is complete, save a run into records[]
-    async function finishRun() {
-        try {
-            const username = wx.getStorageSync('userName');
-            const completedRun = {
-                distance: 5.2,
-                duration: 1800,
-                pace: "5:30",
-                route: [...routeCoordinates],
-                // ... other run data
-            };
-            
-            const result = await global.api.saveRunRecord(username, completedRun);
-            console.log('Run saved successfully:', result);
-        } catch (error) {
-            console.error('Failed to save run:', error);
-        }
-    }
-    */
-
-    /* Displaying run records
-    Page({
-        data: {
-            runRecords: [],
-            currentPage: 1,
-            hasMore: true
-        },
-
-        async onLoad() {
-            await this.loadRunRecords();
-        },
-
-        async loadRunRecords() {
-            try {
-                const username = wx.getStorageSync('userName');
-                const result = await global.api.getRunRecords(username, this.data.currentPage);
-                
-                this.setData({
-                    runRecords: [...this.data.runRecords, ...result.records],
-                    hasMore: this.data.currentPage < result.pagination.pages
-                });
-            } catch (error) {
-                console.error('Failed to load run records:', error);
-            }
-        },
-
-        async onReachBottom() {
-            if (this.data.hasMore) {
-                this.setData({ currentPage: this.data.currentPage + 1 });
-                await this.loadRunRecords();
-            }
-        }
-    });
-    */
-
-    /* Viewing detailed run records
-    Page({
-        data: {
-            runDetail: null
-        },
-
-        async onLoad(options) {
-            const { recordId } = options;
-            await this.loadRunDetail(recordId);
-        },
-
-        async loadRunDetail(recordId) {
-            try {
-                const username = wx.getStorageSync('userName');
-                const runDetail = await global.api.getRunRecordById(username, recordId);
-                
-                this.setData({ runDetail });
-            } catch (error) {
-                console.error('Failed to load run detail:', error);
-                wx.showToast({
-                    title: '加载失败',
-                    icon: 'none'
-                });
-            }
-        },
-
-        async deleteRecord() {
-            try {
-                const username = wx.getStorageSync('userName');
-                const { runDetail } = this.data;
-                
-                await global.api.deleteRunRecord(username, runDetail.runId);
-                
-                // Navigate back to history page
-                wx.navigateBack();
-            } catch (error) {
-                console.error('Failed to delete record:', error);
-            }
-        }
-    });
-    */
-
-
-
-    // translateMarker: function (e) {
-    //     let markers = this.data.markers;
-    //     console.log(markers.length);
-
-    //     // 确保有足够的标记点可以进行回放
-    //     if (markers.length < 2) {
-    //         console.log('标记点不足以进行回放');
-    //         return;
-    //     }
-
-    //     let ii = 0;
-    //     const that = this;
-
-    //     // 使用循环而不是递归进行标记点的回放
-    //     const replayTrack = () => {
-    //         if (ii >= markers.length - 1) {
-    //             console.log('所有标记点已经完成回放');
-    //             return;
-    //         }
-
-    //         let markerId = markers[ii].id;
-    //         let destination = {
-    //             longitude: markers[ii + 1].longitude,
-    //             latitude: markers[ii + 1].latitude,
-    //         };
-
-    //         // 根据两个标记点之间的距离，计算移动的持续时间
-    //         let duration = utils.getDistance(
-    //             markers[ii].latitude,
-    //             markers[ii].longitude,
-    //             markers[ii + 1].latitude,
-    //             markers[ii + 1].longitude
-    //         ) * 5;
-
-    //         // 使用 MapContext.translateMarker 实现轨迹回放
-    //         that.mapCtx.translateMarker({
-    //             markerId: markerId, // 当前标记点
-    //             destination: destination, // 要移动到的下一个标记点
-    //             autoRotate: false, // 关闭旋转
-    //             duration: duration, // 动画时长
-    //             success(res) {
-    //                 // 更新 ii 的值，准备移动到下一个标记点
-    //                 ii += 1;
-    //                 // 调用下一次标记点的移动
-    //                 replayTrack();
-    //             },
-    //             fail(err) {
-    //                 console.log('fail', err);
-    //             },
-    //         });
-    //     };
-
-    //     // 启动回放
-    //     replayTrack();
-    // }
 
         // 停止记录
         this.setData({
@@ -357,14 +172,18 @@ Page({
                 longitude: this.data.longitude,
                 running: false,
                 markers: this.data.markers,
-                start: this.data.startTime, 
+                start: this.data.startTime,
                 end: new Date().toISOString()
             }
         };
 
+        // 在把数据发送到后端之前，先将数据存进globalData
+        const app = getApp();
+        app.globalData.currentRunData = runData;
+
         // 发送请求到后端
         wx.request({
-            url: 'http://124.221.96.133:8000/api/users/sendRunData', 
+            url: 'http://124.221.96.133:8000/api/users/sendRunData',
             method: 'POST',
             data: runData,
             header: {
@@ -384,8 +203,187 @@ Page({
                     icon: 'none',
                     duration: 2000
                 });
+                // 上传失败后跳转到记录页面
+                wx.navigateTo({
+                    url: '../singlerecord/singlerecord',
+                });
             }
         });
     }
 
 });
+
+
+/* During run, update current data
+async function updateCurrentRun() {
+    try {
+        const username = wx.getStorageSync('userName');
+        const currentRunData = {
+            distance: 5.2,
+            duration: 1800,
+            pace: "5:30",
+            // ... other run data
+        };
+        
+        await global.api.updateRunData(username, currentRunData);
+        console.log('Run data updated successfully');
+    } catch (error) {
+        console.error('Failed to update run data:', error);
+    }
+}
+*/
+
+/* // When run is complete, save a run into records[]
+async function finishRun() {
+    try {
+        const username = wx.getStorageSync('userName');
+        const completedRun = {
+            distance: 5.2,
+            duration: 1800,
+            pace: "5:30",
+            route: [...routeCoordinates],
+            // ... other run data
+        };
+        
+        const result = await global.api.saveRunRecord(username, completedRun);
+        console.log('Run saved successfully:', result);
+    } catch (error) {
+        console.error('Failed to save run:', error);
+    }
+}
+*/
+
+/* Displaying run records
+Page({
+    data: {
+        runRecords: [],
+        currentPage: 1,
+        hasMore: true
+    },
+
+    async onLoad() {
+        await this.loadRunRecords();
+    },
+
+    async loadRunRecords() {
+        try {
+            const username = wx.getStorageSync('userName');
+            const result = await global.api.getRunRecords(username, this.data.currentPage);
+            
+            this.setData({
+                runRecords: [...this.data.runRecords, ...result.records],
+                hasMore: this.data.currentPage < result.pagination.pages
+            });
+        } catch (error) {
+            console.error('Failed to load run records:', error);
+        }
+    },
+
+    async onReachBottom() {
+        if (this.data.hasMore) {
+            this.setData({ currentPage: this.data.currentPage + 1 });
+            await this.loadRunRecords();
+        }
+    }
+});
+*/
+
+/* Viewing detailed run records
+Page({
+    data: {
+        runDetail: null
+    },
+
+    async onLoad(options) {
+        const { recordId } = options;
+        await this.loadRunDetail(recordId);
+    },
+
+    async loadRunDetail(recordId) {
+        try {
+            const username = wx.getStorageSync('userName');
+            const runDetail = await global.api.getRunRecordById(username, recordId);
+            
+            this.setData({ runDetail });
+        } catch (error) {
+            console.error('Failed to load run detail:', error);
+            wx.showToast({
+                title: '加载失败',
+                icon: 'none'
+            });
+        }
+    },
+
+    async deleteRecord() {
+        try {
+            const username = wx.getStorageSync('userName');
+            const { runDetail } = this.data;
+            
+            await global.api.deleteRunRecord(username, runDetail.runId);
+            
+            // Navigate back to history page
+            wx.navigateBack();
+        } catch (error) {
+            console.error('Failed to delete record:', error);
+        }
+    }
+});
+*/
+
+
+
+// translateMarker: function (e) {
+//     let markers = this.data.markers;
+//     console.log(markers.length);
+
+//     // 确保有足够的标记点可以进行回放
+//     if (markers.length < 2) {
+//         console.log('标记点不足以进行回放');
+//         return;
+//     }
+
+//     let ii = 0;
+//     const that = this;
+
+//     // 使用循环而不是递归进行标记点的回放
+//     const replayTrack = () => {
+//         if (ii >= markers.length - 1) {
+//             console.log('所有标记点已经完成回放');
+//             return;
+//         }
+
+//         let markerId = markers[ii].id;
+//         let destination = {
+//             longitude: markers[ii + 1].longitude,
+//             latitude: markers[ii + 1].latitude,
+//         };
+
+//         // 根据两个标记点之间的距离，计算移动的持续时间
+//         let duration = utils.getDistance(
+//             markers[ii].latitude,
+//             markers[ii].longitude,
+//             markers[ii + 1].latitude,
+//             markers[ii + 1].longitude
+//         ) * 5;
+
+//         // 使用 MapContext.translateMarker 实现轨迹回放
+//         that.mapCtx.translateMarker({
+//             markerId: markerId, // 当前标记点
+//             destination: destination, // 要移动到的下一个标记点
+//             autoRotate: false, // 关闭旋转
+//             duration: duration, // 动画时长
+//             success(res) {
+//                 // 更新 ii 的值，准备移动到下一个标记点
+//                 ii += 1;
+//                 // 调用下一次标记点的移动
+//                 replayTrack();
+//             },
+//             fail(err) {
+//                 console.log('fail', err);
+//             },
+//         });
+//     };
+
+//     // 启动回放
+//     replayTrack();
+// }

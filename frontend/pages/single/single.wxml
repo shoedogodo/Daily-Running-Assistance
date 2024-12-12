@@ -15,9 +15,18 @@
     </view>
 
     <view class="counter">
-        <text>里程: {{meters}}m </text>
-        <text>时间: {{seconds}}s </text>
-        <text>配速: {{paceFormatted}}</text>
+        <view>
+            <image src="../../images/run-icon.png" mode="" />
+            <text>里程: {{meters}}m </text>
+        </view>
+        <view>
+            <image src="../../images/clock-icon.png" mode="" />
+            <text>时间: {{seconds}}s </text>
+        </view>
+        <view>
+            <image src="../../images/pace-icon.png" mode="" />
+            <text>配速: {{paceFormatted}}</text>
+        </view>
     </view>
 
     <view class="tab-bar">
