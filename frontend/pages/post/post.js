@@ -76,15 +76,21 @@ Page({
    * 确认发布按钮，在服务器创建帖子并存储
    * TODO: wx.request()方法待完善
    */
-  createPost: function(title, content, images) {
+
+  //createPost: function(title, content, images) {
+  createPost: function(title, content) {
+    const username = wx.getStorageSync('username'); 
+
     // 发送请求到服务器，创建帖子
     wx.request({
-      url: 'https://your-server.com/api/posts', // 修正了URL
+      //url: 'http://your-server.com/api/posts', // 修正了URL
+      url: 'http://124.221.96.133:8000/api/users/share/sendPost', // 修正了URL
       method: 'POST',
       data: {
         title: title,
         content: content,
-        images: images // 假设服务器接受一个图片数组
+        //images: images // 假设服务器接受一个图片数组
+        username: username
       },
       success: function(res) {
         if (res.statusCode === 200) {

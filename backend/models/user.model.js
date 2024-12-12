@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // For individual running schema
 const RunDataSchema = mongoose.Schema({
@@ -10,6 +11,33 @@ const RunDataSchema = mongoose.Schema({
     markers: { type: [mongoose.Schema.Types.Mixed], default: [] },
     start: { type: Date, default: 0 },
     end: { type: Date, default: 0 }
+});
+
+// commentSchema
+const CommentSchema = new mongoose.Schema({
+    content: { type: String, required: [true, "Please enter a comment"] },
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
+});
+
+//PostSchema
+const PostSchema = mongoose.Schema({
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
+    title: { type: String, required: [true, "Please enter a title"] },
+    content: { type: String, required: [true, "Please enter content"] },
+    images: [{ 
+        url: String, // 存储图片的URL
+    }],
+    
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
+
+    likes: { type: Number, default: 0 },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
 });
 
 const UserSchema = mongoose.Schema({
@@ -34,7 +62,11 @@ const UserSchema = mongoose.Schema({
             timestamp: { type: Date, default: Date.now }
         }], 
         default: [] 
-    }
+    },
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }]
 });
 
 // Keep the existing toJSON transform
@@ -49,4 +81,13 @@ UserSchema.set('toJSON', {
 });
 
 const User = mongoose.model("User", UserSchema);
-module.exports = User;
+const Comment = mongoose.model('Comment', CommentSchema);
+const Post = mongoose.model('Post', PostSchema);
+
+// 导出模型
+module.exports = {
+    User,
+    Post,
+    Comment
+    
+};

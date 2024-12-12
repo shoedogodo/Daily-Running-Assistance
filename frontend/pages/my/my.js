@@ -12,7 +12,7 @@ Page({
         avatarUrl: '',
         nicknameInput: '',
         nickname: 'nickname_not_updated', // 从用户信息中获取的昵称
-        userName: '', // 从用户信息中获取的用户名
+        username: '', // 从用户信息中获取的用户名
         imagePreview: [], // 用于存储图片预览的数组
         unique: 0, // 添加一个唯一标识符，用于wx:key
         
@@ -30,9 +30,9 @@ Page({
     });
   },
     
-    updateProfilePicDisplay(userName) {
+    updateProfilePicDisplay(username) {
         // First check if we have a profile picture URL
-        const profilePicUrl = global.api.getProfilePicture(userName);
+        const profilePicUrl = global.api.getProfilePicture(username);
         
         // If the URL is null/undefined/empty, use default immediately
         if (!profilePicUrl) {
@@ -104,8 +104,8 @@ Page({
      * TODO: 上传到服务器
      */
     chooseAvatar: function(e) {
-        const userName = wx.getStorageSync('userName');
-        if (!userName) {
+        const username = wx.getStorageSync('username');
+        if (!username) {
             wx.showToast({
                 title: '请先登录',
                 icon: 'none',
@@ -146,7 +146,7 @@ Page({
     onModalSuccess: function () {
         if (this.data.currentAction === 'nickname') {
             const newNickname = this.data.nicknameInput;
-            const username = wx.getStorageSync('userName');
+            const username = wx.getStorageSync('username');
 
             // Check if the nickname is not empty
             if (newNickname.trim() !== '') {
@@ -187,16 +187,16 @@ Page({
         } 
         
         else if (this.data.currentAction === 'avatar' && this.data.tempImagePath) {
-            const userName = wx.getStorageSync('userName');
+            const username = wx.getStorageSync('username');
             
             wx.showLoading({
                 title: '上传中...'
             });
 
-            global.api.updateProfilePicture(userName, this.data.tempImagePath)
+            global.api.updateProfilePicture(username, this.data.tempImagePath)
                 .then(() => {
                     // Get the new profile picture URL
-                    const newProfilePicUrl = global.api.getProfilePicture(userName);
+                    const newProfilePicUrl = global.api.getProfilePicture(username);
                     
                     this.setData({
                         profilePicUrl: newProfilePicUrl + '?t=' + new Date().getTime()
@@ -250,6 +250,10 @@ Page({
      */
     onLoad(options) {  
       app.tokenCheck(); 
+      const username = wx.getStorageSync('username');
+      this.setData({
+        username: username
+      });
     },
 
     /**

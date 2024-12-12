@@ -10,7 +10,7 @@ function login(username, password) {
             success(res) {
                 if (res.statusCode === 200) {
                     // Store user information in local storage
-                    wx.setStorageSync('userName', username);
+                    wx.setStorageSync('username', username);
                     wx.setStorageSync('nickname', res.data.user.nickname);
                     wx.setStorageSync('profilepicture', res.data.user.profilepic);
 
@@ -151,14 +151,14 @@ function updateNickname(username, nickname) {
     });
 }
 
-function updateProfilePicture(userName, fileInfo) {
+function updateProfilePicture(username, fileInfo) {
     return new Promise((resolve, reject) => {
         wx.uploadFile({
             url: global.utils.getAPI(global.utils.serverURL, '/api/users/update/profilepic'),
             filePath: fileInfo,
             name: 'profilePicture',
             formData: {
-                username: userName
+                username: username
             },
             header: {
                 'content-type': 'multipart/form-data'

@@ -2,7 +2,7 @@
 
 <view class="container">
     <view class = "header">
-        <text class="username">{{userName}}</text>
+        <text class="username">{{username}}</text>
 
         <button class="clear-button" bindtap="clearMessages">
             <image class="clear-icon" src="../../images/clear-icon.png" />

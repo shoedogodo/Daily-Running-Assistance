@@ -43,5 +43,7 @@ router.get('/run/records/:username', userController.getRunRecords); // get all r
 router.get('/run/records/:username/:recordId', userController.getRunRecordById); // get run record by id
 router.delete('/run/records/:username/:recordId', userController.deleteRunRecord); // delete run record by id
 
+router.post('/share/sendPost', userController.sendPost);
+
 
 module.exports = router;

@@ -8,7 +8,7 @@ Page({
      */
     data: {
         nickname: '', // 从用户信息中获取的昵称
-        userName: 'username', // 从用户信息中获取的用户名
+        username: 'username', // 从用户信息中获取的用户名
         messages: [], // 存储聊天消息的数组
         messageInput: '', // 用户输入的消息
         pageContext: this, //当前页面的引用
@@ -105,10 +105,10 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        const userName = wx.getStorageSync('userName');
-        if (userName) {
+        const username = wx.getStorageSync('username');
+        if (username) {
             this.setData({
-                userName: userName,
+                username: username,
             });
         }
     },

@@ -61,10 +61,10 @@ Page({
             },
         });
 
-        const userName = wx.getStorageSync('userName');
-        if (userName) {
+        const username = wx.getStorageSync('username');
+        if (username) {
             this.setData({
-                userName: userName,
+                username: username,
             });
         }
 
