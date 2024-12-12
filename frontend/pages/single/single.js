@@ -183,12 +183,9 @@ Page({
 
         // 发送请求到后端
         wx.request({
-            url: 'http://124.221.96.133:8000/api/users/sendRunData',
+            url: 'http://124.221.96.133:8000/api/users/run/record',
             method: 'POST',
             data: runData,
-            header: {
-                'content-type': 'application/json',
-            },
             success: (res) => {
                 console.log('跑步数据上传成功:', res);
                 // 上传成功后跳转到记录页面
@@ -203,7 +200,7 @@ Page({
                     icon: 'none',
                     duration: 2000
                 });
-                // 上传失败后跳转到记录页面
+                // 上传失败后跳转到记录页面 ?
                 wx.navigateTo({
                     url: '../singlerecord/singlerecord',
                 });
