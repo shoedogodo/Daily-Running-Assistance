@@ -139,73 +139,135 @@ Page({
                     width: 5,
                     dottedLine: false,
                 }],
-                meters: this.data.meters + pace,
+                meters: parseFloat((this.data.meters + pace).toFixed(1))
             })
             this.formatPace();
         })
     },
 
     endRun: function (e) {
-
-        // 如果轨迹点数少于两点，直接返回
-        if (this.data.markers.length < 2) {
-            console.log("你没有开始跑步！");
-            wx.showToast({
-                title: '你没有开始跑步！',
-                icon: 'error'
-            })
-            return;
-        }
-
-        // 停止记录
-        this.setData({
-            running: false
-        });
-        clearInterval(this.interval);
-
         // 准备发送给后端的数据
         const runData = {
-            data: {
-                meters: this.data.meters,
-                seconds: this.data.seconds,
-                latitude: this.data.latitude,
-                longitude: this.data.longitude,
-                running: false,
-                markers: this.data.markers,
-                start: this.data.startTime,
-                end: new Date().toISOString()
+            username: "SHIKAI", // 这里需要替换为实际的用户名
+            runRecord: {
+                meters: 270.5,
+                seconds: 155,
+                markers: [{
+                        "latitude": 40.00564480251736,
+                        "longitude": 116.32357964409722,
+                        "id": 1
+                    },
+                    {
+                        "latitude": 40.00570556640625,
+                        "longitude": 116.32352349175348,
+                        "id": 2
+                    },
+                    {
+                        "latitude": 40.00576822916667,
+                        "longitude": 116.32327690972222,
+                        "id": 3
+                    },
+                    {
+                        "latitude": 40.005847981770835,
+                        "longitude": 116.32312879774305,
+                        "id": 4
+                    },
+                    {
+                        "latitude": 40.00602891710069,
+                        "longitude": 116.32269151475694,
+                        "id": 5
+                    },
+                    {
+                        "latitude": 40.005878092447915,
+                        "longitude": 116.32320882161459,
+                        "id": 6
+                    },
+                    {
+                        "latitude": 40.00570556640625,
+                        "longitude": 116.32352349175348,
+                        "id": 7
+                    },
+                    {
+                        "latitude": 40.00564480251736,
+                        "longitude": 116.32357964409722,
+                        "id": 8
+                    }
+                ],
+                start: "2024-12-14T14:33:07.392Z",
+                end: "2024-12-14T14:36:28.952Z"
             }
         };
-
-        // 在把数据发送到后端之前，先将数据存进globalData
         const app = getApp();
         app.globalData.currentRunData = runData;
-
-        // 发送请求到后端
-        wx.request({
-            url: 'http://124.221.96.133:8000/api/users/run/record',
-            method: 'POST',
-            data: runData,
-            success: (res) => {
-                console.log('跑步数据上传成功:', res);
-                // 上传成功后跳转到记录页面
-                wx.navigateTo({
-                    url: '../singlerecord/singlerecord',
-                });
-            },
-            fail: (error) => {
-                console.error('跑步数据上传失败:', error);
-                wx.showToast({
-                    title: '数据上传失败，请重试',
-                    icon: 'none',
-                    duration: 2000
-                });
-                // 上传失败后跳转到记录页面 ?
-                wx.navigateTo({
-                    url: '../singlerecord/singlerecord',
-                });
-            }
+        wx.navigateTo({
+            url: '../singlerecord/singlerecord',
         });
+        return;
+        /*
+                // 如果轨迹点数少于两点，直接返回
+                if (this.data.markers.length < 2) {
+                    console.log("你没有开始跑步！");
+                    wx.showToast({
+                        title: '你没有开始跑步！',
+                        icon: 'error'
+                    })
+                    return;
+                }
+
+                // 停止记录
+                this.setData({
+                    running: false
+                });
+                clearInterval(this.interval);
+
+                // 准备发送给后端的数据
+                const runData = {
+                    username: "SHIKAI", // 这里需要替换为实际的用户名
+                    runRecord: {
+                        meters: this.data.meters,
+                        seconds: this.data.seconds,
+                        markers: this.data.markers,
+                        start: this.data.startTime,
+                        end: new Date().toISOString()
+                    }
+                };
+
+                // 在把数据发送到后端之前，先将数据存进globalData
+                const app = getApp();
+                app.globalData.currentRunData = runData;
+
+                // 发送请求到后端
+                wx.request({
+                    url: 'http://124.221.96.133:8000/api/users/run/record',
+                    method: 'POST',
+                    data: runData,
+                    success: (res) => {
+                        console.log('跑步数据上传成功:', res);
+                        //
+                        console.log(app.globalData.currentRunData.runRecord.markers)
+                        //
+                        // 上传成功后跳转到记录页面
+                        wx.navigateTo({
+                            url: '../singlerecord/singlerecord',
+                        });
+                    },
+                    fail: (error) => {
+                        console.error('跑步数据上传失败:', error);
+                        wx.showModal({
+                            title: '上传失败',
+                            content: '是否重试上传数据？',
+                            success: (res) => {
+                                if (res.confirm) {
+                                    this.endRun(e); // 重试
+                                } else {
+                                    wx.navigateTo({
+                                        url: '../singlerecord/singlerecord'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });*/
     }
 
 });
