@@ -1,7 +1,9 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-const User = require('../models/user.model'); 
+const { User, Post, Comment } = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 // 获取环境变量中的密钥
+//TODO:
 const SECRET_KEY = process.env.SECRET_KEY;
 
 // Initialize GridFS
@@ -455,6 +457,7 @@ const deleteRunRecord = async (req, res) => {
         const recordId = parseInt(req.params.recordId);
         
         const user = await User.findOne({ username });
+
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -482,6 +485,72 @@ const deleteRunRecord = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+/*
+// 假设的函数，用于将图片上传到云存储服务并返回URL
+async function uploadToCloudStorage(file) {
+    // 这里应该实现上传文件到云存储的逻辑
+    // 返回图片在云存储服务上的URL
+    // 以下为伪代码
+    const imageUrl = `https://your-cloud-storage-service.com/${file.filename}`;
+    return imageUrl;
+  }
+
+// send post
+const sendPost = async (req, res) => {
+    try {
+        const { title, content } = req.body;
+        const images = req.files;
+
+            // 上传图片并获取图片URLs
+        const imageUrls = await Promise.all(images.map(async (file) => {
+        const imageUrl = await uploadToCloudStorage(file);
+        return imageUrl;
+        }));
+
+            // 创建帖子并保存到数据库
+        const newPost = new Post({
+        title: title,
+        content: content,
+        images: imageUrls // 存储图片URLs
+        });
+
+        await newPost.save();
+        
+        return res.status(201).json({ message: "Post created successfully",post: newPost });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+*/
+
+// send post
+const sendPost = async (req, res) => {
+    try {
+        const { title, content, username } = req.body;
+
+        // 查找用户
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // 创建帖子并保存到数据库
+        const newPost = new Post({
+        title: title,
+        content: content,
+        author: user._id // 将帖子与用户关联
+        });
+
+        await newPost.save();
+        user.posts.push(newPost._id);
+        await user.save();
+        
+        return res.status(201).json({ message: "Post created successfully",post: newPost });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 module.exports = {
     getUsers,
@@ -492,7 +561,6 @@ module.exports = {
 
     updateUser, // deprecated
     deleteUser,
-    loginUser,
 
     tokenCheck,
 
@@ -508,6 +576,8 @@ module.exports = {
     getRunRecordById, // getting specific run record
     updateRunRecord, // updating run data
     deleteRunRecord, // deleting individual run record
-    getRunRecords // get all run records
+    getRunRecords, // get all run records
+
+    sendPost
 
 }

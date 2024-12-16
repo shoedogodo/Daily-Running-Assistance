@@ -6,8 +6,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-
-    data: {
       posts: [
         {
           image: '/path/to/first/image.jpg',
@@ -22,8 +20,6 @@ Page({
           likeCount: 411
         },
       ]
-    }
-
   },
 
   /**

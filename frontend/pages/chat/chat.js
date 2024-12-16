@@ -8,7 +8,7 @@ Page({
      */
     data: {
         nickname: '', // 从用户信息中获取的昵称
-        userName: 'username', // 从用户信息中获取的用户名
+        username: 'username', // 从用户信息中获取的用户名
         messages: [], // 存储聊天消息的数组
         messageInput: '', // 用户输入的消息
         pageContext: this, //当前页面的引用
@@ -55,7 +55,6 @@ Page({
         const that = this; // 保存当前页面的this引用
         // 发送请求到AI模型
         wx.request({
-            
             url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions', // 请求URL
             method: 'POST',
             data: {
@@ -68,7 +67,7 @@ Page({
                 'Authorization': 'Bearer 0d567b5f2975fe9553b9122af1fb183e.zC8c4UK9yC8nuxmF' //设置api key
             },
             success(res) {
-                console.log(res.data); // 处理响应数据
+                //console.log(res.data); // 处理响应数据
                 const aiMessage = {
                     'role': 'assistant', // 来自AI的答复
                     'content': res.data.choices[0].message.content, // 假设响应数据中有AI回复的内容       
@@ -105,10 +104,10 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        const userName = wx.getStorageSync('userName');
-        if (userName) {
+        const nickname = wx.getStorageSync('nickname');
+        if (nickname) {
             this.setData({
-                userName: userName,
+                nickname: nickname,
             });
         }
     },

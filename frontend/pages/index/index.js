@@ -52,7 +52,11 @@ Page({
             success(res) {
                 if (res.statusCode === 200) {
                     const token = res.data.token;
-                    const username = res.data.username;
+                    //const username = res.data.username;
+                    const username = res.data.user.username;
+
+                    console.log (token);
+                    console.log (username);
 
                     wx.setStorageSync('token', token);
                     wx.setStorageSync('username', username);
@@ -61,7 +65,7 @@ Page({
                         title: '登录成功!',
                         icon: 'none',
                     });
-                    wx.setStorageSync('userName', username);
+                    //wx.setStorageSync('username', username);
                     const nicknameFetch = res.data.user.nickname; // Adjust this depending on your response structure
                     wx.setStorageSync('nickname', nicknameFetch);
                     //console.log('nickname fetched: ' + wx.getStorageSync('nickname'));

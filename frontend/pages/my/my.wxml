@@ -46,7 +46,7 @@
                 <view bindtap="chooseAvatar">选择头像</view>
             </block>
             <block wx:if="{{currentAction === 'profile'}}">
-                <view><text>用户名: {{userName}}</text></view>
+                <view><text>用户名: {{username}}</text></view>
                 <view><text>昵称: {{nickname}}</text></view>
             </block>
         </view>
