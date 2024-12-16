@@ -7,23 +7,29 @@
     <view class="statistics">
         <view class="stat-item">
             <text class="stat-label">开始时间：</text>
-            <text class="stat-value">{{starttime}}</text>
+            <text class="stat-value">{{startTime}}</text>
         </view>
         <view class="stat-item">
             <text class="stat-label">结束时间：</text>
-            <text class="stat-value">{{endtime}}</text>
+            <text class="stat-value">{{endTime}}</text>
         </view>
         <view class="stat-item">
-            <text class="stat-label">路程：</text>
-            <text class="stat-value">{{meters}}m</text>
+            <text class="stat-value">{{suggestion}}</text>
         </view>
-        <view class="stat-item">
-            <text class="stat-label">用时：</text>
-            <text class="stat-value">{{seconds}}s</text>
+    </view>
+
+    <view class="counter">
+        <view>
+            <image src="../../images/distance-icon.png" mode="" />
+            <text>里程: {{meters}}m </text>
         </view>
-        <view class="stat-item">
-            <text class="stat-label">配速：</text>
-            <text class="stat-value">{{pace}}</text>
+        <view>
+            <image src="../../images/clock-icon.png" mode="" />
+            <text>时间: {{seconds}}s </text>
+        </view>
+        <view>
+            <image src="../../images/pace-icon.png" mode="" />
+            <text>配速: {{pace}}</text>
         </view>
     </view>
 

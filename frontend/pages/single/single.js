@@ -97,9 +97,6 @@ Page({
         this.setData({
             seconds: this.data.seconds + this.data.interval / 1000
         })
-        // if (this.data.seconds % 3 !== 0) {
-        //     return;
-        // }
         wx.getLocation({
             type: 'gcj02',
         }).then(res => {
@@ -150,7 +147,7 @@ Page({
         const runData = {
             username: "SHIKAI", // 这里需要替换为实际的用户名
             runRecord: {
-                meters: 270.5,
+                meters: 1000.0,
                 seconds: 155,
                 markers: [{
                         "latitude": 40.00564480251736,
@@ -179,16 +176,16 @@ Page({
                     },
                     {
                         "latitude": 40.005878092447915,
-                        "longitude": 116.32320882161459,
+                        "longitude": 116.32220882161459,
                         "id": 6
                     },
                     {
-                        "latitude": 40.00570556640625,
+                        "latitude": 40.00590556640625,
                         "longitude": 116.32352349175348,
                         "id": 7
                     },
                     {
-                        "latitude": 40.00564480251736,
+                        "latitude": 40.00594480251736,
                         "longitude": 116.32357964409722,
                         "id": 8
                     }
@@ -267,7 +264,8 @@ Page({
                             }
                         });
                     }
-                });*/
+                });
+                */
     }
 
 });
