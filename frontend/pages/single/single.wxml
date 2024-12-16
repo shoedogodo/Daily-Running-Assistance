@@ -16,7 +16,7 @@
 
     <view class="counter">
         <view>
-            <image src="../../images/run-icon.png" mode="" />
+            <image src="../../images/distance-icon.png" mode="" />
             <text>里程: {{meters}}m </text>
         </view>
         <view>
