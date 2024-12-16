@@ -147,8 +147,8 @@ Page({
         const runData = {
             username: "SHIKAI", // 这里需要替换为实际的用户名
             runRecord: {
-                meters: 1000.0,
-                seconds: 155,
+                meters: 300.0,
+                seconds: 100,
                 markers: [{
                         "latitude": 40.00564480251736,
                         "longitude": 116.32357964409722,

@@ -4,16 +4,24 @@
     <map class="map" id="map" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" polyline="{{polyline}}"></map>
 
     <!-- 统计信息展示 -->
-    <view class="statistics">
-        <view class="stat-item">
-            <text class="stat-label">开始时间：</text>
-            <text class="stat-value">{{startTime}}</text>
+    <view class="statistics" style="height: {{panelHeight}}rpx;" bind:touchstart="handleTouchStart" bind:touchmove="handleTouchMove" bind:touchend="handleTouchEnd">
+        <!-- 拖动条示意 -->
+        <view class="drag-indicator"></view>
+
+        <!-- 基础信息（始终显示） -->
+        <view class="basic-info">
+            <view class="stat-item">
+                <text class="stat-label">开始时间：</text>
+                <text class="stat-value">{{startTime}}</text>
+            </view>
+            <view class="stat-item">
+                <text class="stat-label">结束时间：</text>
+                <text class="stat-value">{{endTime}}</text>
+            </view>
         </view>
-        <view class="stat-item">
-            <text class="stat-label">结束时间：</text>
-            <text class="stat-value">{{endTime}}</text>
-        </view>
-        <view class="stat-item">
+
+        <!-- 运动建议（展开时显示） -->
+        <view class="suggestion {{isPanelExpanded ? 'expanded' : ''}}">
             <text class="stat-value">{{suggestion}}</text>
         </view>
     </view>

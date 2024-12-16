@@ -18,10 +18,35 @@
     opacity: 0.8;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     background-color: #ffffff;
-    margin: 0rpx 20rpx 0rpx 20rpx;
+    margin: 0rpx 20rpx;
     padding: 20rpx;
+    transition: height 0.3s ease;
+    overflow: hidden;
+}
+
+.drag-indicator {
+    width: 60rpx;
+    height: 8rpx;
+    background-color: #E0E0E0;
+    border-radius: 4rpx;
+    margin: 0 auto 20rpx;
+}
+
+.basic-info {
+    opacity: 1;
+}
+
+.suggestion {
+    margin-top: 20rpx;
+    opacity: 0;
+    transform: translateY(20rpx);
+    transition: all 0.3s ease;
+}
+
+.suggestion.expanded {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .stat-item {

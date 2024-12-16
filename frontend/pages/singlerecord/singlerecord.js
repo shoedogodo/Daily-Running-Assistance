@@ -16,7 +16,10 @@ Page({
         seconds: '0',
         pace: '0\'00"',
         animationTimer: null,
-        currentPointIndex: 0
+        currentPointIndex: 0,
+        isPanelExpanded: false,
+        panelHeight: 200,
+        startY: 0
     },
 
     formatPace: function () {
@@ -159,13 +162,13 @@ Page({
 
         switch (exertionLevel) {
             case 5:
-                suggestion = "建议休息48-72小时。请充分保证睡眠质量（建议每天8-9小时），及时补充蛋白质和碳水化合物，可以进行15-20分钟轻度拉伸，可以冷敷或冰浴缓解肌肉疲劳。休息期间避免高强度运动，以恢复性训练为主。";
+                suggestion = "建议休息48-72小时。请保证睡眠质量（8-9小时），补充蛋白质和碳水化合物，进行轻度拉伸，可以冷敷或冰浴缓解肌肉疲劳。避免高强度运动，以恢复性训练为主。";
                 break;
             case 4:
-                suggestion = "建议休息24-48小时。保证充足睡眠（7-8小时），注意补充营养，可以进行20分钟轻度有氧运动或拉伸。建议进行适度按摩或泡温水澡帮助恢复。";
+                suggestion = "建议休息24-48小时。请保证充足睡眠（7-8小时），注意补充营养，可以进行20分钟轻度有氧运动或拉伸。适度按摩或泡温水澡有助于帮助恢复。";
                 break;
             case 3:
-                suggestion = "建议休息24小时。保持正常作息，可以进行30分钟中等强度有氧运动或力量训练。注意补充水分和适量蛋白质，帮助肌肉恢复。";
+                suggestion = "建议休息24小时。请保持正常作息，可以进行30分钟中等强度有氧运动或力量训练。注意补充水分和适量蛋白质，帮助肌肉恢复。";
                 break;
             case 2:
                 suggestion = "可以继续进行训练，建议适当增加运动强度或时长。注意在运动前做足热身，合理安排训练计划。可以尝试增加配速或距离来提高训练效果。";
@@ -225,6 +228,40 @@ Page({
 
         this.setData({
             animationTimer: timer
+        });
+    },
+
+    // 处理触摸开始事件
+    handleTouchStart: function(e) {
+        this.setData({
+            startY: e.touches[0].clientY
+        });
+    },
+
+    // 处理触摸移动事件
+    handleTouchMove: function(e) {
+        const currentY = e.touches[0].clientY;
+        const moveDistance = this.data.startY - currentY;
+        
+        // 计算新的面板高度
+        let newHeight = this.data.panelHeight + moveDistance;
+        
+        // 限制面板高度的范围
+        newHeight = Math.max(200, Math.min(newHeight, 500));
+        
+        this.setData({
+            panelHeight: newHeight,
+            isPanelExpanded: newHeight > 300,
+            startY: currentY
+        });
+    },
+
+    // 处理触摸结束事件
+    handleTouchEnd: function() {
+        // 根据当前高度决定是否自动展开或收起
+        const finalHeight = this.data.isPanelExpanded ? 500 : 200;
+        this.setData({
+            panelHeight: finalHeight
         });
     }
 });
