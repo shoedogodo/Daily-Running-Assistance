@@ -485,46 +485,9 @@ const deleteRunRecord = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-/*
-// 假设的函数，用于将图片上传到云存储服务并返回URL
-async function uploadToCloudStorage(file) {
-    // 这里应该实现上传文件到云存储的逻辑
-    // 返回图片在云存储服务上的URL
-    // 以下为伪代码
-    const imageUrl = `https://your-cloud-storage-service.com/${file.filename}`;
-    return imageUrl;
-  }
 
 // send post
-const sendPost = async (req, res) => {
-    try {
-        const { title, content } = req.body;
-        const images = req.files;
-
-            // 上传图片并获取图片URLs
-        const imageUrls = await Promise.all(images.map(async (file) => {
-        const imageUrl = await uploadToCloudStorage(file);
-        return imageUrl;
-        }));
-
-            // 创建帖子并保存到数据库
-        const newPost = new Post({
-        title: title,
-        content: content,
-        images: imageUrls // 存储图片URLs
-        });
-
-        await newPost.save();
-        
-        return res.status(201).json({ message: "Post created successfully",post: newPost });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-*/
-
-// send post
-const sendPost = async (req, res) => {
+const createPost = async (req, res) => {
     try {
         const { title, content, username } = req.body;
 
@@ -535,11 +498,33 @@ const sendPost = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+        // 处理上传的图片
+        let imageIds = [];
+        if (req.files && req.files.images) {
+            // 如果有多个文件，req.files.images 将是一个数组
+            // 如果只有一个文件，req.files.images 将是一个对象
+            const files = Array.isArray(req.files.images) ? req.files.images : [req.files.images];
+
+            for (const file of files) {
+                // 创建上传流并获取文件ID
+                const uploadStream = gfs.openUploadStream(username + '-post-image-' + Date.now(), {
+                    contentType: file.mimetype
+                });
+
+                // 将文件缓冲区写入上传流
+                uploadStream.end(file.buffer);
+
+                // 将文件ID添加到数组中
+                imageIds.push(uploadStream.id);
+            }
+        }
+        
         // 创建帖子并保存到数据库
         const newPost = new Post({
-        title: title,
-        content: content,
-        author: user._id // 将帖子与用户关联
+            title: title,
+            content: content,
+            author: user._id, // 将帖子与用户关联
+            images: imageIds // 将图片文件ID保存到帖子中
         });
 
         await newPost.save();
@@ -549,6 +534,370 @@ const sendPost = async (req, res) => {
         return res.status(201).json({ message: "Post created successfully",post: newPost });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+const getPosts = async (req, res) => {
+    try {
+        // 查询数据库中的所有帖子
+        const posts = await Post.find({}).populate('author', 'username'); // 假设我们需要返回作者的username
+
+        // 如果没有找到帖子，返回404状态
+        if (!posts || posts.length === 0) {
+            return res.status(404).json({ message: "No posts found" });
+        }
+
+        // 返回所有帖子
+        res.status(200).json({ message: "Posts retrieved successfully", posts });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+const getPostById = async (req, res) => {
+    try {
+        // 从请求参数中获取postId
+        const { postId } = req.params;
+
+        const post = await Post.findOne({ postId: postId });
+        // 如果没有找到帖子，返回404状态
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        // 如果找到了帖子，返回200状态和帖子数据
+        res.status(200).json({ message: "Post retrieved successfully", post });
+    } catch (error) {
+        // 如果发生错误，返回500状态和错误消息
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getPostByUsername = async (req, res) => {
+    try {
+        // 从请求参数中获取用户名
+        const { username } = req.params;
+
+        // 查找具有指定用户名的用户
+        const user = await User.findOne({ username: username });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // 查找所有属于该用户的帖子，并填充作者信息
+        const posts = await Post.find({ author: user._id }).populate('author', 'username');
+
+        // 返回帖子列表
+        res.status(200).json(posts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const updatePost = async (req, res) => {
+    try {
+        // 从请求参数中获取postId
+        const postId = req.params.postId;
+
+        // 从请求体中获取更新数据
+        const { title, content} = req.body;
+
+        // 查询数据库中的帖子
+        const post = await Post.findOne({ postId: postId });
+
+        if (!post) {
+            // 如果帖子不存在，返回404状态和错误消息
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        // 更新帖子的字段
+        post.title = title;
+        post.content = content;
+        //post.images = images; // 假设images是一个数组或者适当的字段格式
+        
+        // 清空帖子当前的图片
+        if (post.images && post.images.length > 0) {
+            // 假设post.images存储的是文件ID数组
+            // 删除存储在GridFS中的图片文件
+            for (const imageId of post.images) {
+                await gfs.delete(imageId);
+            }
+        }
+
+        // 处理上传的图片
+        let imageIds = [];
+        if (req.files && req.files.images) {
+            // 如果有多个文件，req.files.images 将是一个数组
+            // 如果只有一个文件，req.files.images 将是一个对象
+            const files = Array.isArray(req.files.images) ? req.files.images : [req.files.images];
+
+            for (const file of files) {
+                // 创建上传流并获取文件ID
+                const uploadStream = gfs.openUploadStream(username + '-post-image-' + Date.now(), {
+                    contentType: file.mimetype
+                });
+
+                // 将文件缓冲区写入上传流
+                uploadStream.end(file.buffer);
+
+                // 将文件ID添加到数组中
+                imageIds.push(uploadStream.id);
+            }
+        }
+
+        // 更新帖子的图片数组
+        post.images = imageIds;
+        
+        // 保存更新后的帖子到数据库
+        await post.save();
+
+        // 返回更新后的帖子
+        res.status(200).json({ message: 'Post updated successfully', post });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+const deletePost = async (req, res) => {
+    try {
+        // 从请求参数中获取postId
+        const postId = req.params.postId;
+
+        // 使用自定义的postId字段来查找帖子
+        const post = await Post.findOne({ postId: postId });
+
+        if (!post) {
+            // 如果没有找到帖子，返回404状态
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        // 删除帖子中的所有评论
+        await Comment.deleteMany({ _id: { $in: post.comments } });
+
+        // 获取帖子的作者_id
+        const authorId = post.author;
+
+        // 从用户的posts数组中移除该帖子的_id
+        await User.updateOne(
+        { _id: authorId },
+        { $pull: { posts: post._id } }
+        );
+
+        // 如果帖子包含图片，也需要从GridFS中删除这些图片
+        if (post.images && post.images.length > 0) {
+            for (const imageId of post.images) {
+                // 删除GridFS中的图片
+                await gfs.delete(imageId);
+            }
+        }
+
+        // 删除帖子
+        await Post.deleteOne({ _id: post._id });
+        
+        // 如果帖子被成功删除，返回成功消息
+        res.json({ message: 'Post deleted successfully' });
+    } catch (error) {
+        // 如果发生错误，返回500状态和错误消息
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+const createComment = async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        // 从请求体中获取数据
+        const {content, username } = req.body;
+
+        // 查找用户，这里假设你有一个 User 模型并且可以通过用户名找到用户
+        const user = await User.findOne({ username: username });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // 查找具有指定 postId 的帖子
+        const post = await Post.findOne({ postId: postId });
+
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        // 创建新的评论
+        const newComment = new Comment({
+            content: content,
+            author: user._id, // 使用用户的 _id 作为评论的作者
+            post: post._id, // 使用帖子的 _id 关联评论
+            createdAt: new Date(),
+            updatedAt: new Date()
+        });
+
+        // 保存评论
+        await newComment.save();
+
+        // 将评论的 _id 添加到帖子的 comments 数组中
+        post.comments.push(newComment._id);
+        await post.save();
+
+        // 返回成功消息和新的评论
+        res.status(200).json({
+            message: 'Comment created successfully',
+            comment: newComment
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+const getCommentsByPostId = async (req, res) => {
+    try {
+        // 假设从请求参数中获取postId
+        const { postId } = req.params;
+
+        // 查找具有指定postId的帖子
+        const post = await Post.findOne({ postId: postId }).populate('comments');
+
+        if (!post) {
+            // 如果帖子不存在，则返回404错误
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        // 返回评论数组
+        res.status(200).json(post.comments);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const deleteComment = async (req, res) => {
+    try {
+        // 从请求参数中获取 commentId
+        const { commentId } = req.params;
+
+        // 查找并删除具有指定 commentId 的评论
+        const deletedComment = await Comment.findOneAndDelete({ commentId: commentId });
+
+        // 如果没有找到评论，则返回404错误
+        if (!deletedComment) {
+            return res.status(404).json({ message: 'Comment not found' });
+        }
+
+        // 从帖子中移除该评论的引用
+        await Post.updateOne(
+            { postId: deletedComment.postId },
+            { $pull: { comments: deletedComment._id } }
+        );
+
+        // 返回成功删除的评论信息
+        res.status(200).json({ message: 'Comment deleted successfully', comment: deletedComment });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+};
+
+const likePost = async (req, res) => {
+    try {
+      // 从请求参数中获取 postID
+      const postID = req.params.postID;
+  
+      // 查找具有指定 postID 的帖子并增加点赞数
+      const post = await Post.findOneAndUpdate(
+        { postId: postID }, // 查询条件，使用自定义的 postId 字段
+        { $inc: { likes: 1 } }, // 使用$inc 操作符来增加 likes 字段的值
+        { new: true, useFindAndModify: false } // 返回更新后的文档，不使用过时的 findAndModify
+      );
+  
+      // 如果帖子不存在，返回404状态码和错误消息
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+  
+      // 返回200状态码和更新后的帖子信息
+      res.status(200).json({ message: 'Post liked successfully', post });
+    } catch (error) {
+      // 如果发生错误，返回500状态码和错误消息
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
+
+const unlikePost = async (req, res) => {
+    try {
+        // 从请求参数中获取 postID
+        const postID = req.params.postID;
+
+        // 查找具有指定 postID 的帖子并减少点赞数
+        const post = await Post.findOneAndUpdate(
+            { postId: postID }, // 查询条件，使用自定义的 postId 字段
+            { $inc: { likes: -1 } }, // 使用$inc 操作符来减少 likes 字段的值
+            { new: true, useFindAndModify: false } // 返回更新后的文档，不使用过时的 findAndModify
+        );
+
+        // 如果帖子不存在，返回404状态码和错误消息
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        // 返回200状态码和更新后的帖子信息
+        res.status(200).json({ message: 'Post unliked successfully', post });
+    } catch (error) {
+        // 如果发生错误，返回500状态码和错误消息
+        res.status(500).json({ message: error.message });
+    }
+};
+  
+const likeComment = async (req, res) => {
+    try {
+      // 从请求参数中获取 commentId
+      const commentId = req.params.commentId;
+  
+      // 查找具有指定 commentId 的评论并增加点赞数
+      const comment = await Comment.findOneAndUpdate(
+        { commentId: commentId }, // 查询条件，使用 MongoDB 默认的 _id 字段
+        { $inc: { likes: 1 } }, // 使用$inc 操作符来增加 likes 字段的值
+        { new: true, useFindAndModify: false } // 返回更新后的文档，不使用过时的 findAndModify
+      );
+  
+      // 如果评论不存在，返回404状态码和错误消息
+      if (!comment) {
+        return res.status(404).json({ message: 'Comment not found' });
+      }
+  
+      // 返回200状态码和更新后的评论信息
+      res.status(200).json({ message: 'Comment liked successfully', comment });
+    } catch (error) {
+      // 如果发生错误，返回500状态码和错误消息
+      res.status(500).json({ message: error.message });
+    }
+};
+
+const unlikeComment = async (req, res) => {
+    try {
+      // 从请求参数中获取 commentId
+      const commentId = req.params.commentId;
+  
+      // 查找具有指定 commentId 的评论并减少点赞数
+      const comment = await Comment.findOneAndUpdate(
+        { commentId: commentId }, // 查询条件，使用 MongoDB 默认的 _id 字段
+        { $inc: { likes: -1 }}, // 使用$inc 操作符来减少 likes 字段的值
+        { new: true, useFindAndModify: false } // 返回更新后的文档，不使用过时的 findAndModify
+      );
+  
+      // 如果评论不存在，返回404状态码和错误消息
+      if (!comment) {
+        return res.status(404).json({ message: 'Comment not found' });
+      }
+  
+      // 返回200状态码和更新后的评论信息
+      res.status(200).json({ message: 'Comment unliked successfully', comment });
+    } catch (error) {
+      // 如果发生错误，返回500状态码和错误消息
+      res.status(500).json({ message: error.message });
     }
 };
 
@@ -578,6 +927,19 @@ module.exports = {
     deleteRunRecord, // deleting individual run record
     getRunRecords, // get all run records
 
-    sendPost
+    createPost,
+    getPosts,
+    getPostById,
+    getPostByUsername,
+    updatePost,
+    deletePost,
 
+    createComment,
+    getCommentsByPostId,
+    deleteComment,
+
+    likePost,
+    unlikePost,
+    likeComment,
+    unlikeComment
 }

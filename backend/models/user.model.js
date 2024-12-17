@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const sequence = require('mongoose-sequence')(mongoose);
+
 // For individual running schema
 const RunDataSchema = mongoose.Schema({
     meters: { type: Number, default: 0 },
@@ -15,19 +17,25 @@ const RunDataSchema = mongoose.Schema({
 
 // commentSchema
 const CommentSchema = new mongoose.Schema({
+    //commentId: Number,
+    commentId: { type: Number, unique: true },
     content: { type: String, required: [true, "Please enter a comment"] },
     author: { type: Schema.Types.ObjectId, ref: 'User' },
+    post: { type: Schema.Types.ObjectId, ref: 'Post'}, 
+    likes: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
 });
 
 //PostSchema
 const PostSchema = mongoose.Schema({
-    author: { type: Schema.Types.ObjectId, ref: 'User' },
+    postId: { type: Number, unique: true },
     title: { type: String, required: [true, "Please enter a title"] },
     content: { type: String, required: [true, "Please enter content"] },
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
     images: [{ 
-        url: String, // 存储图片的URL
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'uploads.files' 
     }],
     
     comments: [{
@@ -80,6 +88,11 @@ UserSchema.set('toJSON', {
     }
 });
 
+// 应用sequence插件来生成自增的postId
+PostSchema.plugin(sequence, { id: 'post_id_counter', inc_field: 'postId' });
+CommentSchema.plugin(sequence, { id: 'commenet_id_counter', inc_field: 'commentId' });
+
+
 const User = mongoose.model("User", UserSchema);
 const Comment = mongoose.model('Comment', CommentSchema);
 const Post = mongoose.model('Post', PostSchema);
@@ -89,5 +102,4 @@ module.exports = {
     User,
     Post,
     Comment
-    
 };

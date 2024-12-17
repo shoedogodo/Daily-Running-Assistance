@@ -1,3 +1,4 @@
+
 // pages/post/post.js
 const app = require('../../app.js');
 
@@ -84,13 +85,13 @@ Page({
     // 发送请求到服务器，创建帖子
     wx.request({
       //url: 'http://your-server.com/api/posts', // 修正了URL
-      url: 'http://124.221.96.133:8000/api/users/share/sendPost', // 修正了URL
+      url: 'http://124.221.96.133:8000/api/share/posts', // 修正了URL
       method: 'POST',
       data: {
         title: title,
         content: content,
-        //images: images // 假设服务器接受一个图片数组
-        username: username
+        username: username,
+        images: images // 假设服务器接受一个图片数组
       },
       success: function(res) {
         if (res.statusCode === 200) {
