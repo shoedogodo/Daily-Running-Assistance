@@ -1,0 +1,28 @@
+<!--pages/postdetail/postdetail.wxml-->
+<view class="container">
+    <view class="post">
+        <view class="post-meta">
+            <text class="post-author">{{post.author}}</text>
+            <text class="post-time">{{post.createTime}}</text>
+        </view>
+        <view class="post-content">
+            <text class="post-title">{{post.title}}</text>
+            <text class="post-content">{{post.content}}</text>
+            <image class="post-image" src="{{post.image}}" />
+        </view>
+        <view class="post-interaction">
+            <text class="comment-count">💬 {{post.commentCount}}</text>
+            <text class="like-count">❤️ {{post.likeCount}}</text>
+        </view>
+    </view>
+
+    <view class="comments-section">
+        <view class="comment" wx:for="{{comments}}" wx:key="index">
+            <text class="comment-text">{{item.content}}</text>
+        </view>
+    </view>
+    <view class="comment-input">
+        <input type="text" placeholder="发表评论" bindinput="bindCommentInput" />
+        <button bindtap="submitComment">评论</button>
+    </view>
+</view>

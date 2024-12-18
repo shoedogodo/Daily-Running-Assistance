@@ -19,7 +19,8 @@
     "pages/my/my",
     "pages/post/post",
     "pages/runrecord/runrecord",
-    "pages/singlerecord/singlerecord"
+    "pages/singlerecord/singlerecord",
+    "pages/postdetail/postdetail"
   ],
   "window": {
     "navigationBarTextStyle": "black",

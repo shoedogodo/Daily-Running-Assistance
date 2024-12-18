@@ -29,24 +29,28 @@
 }
 
 .post-list {
+    width: 100%;
     flex: 1;
     padding: 10px;
 }
 
 .post {
+    width: 95%;
     margin-bottom: 20px;
     border: 1px solid #e0e0e0;
-    padding: 10px;
+    padding: 5px;
     border-radius: 5px;
 }
 
 .post-image {
-    width: 100%;
-    height: auto;
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
     border-radius: 5px;
 }
 
-.post-text {
+.post-title {
+    font-size: 20px;
     margin-top: 10px;
 }
 

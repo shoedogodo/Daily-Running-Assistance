@@ -8,14 +8,16 @@ Page({
   data: {
       posts: [
         {
-          image: '/path/to/first/image.jpg',
-          text: '#我要减肥#俗话说7分吃3分练，每日搭配营养健身餐。',
+          image: '../../images/run-icon.png',
+          title: '今日运动记录，12分长跑3千米',
+          content: '#我要减肥#俗话说7分吃3分练，每日搭配营养健身餐。',
           commentCount: 334,
           likeCount: 334
         },
         {
-          image: '/path/to/second/image.jpg',
-          text: '#小器械大作用#哑铃增肌入门的最好选择。',
+          image: '../../images/group-icon.png',
+          title: '长跑怎么提速啊求aaaaaaaaaaaaaaaaaaaaaaa助',
+          content: '#我要减肥#俗话说7分吃3分练，每日搭配营养健身餐。',
           commentCount: 200,
           likeCount: 411
         },
@@ -30,11 +32,46 @@ Page({
       url: '../post/post'
     });
   },
+
+  /**
+   * 获取帖子列表
+   * TODO: 后端API带连接
+   */
+  fetchPosts: function() {
+    wx.request({
+      url: 'http://your-server.com/api/posts', // 请替换为您的服务器API地址
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode === 200) {
+          this.setData({
+            posts: res.data
+          });
+        } else {
+          wx.showToast({
+            title: '获取帖子列表失败',
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none',
+          duration: 2000
+        });
+      }
+    });
+  },
+
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
     app.tokenCheck();
+    // TODO: 从服务器获取帖子list并加载
+
   },
 
   /**
