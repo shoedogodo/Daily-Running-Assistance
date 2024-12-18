@@ -101,7 +101,6 @@ Page({
 
     /**
      * 选择头像，并进行显示，限定一张
-     * TODO: 上传到服务器
      */
     chooseAvatar: function(e) {
         const username = wx.getStorageSync('username');
@@ -116,7 +115,7 @@ Page({
 
         wx.chooseImage({
             count: 1,
-            sizeType: ['compressed'],
+            sizeType: ['compressed'], 
             sourceType: ['album', 'camera'],
             success: (res) => {
                 const tempFilePath = res.tempFilePaths[0];
@@ -141,7 +140,6 @@ Page({
 
     /**
      * 点击弹窗的确认
-     * TODO: 上传到服务器保存的逻辑待完成
      */
     onModalSuccess: function () {
         if (this.data.currentAction === 'nickname') {
@@ -240,7 +238,6 @@ Page({
 
     /**
      * 登出函数
-     * TODO: 待完成
      */
     onLogout: function(){
         wx.clearStorageSync('token');
