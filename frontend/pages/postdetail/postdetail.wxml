@@ -18,6 +18,10 @@
 
     <view class="comments-section">
         <view class="comment" wx:for="{{comments}}" wx:key="index">
+            <view class="comment-meta">
+                <text class="commentator">{{item.commentator}}</text>
+                <text class="comment-time"> {{item.commentTime}} </text>
+            </view>
             <text class="comment-text">{{item.content}}</text>
         </view>
     </view>
