@@ -13,15 +13,14 @@ Page({
               createTime: '2024-12-17 21:54'
             },
         comments: [
-            {content: "haha"},
-            {content: "this is another comment"},
-            {content: "this is another comment"},
-            {content: "this is another comment"},
-            {content: "this is another comment"},
-            {content: "this is another comment"},
-            {content: "this is another comment"},
-            {content: "this is another comment"},
-            {content: "this is another comment"}
+            {content: "haha", commentator: 'a commentator', commentTime: '2024-12-18 14:49'},
+            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:50'},
+            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:51'},
+            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:52'},
+            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:53'},
+            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:54'},
+            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:55'},
+            {content: "this is another another another another another comment", commentator: 'another commentator', commentTime: '2024-12-18 14:56'}
 
         ]
     },

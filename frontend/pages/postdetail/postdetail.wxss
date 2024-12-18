@@ -74,9 +74,21 @@
     border-radius: 4px;
   }
   
-  .comment-text {
+  .comment-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 14px;
-    color: #555;
+    margin-bottom: 10px; /* 根据需要调整间距 */
+  }
+  
+  /* 作者和时间样式 */
+  .commentator, .comment-time {
+    color: #666; /* 根据需要调整字体颜色 */
+  }
+
+  .comment-text {
+    font-size: 16px;
   }
   
   /* 评论输入区域样式 */
