@@ -8,6 +8,8 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.get('/', runRoomController.getRoom);
+router.get('/all', runRoomController.getAllRooms);
+
 router.post('/create', runRoomController.createRoom);
 router.post('/join', runRoomController.joinRoom);
 router.post('/leave', runRoomController.leaveRoom);

@@ -8,7 +8,7 @@ const RunRoomSchema = mongoose.Schema({
     runners: [{
         username: { type: String, required: true },  // Runner's username
         nickname: { type: String, default: null },
-        profile_pic: { type: mongoose.Schema.Types.ObjectId, ref: 'uploads.files', default: null },
+        profile_pic: String, // Change this to String instead of ObjectId
         distance_run: { type: Number, default: 0 },  // Runner's distance covered so far
         run_time: { type: Number, default: 0 },  // Elapsed run time (in seconds)
         markers: [{ 
@@ -16,8 +16,7 @@ const RunRoomSchema = mongoose.Schema({
             marker_time: { type: Date }
         }],
         marathon_place: { type: String, default: 'N/A' },  // Runner's place in the race
-        time_entered_room: { type: Date, default: Date.now },
-        time_exited_room: { type: Date },
+        in_room: {type:Boolean, default: true, required: true},
     }],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

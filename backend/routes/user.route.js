@@ -27,6 +27,7 @@ router.delete('/delete', userController.deleteUser);
 
 // update user nickname
 router.put('/update/nickname', userController.editNickname);
+router.get('/nickname/:username', userController.getNickname);
 
 // update user profile picture
 router.post('/update/profilepic', upload.single('profilePicture'), userController.uploadProfilePicture);

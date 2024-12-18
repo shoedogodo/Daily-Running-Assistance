@@ -2,6 +2,9 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const { User, Post, Comment } = require('../models/user.model');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
+
 // 获取环境变量中的密钥
 //TODO:
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -45,7 +48,6 @@ const getUser = async (req, res) => {
 };
 
 
-// API: Register a new User, load in JSON body
 const registerUser = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -60,7 +62,21 @@ const registerUser = async (req, res) => {
         const loginTime = new Date();
 
         // Create a new user
-        const newUser = await User.create({ username, password, nickname: username});
+        const newUser = await User.create({ username, password, nickname: username });
+
+        // Set the default profile picture
+        const defaultProfilePicture = path.join(__dirname, '../images/my-icon.png');
+        const uploadStream = gfs.openUploadStream('default-profile-picture', {
+            contentType: 'image/png'
+        });
+
+        // Read the default profile picture file and write it to GridFS
+        const readStream = fs.createReadStream(defaultProfilePicture);
+        readStream.pipe(uploadStream);
+
+        // Update the user's profilePicture field with the default file ID
+        newUser.profilePicture = uploadStream.id;
+        await newUser.save();
 
         // Generate a token for the new user
         const token = jwt.sign({
@@ -71,8 +87,7 @@ const registerUser = async (req, res) => {
             expiresIn: '2h' // 设置token过期时间
         });
 
-
-        res.status(200).json({ message: "Register successful", token , newUser });
+        res.status(200).json({ message: "Register successful", token, newUser });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
@@ -185,6 +200,24 @@ const editNickname = async (req, res) => {
         //console.log(nickname);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+// API: Get User's nickname
+const getNickname = async (req, res) => {
+    try {
+      const { username } = req.params; // Assuming username is passed as a URL parameter
+  
+      // Find the user by username
+      const user = await User.findOne({ username });
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.status(200).json({ nickname: user.nickname });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
 };
 
@@ -565,6 +598,7 @@ module.exports = {
     tokenCheck,
 
     editNickname,
+    getNickname,
 
     uploadProfilePicture,
     getProfilePicture,
