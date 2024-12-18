@@ -51,7 +51,7 @@ const PostSchema = mongoose.Schema({
 const UserSchema = mongoose.Schema({
     username: { type: String, required: [true, "Please enter username"] },
     password: { type: String, required: [true, "Please enter password"] },
-    nickname: { type: String, default: null },
+    nickname: { type: String, default: function() { return this.username; } },
     profilePicture: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'uploads.files',
