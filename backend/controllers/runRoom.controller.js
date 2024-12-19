@@ -1,8 +1,12 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const { RunRoom } = require('../models/runRoom.model');
+const { User } = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.SECRET_KEY;
+
+//const serverURL = "http://124.221.96.133:8000"; //for deployment testing
+const serverURL = "http://localhost:8000"; //for local testing
 
 // Initialize GridFS
 let gfs;
@@ -136,12 +140,15 @@ const joinRoom = async (req, res) => {
       return res.status(401).json({ error: 'Invalid password' });
     }
 
+    const doesUserExist = await User.findOne({ username });
+    if (!doesUserExist) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
     // Check if the runner is already in the room
     const existingRunner = room.runners.find((runner) => runner.username === username);
     if (existingRunner) {
-      if (room.runners.find((runner) => runner.in_room === true)) {
-        return res.status(400).json({ error: 'Runner already in the room' });
-      }
+      return res.status(400).json({ error: 'Runner already in the room' });
     }
 
     // Fetch the user's nickname from the API
@@ -195,7 +202,7 @@ const joinRoom = async (req, res) => {
         }
         return {
           ...runner.toObject(),
-          profile_pic: runnerProfilePic,
+          profile_pic: runnerProfilePic, // Assign the URL string directly
         };
       })
     );
