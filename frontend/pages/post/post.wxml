@@ -1,11 +1,11 @@
 <!--pages/post/post.wxml-->
 <view class="container">
     <view class="post-editor">
-        <input class="title-input" placeholder="输入标题" />
+        <input class="title-input" value="{{titleInput}}" bindinput="inputTitle" placeholder="输入标题" />
 
         <view class="separator"></view> <!-- 添加分隔线 -->
 
-        <textarea class="content-textarea" placeholder="输入正文" />
+        <textarea class="content-textarea" value="{{contentInput}}" bindinput="inputContent" placeholder="输入正文" />
 
         <view class="image-upload-area">
             <!-- 这里将显示上传的图片 -->
