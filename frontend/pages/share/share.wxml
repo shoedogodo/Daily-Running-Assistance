@@ -4,15 +4,20 @@
 
     <view class="post-list">
         <view class="post" wx:for="{{posts}}" wx:key="index">
-            <navigator url="../postdetail/postdetail?id={{item.id}}" class="post">
+            <navigator url="../postdetail/postdetail?id={{item.postId}}">
+            <view class="post">
                 <view>
-                <text class="post-title">{{item.title}}</text>
+                    <text class="post-title">{{item.title}}</text>
                 </view>
-                <image class="post-image" src="{{item.image}}" />
-                <view class="post-interaction">
+                <block wx:for="{{item.images}}" wx:key="index">
+                    <image class="post-image" src="{{item}}" />
+                </block>
+            </view>
+
+            <view class="post-interaction">
                     <text class="comment-count">💬 {{item.commentCount}}</text>
                     <text class="like-count">❤️ {{item.likeCount}}</text>
-                </view>
+            </view>
             </navigator>
         </view>
     </view>
