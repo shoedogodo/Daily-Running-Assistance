@@ -16,7 +16,7 @@
 
             <view class="post-interaction">
                     <text class="comment-count">💬 {{item.commentCount}}</text>
-                    <text class="like-count">❤️ {{item.likeCount}}</text>
+                    <text class="like-count">❤️ {{item.likes}}</text>
             </view>
             </navigator>
         </view>

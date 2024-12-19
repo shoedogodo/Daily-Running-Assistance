@@ -105,10 +105,16 @@ Page({
             url: 'http://124.221.96.133:8000/api/users/share/posts', // 修正了URL
             method: 'POST',
             // TODO: 传入的参数应该还需要有author的信息，images[]图片数组
+            // example:
+            /*  images: [
+                '../../images/run-icon.png',
+
+            ], */
             data: {
                 title: title,
                 content: content,
                 username: username,
+                images: imagePreview,
             },
             success: function (res) {
                 // BUG!!! 返回的状态码是201而非文档中写的200
