@@ -2,32 +2,32 @@
 Page({
 
     data: {
+        postId: 0, //存储所要获取帖子的postId
         post: 
             {
-              image: '../../images/run-icon.png',
-              title: '今日运动记录，12分长跑3千米',
-              content: '#我要减肥#俗话说7分吃3分练，每日搭配营养健身餐。',
-              author: 'cuber',
-              commentCount: 334,
-              likeCount: 334,
-              createTime: '2024-12-17 21:54'
+                images: ['../../images/run-icon.png'],
+                title: '今日运动记录，12分长跑3千米',
+                content: '#我要减肥#俗话说7分吃3分练，每日搭配营养健身餐。',
+                author: 'cuber',
+                commentCount: 334,
+                comments: [
+                    {content: "haha", author: 'a commentator', createdAt: '2024-12-18 14:49'},
+                    {content: "this is another comment", author: 'some commentator', createdAt: '2024-12-18 14:50'},
+                    {content: "this is another comment", author: 'some commentator', createdAt: '2024-12-18 14:51'},
+                    {content: "this is another comment", author: 'some commentator', createdAt: '2024-12-18 14:52'},
+                    {content: "this is another comment", author: 'some commentator', createdAt: '2024-12-18 14:53'},
+                    {content: "this is another comment", author: 'some commentator', createdAt: '2024-12-18 14:54'},
+                    {content: "this is another comment", author: 'some commentator', createdAt: '2024-12-18 14:55'},
+                    {content: "this is another another another another another comment", author: 'another commentator', createdAt: '2024-12-18 14:56'}
+                ],
+                likes: 334,
+                createdAt: '2024-12-17 21:54'
             },
-        comments: [
-            {content: "haha", commentator: 'a commentator', commentTime: '2024-12-18 14:49'},
-            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:50'},
-            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:51'},
-            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:52'},
-            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:53'},
-            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:54'},
-            {content: "this is another comment", commentator: 'some commentator', commentTime: '2024-12-18 14:55'},
-            {content: "this is another another another another another comment", commentator: 'another commentator', commentTime: '2024-12-18 14:56'}
-
-        ]
     },
 
     fetchPostDetails: function (postId) {
         wx.request({
-            url: 'http://your-server.com/api/posts/' + postId, // 请替换为您的服务器API地址
+            url: 'http://124.221.96.133:8000/api/users/share/posts/' + postId, // 请替换为您的服务器API地址
             method: 'GET',
             success: (res) => {
                 if (res.statusCode === 200) {
@@ -35,6 +35,8 @@ Page({
                         post: res.data.post,
                         comments: res.data.comments
                     });
+                console.log(this.data.post);
+                console.log()
                 } else {
                     wx.showToast({
                         title: '获取帖子详情失败',
@@ -61,7 +63,7 @@ Page({
 
     submitComment: function () {
         const commentContent = this.data.commentContent;
-        const postId = this.data.post.id;
+        const postId = this.data.postId;
         if (!commentContent) {
             wx.showToast({
                 title: '评论不能为空',
@@ -74,10 +76,13 @@ Page({
     },
 
     createComment: function (postId, commentContent) {
+        console.log(postId);
         wx.request({
-            url: 'http://your-server.com/api/posts/' + postId + '/comments', // 请替换为您的服务器API地址
+            // http://124.221.96.133:8000/api/users/share/posts/4/comments
+            url: 'http://124.221.96.133:8000/api/users/share/posts/' + postId + '/comments' ,
             method: 'POST',
             data: {
+                username: wx.getStorageSync('username'),
                 content: commentContent
             },
             success: (res) => {
@@ -110,6 +115,10 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        this.setData({
+            postId: options.id
+          });
+        console.log(this.data.postId)
         this.fetchPostDetails(options.id);
     },
 

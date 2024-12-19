@@ -2,25 +2,27 @@
 <view class="container">
     <view class="post">
         <view class="post-meta">
-            <text class="post-author">{{post.author}}</text>
-            <text class="post-time">{{post.createTime}}</text>
+            <text class="post-author">{{post.author.nickname}}</text>
+            <text class="post-time">{{post.createdAt}}</text>
         </view>
         <view class="post-content">
             <text class="post-title">{{post.title}}</text>
             <text class="post-content">{{post.content}}</text>
-            <image class="post-image" src="{{post.image}}" />
+            <view wx:for="{{post.images}}" wx:key="index">
+                <image class="post-image" src="{{item}}" />
+            </view>
         </view>
         <view class="post-interaction">
             <text class="comment-count">💬 {{post.commentCount}}</text>
-            <text class="like-count">❤️ {{post.likeCount}}</text>
+            <text class="like-count">❤️ {{post.likes}}</text>
         </view>
     </view>
 
     <view class="comments-section">
-        <view class="comment" wx:for="{{comments}}" wx:key="index">
+        <view class="comment" wx:for="{{post.comments}}" wx:key="index">
             <view class="comment-meta">
-                <text class="commentator">{{item.commentator}}</text>
-                <text class="comment-time"> {{item.commentTime}} </text>
+                <text class="commentator">{{item.author.nickname}}</text>
+                <text class="comment-time"> {{item.createdAt}} </text>
             </view>
             <text class="comment-text">{{item.content}}</text>
         </view>
