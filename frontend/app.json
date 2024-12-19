@@ -20,7 +20,8 @@
     "pages/post/post",
     "pages/runrecord/runrecord",
     "pages/singlerecord/singlerecord",
-    "pages/postdetail/postdetail"
+    "pages/postdetail/postdetail",
+    "pages/multiple_run/multiple_run"
   ],
   "window": {
     "navigationBarTextStyle": "black",

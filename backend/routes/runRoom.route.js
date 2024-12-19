@@ -7,7 +7,7 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.get('/', runRoomController.getRoom);
+router.get('/:runID', runRoomController.getRoom);
 router.get('/all', runRoomController.getAllRooms);
 
 router.post('/create', runRoomController.createRoom);
