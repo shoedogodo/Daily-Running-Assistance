@@ -1,7 +1,7 @@
 <!--pages/singlerecord/singlerecord.wxml-->
 <view class="container">
     <!-- 地图展示 -->
-    <map class="map" id="map" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" polyline="{{polyline}}"></map>
+    <map class="map" id="map" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" polyline="{{polyline}}" scale="17"></map>
 
     <!-- 统计信息展示 -->
     <view class="statistics" style="height: {{panelHeight}}rpx;" bind:touchstart="handleTouchStart" bind:touchmove="handleTouchMove" bind:touchend="handleTouchEnd">
