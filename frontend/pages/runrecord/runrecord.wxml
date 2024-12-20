@@ -5,11 +5,42 @@
     </view>
 
     <view class="record-list">
-        <block wx:for="{{records}}" wx:key="index">
-            <view class="record-item">
-                <image class="record-image" src="{{item.image}}" />
-                <text class="record-date">{{item.date}}</text>
+        <view class="record-item" wx:for="{{records}}" wx:key="runId" bindtap="onRecordClick" data-record="{{item}}">
+            <view class="record-date">{{item.formattedDate}}</view>
+            <view class="record-details">
+                <view class="detail-item">
+                    <text class="label">距离</text>
+                    <text class="value">{{item.formattedDistance}}</text>
+                </view>
+                <view class="detail-item">
+                    <text class="label">时长</text>
+                    <text class="value">{{item.formattedDuration}}</text>
+                </view>
+                <view class="detail-item">
+                    <text class="label">配速</text>
+                    <text class="value">{{item.pace}}</text>
+                </view>
             </view>
-        </block>
+        </view>
+    </view>
+
+    <!-- 底栏 -->
+    <view class="tab-bar">
+        <navigator class="tab-item" url="../run/run">
+            <image class="icon" src="../../images/run-icon.png" />
+            <text>跑步</text>
+        </navigator>
+        <navigator class="tab-item" url="../share/share">
+            <image class="icon" src="../../images/share-icon.png" />
+            <text>分享</text>
+        </navigator>
+        <navigator class="tab-item" url="../chat/chat">
+            <image class="icon" src="../../images/chat-icon.png" />
+            <text>助手</text>
+        </navigator>
+        <navigator class="tab-item" url="../my/my" style="color: #009688;">
+            <image class="icon" src="../../images/my-icon.png" />
+            <text>我的</text>
+        </navigator>
     </view>
 </view>

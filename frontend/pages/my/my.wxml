@@ -14,7 +14,7 @@
     
     <!-- 新增的菜单栏 -->
     <view class="menu-bar">
-        <navigator class="menu-item" bindtap="navigateToRecord">
+        <navigator class="menu-item" url='../runrecord/runrecord'>
             <text>跑步记录</text>
         </navigator>
         <navigator class="menu-item" bindtap="showModal" data-action="nickname">
