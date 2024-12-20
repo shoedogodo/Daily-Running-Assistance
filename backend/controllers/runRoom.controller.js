@@ -18,64 +18,63 @@ conn.once('open', () => {
 });
 
 const getRoom = async (req, res) => {
-    try {
-        // Get runID from request body
-        const { runID } = req.body;  // Changed from req.params to req.body
+  try {
+      // Get runID from query string
+      const { runID } = req.params;
 
-        // Validate runID
-        if (!runID) {
-            return res.status(400).json({
-                success: false,
-                code: 'MISSING_RUNID',
-                message: 'Run ID is required'
-            });
-        }
+      // Validate runID
+      if (!runID) {
+          return res.status(400).json({
+              success: false,
+              code: 'MISSING_RUNID',
+              message: 'Run ID is required'
+          });
+      }
 
-        // Find the room and populate profile pictures for runners
-        const room = await RunRoom.findOne({ runID });
+      // Find the room and populate profile pictures for runners
+      const room = await RunRoom.findOne({ runID });
 
-        // Check if room exists
-        if (!room) {
-            return res.status(404).json({
-                success: false,
-                code: 'ROOM_NOT_FOUND',
-                message: 'Run room not found'
-            });
-        }
+      // Check if room exists
+      if (!room) {
+          return res.status(404).json({
+              success: false,
+              code: 'ROOM_NOT_FOUND',
+              message: 'Run room not found'
+          });
+      }
 
-        // Return success response with room data
-        return res.status(200).json({
-            success: true,
-            code: 'ROOM_FOUND',
-            message: 'Run room retrieved successfully',
-            data: {
-                runID: room.runID,
-                runners: room.runners.map(runner => ({
-                    username: runner.username,
-                    nickname: runner.nickname,
-                    profile_pic: runner.profile_pic,
-                    distance_run: runner.distance_run,
-                    run_time: runner.run_time,
-                    markers: runner.markers,
-                    marathon_place: runner.marathon_place,
-                    time_entered_room: runner.time_entered_room,
-                    time_exited_room: runner.time_exited_room
-                })),
-                createdAt: room.createdAt,
-                updatedAt: room.updatedAt
-            }
-        });
+      // Return success response with room data
+      return res.status(200).json({
+          success: true,
+          code: 'ROOM_FOUND',
+          message: 'Run room retrieved successfully',
+          data: {
+              runID: room.runID,
+              runners: room.runners.map(runner => ({
+                  username: runner.username,
+                  nickname: runner.nickname,
+                  profile_pic: runner.profile_pic,
+                  distance_run: runner.distance_run,
+                  run_time: runner.run_time,
+                  markers: runner.markers,
+                  marathon_place: runner.marathon_place,
+                  time_entered_room: runner.time_entered_room,
+                  time_exited_room: runner.time_exited_room
+              })),
+              createdAt: room.createdAt,
+              updatedAt: room.updatedAt
+          }
+      });
 
-    } catch (error) {
-        console.error('Error in getRoom:', error);
-        return res.status(500).json({
-            success: false,
-            code: 'SERVER_ERROR',
-            message: 'An internal server error occurred'
-        });
-    }
+  } catch (error) {
+      console.error('Error in getRoom:', error);
+      return res.status(500).json({
+          success: false,
+          code: 'SERVER_ERROR',
+          message: 'An internal server error occurred'
+      });
+  }
 };
-
 const getAllRooms = async (req, res) => {
   try {
       // Fetch all rooms from the database
