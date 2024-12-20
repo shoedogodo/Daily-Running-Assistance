@@ -29,7 +29,7 @@ Page({
             method: 'GET',
             success: function (res) {
                 if (res.data && res.data.records && res.data.records.length > 0) {
-                    that.processRecords(res.data.records);
+                    that.processRecords(res.data.records.reverse());
                     console.log('成功获取数据');
                 } else {
                     wx.showToast({

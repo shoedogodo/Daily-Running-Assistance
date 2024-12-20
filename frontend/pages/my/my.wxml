@@ -17,13 +17,13 @@
         <navigator class="menu-item" url='../runrecord/runrecord'>
             <text>跑步记录</text>
         </navigator>
-        <navigator class="menu-item" bindtap="showModal" data-action="nickname">
+        <navigator class="menu-item" bindtap="showModal" data-action="nickname" url="">
             <text>修改昵称</text>
         </navigator>
-        <navigator class="menu-item" bindtap="showModal" data-action="avatar">
+        <navigator class="menu-item" bindtap="showModal" data-action="avatar" url="">
             <text>修改头像</text>
         </navigator>
-        <navigator class="menu-item" bindtap="showModal" data-action="profile">
+        <navigator class="menu-item" bindtap="showModal" data-action="profile" url="">
             <text>个人信息</text>
         </navigator>
     </view>
