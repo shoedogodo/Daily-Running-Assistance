@@ -10,28 +10,34 @@ Page({
     data: {
         username: '',
 
-        roomID:'',
-        password:'',
+        roomID: '',
+        password: '',
 
-        verifiedRoomID:'', // this is the roomID passed onto multipl_run
+        verifiedRoomID: '', // this is the roomID passed onto multipl_run
     },
 
-    bindRoomIdInput: function(e) {
+    bindRoomIdInput: function (e) {
         this.setData({
             roomID: e.detail.value
         });
     },
-  
-    bindPasswordInput: function(e) {
+
+    bindPasswordInput: function (e) {
         this.setData({
             password: e.detail.value
         });
     },
 
     createGroup() {
-        const { roomID, password } = this.data;
-        const data = { runID: roomID, password };
-    
+        const {
+            roomID,
+            password
+        } = this.data;
+        const data = {
+            runID: roomID,
+            password
+        };
+
         if (!roomID) {
             wx.showToast({
                 title: '请输入房间号!',
@@ -39,7 +45,7 @@ Page({
             });
             return;
         }
-    
+
         if (!password) {
             wx.showToast({
                 title: '请输入房间密码!',
@@ -47,7 +53,7 @@ Page({
             });
             return;
         }
-    
+
         wx.request({
             url: global.utils.getAPI(global.utils.serverURL, '/api/runRoom/create'),
             method: 'POST',
@@ -78,9 +84,17 @@ Page({
     },
 
     joinGroup() {
-        const { roomID, password, username} = this.data;
-        const data = { runID: roomID, password , username};
-    
+        const {
+            roomID,
+            password,
+            username
+        } = this.data;
+        const data = {
+            runID: roomID,
+            password,
+            username
+        };
+
         if (!roomID) {
             wx.showToast({
                 title: '请输入房间号!',
@@ -88,7 +102,7 @@ Page({
             });
             return;
         }
-    
+
         if (!password) {
             wx.showToast({
                 title: '请输入房间密码!',
@@ -96,7 +110,7 @@ Page({
             });
             return;
         }
-    
+
         wx.request({
             url: global.utils.getAPI(global.utils.serverURL, '/api/runRoom/join'),
             method: 'POST',
@@ -110,16 +124,16 @@ Page({
 
                     wx.setStorageSync('verifiedRoomID', roomID),
 
-                    // Navigate to the multiple_run room
-                    wx.navigateTo({
-                        url: '../multiple_run/multiple_run',
-                        success: function() {
-                          console.log('Navigation succeeded');
-                        },
-                        fail: function(error) {
-                          console.error('Navigation failed', error);
-                        }
-                      });
+                        // Navigate to the multiple_run room
+                        wx.navigateTo({
+                            url: '../multiple_run/multiple_run',
+                            success: function () {
+                                console.log('Navigation succeeded');
+                            },
+                            fail: function (error) {
+                                console.error('Navigation failed', error);
+                            }
+                        });
                 } else {
                     wx.showToast({
                         title: '加入房间失败!',
@@ -138,9 +152,9 @@ Page({
         });
     },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+    /**
+     * 生命周期函数--监听页面加载
+     */
     onLoad(options) {
         app.tokenCheck();
 
@@ -172,12 +186,12 @@ Page({
         });
 
         const username = wx.getStorageSync('username');
-        if(username){
+        if (username) {
             this.setData({
-                username: username, 
+                username: username,
             });
         }
     },
 
-  
+
 })

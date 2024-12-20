@@ -6,7 +6,7 @@ Page({
         markers: [],
         polyline: [{
             points: [],
-            color: "#FF4500",
+            color: "#009688",
             width: 5,
             arrowLine: true
         }],
@@ -116,8 +116,9 @@ Page({
                 seconds: app.globalData.currentRunData.runRecord.seconds,
                 markers: app.globalData.currentRunData.runRecord.markers.map(marker => ({
                     ...marker,
-                    width: 10, // 添加固定宽度
-                    height: 10, // 添加固定高度
+                    width: 0, // 添加固定宽度
+                    height: 0, // 添加固定高度
+                    alpha: 0
                 })),
                 startTime: this.formatDateTime(app.globalData.currentRunData.runRecord.start),
                 endTime: this.formatDateTime(app.globalData.currentRunData.runRecord.end),
@@ -179,7 +180,9 @@ Page({
             default:
                 suggestion = "数据无效，无法提供建议。请确保正确记录运动数据。";
         }
-        this.setData({suggestion:"运动建议："+suggestion})
+        this.setData({
+            suggestion: "运动建议：" + suggestion
+        })
     },
 
     onUnload: function () {
@@ -232,23 +235,23 @@ Page({
     },
 
     // 处理触摸开始事件
-    handleTouchStart: function(e) {
+    handleTouchStart: function (e) {
         this.setData({
             startY: e.touches[0].clientY
         });
     },
 
     // 处理触摸移动事件
-    handleTouchMove: function(e) {
+    handleTouchMove: function (e) {
         const currentY = e.touches[0].clientY;
         const moveDistance = this.data.startY - currentY;
-        
+
         // 计算新的面板高度
         let newHeight = this.data.panelHeight + moveDistance;
-        
+
         // 限制面板高度的范围
         newHeight = Math.max(200, Math.min(newHeight, 500));
-        
+
         this.setData({
             panelHeight: newHeight,
             isPanelExpanded: newHeight > 300,
@@ -257,7 +260,7 @@ Page({
     },
 
     // 处理触摸结束事件
-    handleTouchEnd: function() {
+    handleTouchEnd: function () {
         // 根据当前高度决定是否自动展开或收起
         const finalHeight = this.data.isPanelExpanded ? 500 : 200;
         this.setData({
