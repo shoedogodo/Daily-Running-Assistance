@@ -385,21 +385,15 @@ const getRunRecords = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Optional: Add query parameters for pagination
-        const limit = parseInt(req.query.limit) || 10;
-        const page = parseInt(req.query.page) || 1;
-        const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
-
-        const records = user.record.slice(startIndex, endIndex);
-        const total = user.record.length;
+        // Get all records
+        const records = user.record;
 
         res.status(200).json({
             records,
             pagination: {
-                total,
-                page,
-                pages: Math.ceil(total / limit)
+                total: records.length,
+                page: 1,
+                pages: 1
             }
         });
     } catch (error) {
