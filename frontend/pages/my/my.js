@@ -180,6 +180,7 @@ Page({
                 title: '上传中...'
             });
 
+            // 调用api上传选择的图片头像
             global.api.updateProfilePicture(username, this.data.tempImagePath)
                 .then(() => {
                     // Get the new profile picture URL
