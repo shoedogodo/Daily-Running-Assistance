@@ -105,15 +105,20 @@ Page({
 
         // Make the GET request with runID as part of the URL path
         wx.request({
-            url: `http://124.221.96.133:8000/api/runRoom/${runID}`,  // Insert runID into the path
+            url: global.utils.getAPI(global.utils.serverURL, `/api/runRoom/${runID}`),  // Use getAPI to construct the URL
             method: 'GET',  // Make sure it's a GET request
             success(res) {
                 if (res.data.success && res.data.code === 'ROOM_FOUND') {
                     // On success, extract the 'runners' array
                     const users = res.data.data.runners.map(user => ({
                         username: user.username,
-                        profilePic: user.profile_pic  // Assuming the 'profile_pic' is a URL or valid image path
+                        profilePic: user.profile_pic,  // Assuming the 'profile_pic' is a URL or valid image path
+                        latitude: user.latitude,
+                        longitude: user.longitude,
                     }));
+
+                    // Print the users array to the console for testing
+                    console.log('Users:', users);
 
                     // Update the page's data to display users
                     that.setData({
