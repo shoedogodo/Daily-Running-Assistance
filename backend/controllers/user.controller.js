@@ -47,7 +47,6 @@ const getUser = async (req, res) => {
     }
 };
 
-
 const registerUser = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -74,25 +73,35 @@ const registerUser = async (req, res) => {
         const readStream = fs.createReadStream(defaultProfilePicture);
         readStream.pipe(uploadStream);
 
-        // Update the user's profilePicture field with the default file ID
-        newUser.profilePicture = uploadStream.id;
-        await newUser.save();
+        // Wait for the upload stream to finish
+        uploadStream.on('finish', async () => {
+            // Update the user's profilePicture field with the default file ID
+            newUser.profilePicture = uploadStream.id;
+            await newUser.save();
 
-        // Generate a token for the new user
-        const token = jwt.sign({
-            id: newUser._id,
-            username: newUser.username,
-            loginTime: loginTime.toISOString() // 将登录时间添加到token的payload中
-        }, SECRET_KEY, {
-            expiresIn: '2h' // 设置token过期时间
+            // Generate a token for the new user
+            const token = jwt.sign({
+                id: newUser._id,
+                username: newUser.username,
+                loginTime: loginTime.toISOString() // 将登录时间添加到token的payload中
+            }, SECRET_KEY, {
+                expiresIn: '2h' // 设置token过期时间
+            });
+
+            res.status(200).json({ message: "Register successful", token, newUser });
         });
 
-        res.status(200).json({ message: "Register successful", token, newUser });
+        uploadStream.on('error', (error) => {
+            console.error('Error uploading profile picture:', error);
+            res.status(500).json({ message: 'Error uploading profile picture' });
+        });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
     }
 };
+
 
 const loginUser = async (req, res) => {
     try {
@@ -385,21 +394,15 @@ const getRunRecords = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Optional: Add query parameters for pagination
-        const limit = parseInt(req.query.limit) || 10;
-        const page = parseInt(req.query.page) || 1;
-        const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
-
-        const records = user.record.slice(startIndex, endIndex);
-        const total = user.record.length;
+        // Get all records
+        const records = user.record;
 
         res.status(200).json({
             records,
             pagination: {
-                total,
-                page,
-                pages: Math.ceil(total / limit)
+                total: records.length,
+                page: 1,
+                pages: 1
             }
         });
     } catch (error) {

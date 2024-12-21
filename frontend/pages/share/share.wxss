@@ -32,11 +32,12 @@
     width: 100%;
     flex: 1;
     padding: 10px;
+    margin-bottom: 50px;
 }
 
 .post {
     width: 95%;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     border: 1px solid #e0e0e0;
     padding: 5px;
     border-radius: 5px;
@@ -57,7 +58,7 @@
 .post-interaction {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-top: 1px;
 }
 
 .comment-count,
@@ -66,16 +67,23 @@
 }
 
 .new-post-button {
-    padding: 0px;
-    text-align: center;
+    position: fixed; /* 固定定位 */
+    right: 10px; /* 距离右边10px */
+    bottom: 80px; /* 距离底部80px */
+    z-index: 10; /* 确保在帖子列表图层上方 */
+    text-align: center; /* 文字水平居中 */
 }
 
 .new-post-button button {
-    background-color: #009688;
-    display: flexbox;
-    font-size: 25px;
-    color: white;
-    bottom: 15px;
+    width: 50px; /* 按钮宽度 */
+    height: 50px; /* 按钮高度 */
+    border-radius: 50%; /* 圆形按钮 */
+    background-color: #009688; /* 按钮背景色 */
+    color: white; /* 文字颜色 */
+    border: none; /* 无边框 */
+    font-size: 40px; 
+    line-height: 45px; 
+    padding: 0px;
 }
 
 .tab-bar {

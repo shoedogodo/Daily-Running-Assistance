@@ -1,0 +1,128 @@
+/* pages/single/multiple_run.wxss */
+
+.container {
+    height: 100vh; /* 设置容器高度为视口高度 */
+}
+
+.map {
+    width: 100%;
+    height: 1000rpx;
+    margin-top: 0;
+    flex: 1;
+}
+
+.counter{
+    width: 150rpx;
+    background-color: #fff;
+    opacity: 0.8;
+    position: fixed;
+    top: 20rpx;
+    left: 20rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border-width: 0;
+    margin: 0;
+    padding: 10rpx;
+    box-sizing: border-box;
+}
+
+.counter view{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.counter text{
+    display: block;
+    margin: 5rpx;
+    font-size: 25rpx; 
+}
+
+.counter image{
+    width: 100rpx;
+    height: 100rpx;
+}
+
+.leaderboards {
+    width: 250rpx; /* Set desired width */
+    max-width: 250rpx; /* Ensure the width doesn't exceed this value */
+    background-color: #fff;
+    opacity: 0.8;
+    position: fixed;
+    top: 20rpx;
+    right: 20rpx;
+    max-height: 300rpx; /* Set a maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: block; /* Use block layout to prevent flexbox issues */
+    white-space: nowrap; /* Prevent text wrapping */
+    text-overflow: ellipsis; /* Add an ellipsis if the text is cut off */
+    border-width: 0;
+    margin: 0;
+    padding: 10rpx;
+    box-sizing: border-box;
+}
+
+.title {
+    font-size: 28rpx;
+    font-weight: bold;
+    margin-bottom: 5rpx;
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5rpx; /* Space between user rows */
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10rpx; /* Space between image and text */
+    padding: 2rpx;
+    background-color: #f9f9f9;
+    border-radius: 8rpx;
+    box-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.1);
+}
+
+.profile-pic {
+    width: 50rpx;
+    height: 50rpx;
+    border-radius: 25rpx; /* Makes the image circular */
+    object-fit: cover;
+}
+
+.username {
+    font-size: 28rpx;
+    color: #333;
+}
+
+
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background-color: transparent;
+    margin: 0 0;
+    position: absolute;
+    bottom: 200rpx;
+}
+
+.run-button {
+    padding: 0;
+    width: 150rpx;
+    height: 150rpx;
+    background-color: transparent;
+}
+
+.run-button image{
+    width: 150rpx;
+    height: 150rpx;
+    border-radius: 50%;
+}

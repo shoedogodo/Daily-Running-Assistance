@@ -8,23 +8,155 @@ Page({
      * 页面的初始数据
      */
     data: {
-        meters: 0, // 里程，单位米
-        seconds: 0, // 时间，单位秒
-        latitude: 39.9050, // 纬度
-        longitude: 116.4070, // 经度
-        running: false, // 是否开始
-        interval: 1000, // 定位更新间隔，单位毫秒
-        markers: [], // 标记
-        showMap: false, // 控制地图是否显示
-        polyline: [], // 路线
-        username: '', // 用户名
+        username: '',
+
+        roomID: '',
+        password: '',
+
+        verifiedRoomID: '', // this is the roomID passed onto multipl_run
     },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+    bindRoomIdInput: function (e) {
+        this.setData({
+            roomID: e.detail.value
+        });
+    },
+
+    bindPasswordInput: function (e) {
+        this.setData({
+            password: e.detail.value
+        });
+    },
+
+    createGroup() {
+        const {
+            roomID,
+            password
+        } = this.data;
+        const data = {
+            runID: roomID,
+            password
+        };
+
+        if (!roomID) {
+            wx.showToast({
+                title: '请输入房间号!',
+                icon: 'none',
+            });
+            return;
+        }
+
+        if (!password) {
+            wx.showToast({
+                title: '请输入房间密码!',
+                icon: 'none',
+            });
+            return;
+        }
+
+        wx.request({
+            url: global.utils.getAPI(global.utils.serverURL, '/api/runRoom/create'),
+            method: 'POST',
+            data: data,
+            success: (res) => {
+                if (res.statusCode === 201) {
+                    wx.showToast({
+                        title: '房间创建成功!',
+                        icon: 'success',
+                    });
+                    // Perform any additional actions after successful room creation
+                } else {
+                    wx.showToast({
+                        title: '房间创建失败!',
+                        icon: 'none',
+                    });
+                    console.error('Error creating room:', res.data.error);
+                }
+            },
+            fail: (error) => {
+                wx.showToast({
+                    title: '请求失败!',
+                    icon: 'none',
+                });
+                console.error('Request failed:', error);
+            },
+        });
+    },
+
+    joinGroup() {
+        const {
+            roomID,
+            password,
+            username
+        } = this.data;
+        const data = {
+            runID: roomID,
+            password,
+            username
+        };
+
+        if (!roomID) {
+            wx.showToast({
+                title: '请输入房间号!',
+                icon: 'none',
+            });
+            return;
+        }
+
+        if (!password) {
+            wx.showToast({
+                title: '请输入房间密码!',
+                icon: 'none',
+            });
+            return;
+        }
+
+        wx.request({
+            url: global.utils.getAPI(global.utils.serverURL, '/api/runRoom/join'),
+            method: 'POST',
+            data: data,
+            success: (res) => {
+                if (res.statusCode === 200) {
+                    wx.showToast({
+                        title: '加入房间成功!',
+                        icon: 'success',
+                    });
+
+                    wx.setStorageSync('verifiedRoomID', roomID),
+
+                        // Navigate to the multiple_run room
+                        wx.navigateTo({
+                            url: '../multiple_run/multiple_run',
+                            success: function () {
+                                console.log('Navigation succeeded');
+                            },
+                            fail: function (error) {
+                                console.error('Navigation failed', error);
+                            }
+                        });
+                } else {
+                    wx.showToast({
+                        title: '加入房间失败!',
+                        icon: 'none',
+                    });
+                    console.error('Error joining room:', res.data.error);
+                }
+            },
+            fail: (error) => {
+                wx.showToast({
+                    title: '请求失败!',
+                    icon: 'none',
+                });
+                console.error('Request failed:', error);
+            },
+        });
+    },
+
+    /**
+     * 生命周期函数--监听页面加载
+     */
     onLoad(options) {
-      app.tokenCheck();
+        app.tokenCheck();
 
         const date = new Date();
         this.setData({
@@ -54,12 +186,12 @@ Page({
         });
 
         const username = wx.getStorageSync('username');
-        if(username){
+        if (username) {
             this.setData({
-                username: username, 
+                username: username,
             });
         }
     },
 
-  
+
 })

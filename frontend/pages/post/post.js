@@ -1,51 +1,27 @@
-
 // pages/post/post.js
 const app = require('../../app.js');
 
 Page({
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
+    /**
+     * 页面的初始数据
+     */
     data: {
-      imagePreview: [], // 用于存储图片预览的数组
-      unique: 0, // 添加一个唯一标识符，用于wx:key
+        data: {
+            titleInput: '',
+            contentInput: '',
+            imagePreview: [], // 用于存储图片预览的数组
+            unique: 0, // 添加一个唯一标识符，用于wx:key
+        },
     },
-  },
 
-  /**
-   * 处理发布帖子的函数
-   */
-  publishPost: function() {
-    // 获取标题和正文
-    const title = this.data.titleInput; // 假设您已经在data中定义了titleInput
-    const content = this.data.contentTextarea; // 假设您已经在data中定义了contentTextarea
 
-    // 获取图片URL数组
-    const images = this.data.imagePreview;
-
-    // 发布帖子的逻辑
-    this.createPost(title, content, images);
-  },
-  /**
-   * 用户上传图片
-   * 调用wx.chooseImage()接口
-   */
-  uploadImage: function() {
-    const that = this; // 保存当前页面的this引用
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: function(res) {
-        if (!Array.isArray(that.data.imagePreview)) {
-          that.setData({ imagePreview: [] }); // 确保imagePreview是数组
-        }
-        // 使用that引用页面data，避免this指向问题
-        const newImages = that.data.imagePreview.concat(res.tempFilePaths);
-        that.setData({
-          imagePreview: newImages,
+    /**
+     * 获取输入的标题、正文
+     */
+    inputTitle: function(e) {
+        this.setData({
+            titleInput: e.detail.value,
         });
       }
     });

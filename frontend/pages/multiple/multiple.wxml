@@ -1,21 +1,22 @@
-<!--pages/multiple/multiple.wxml-->
-
 <view class="container">
-    <!-- <view class="user-info">
-        <image class="profile-pic" src="" />
-        <view class="user-text">
-            <text class="username">{{username}}</text>
-            <text class="date">{{formattedDate}}</text>
-        </view>
-    </view> -->
+    <!-- <map class="map" id="map" show-location="true" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" polyline="{{polyline}}" wx:if="showMap"></map> -->
 
-    <map class="map" id="map" show-location="true" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" polyline="{{polyline}}" wx:if="showMap"></map>
+    <view class="title">多人跑步房间</view>
+    <view class="picview" url="../multiple/multiple">
+        <image src="../../images/group-icon.png" class="pic" />
+    </view>
+    
+    <view class="input-container">
+        <input placeholder="请输房间号" type="text" class="input-box" bindinput="bindRoomIdInput" />
+    </view>
+    <view class="input-container">
+        <input placeholder="请输入房间密码" type="password" class="input-box" bindinput="bindPasswordInput" />
+    </view>
 
     <view class="button-box">
         <button class="create-run-group" bindtap="createGroup">创建房间</button>
         <button class="join-run-group" bindtap="joinGroup">加入房间</button>
     </view>
-
 
     <view class="tab-bar">
         <navigator class="tab-item" url="../run/run" style="color: #009688;">
@@ -35,5 +36,4 @@
             <text>我的</text>
         </navigator>
     </view>
-
 </view>

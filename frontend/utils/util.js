@@ -1,5 +1,5 @@
-//const serverURL = "http://localhost:8000"; //for local testing
-const serverURL = "http://124.221.96.133:8000"; //for deployment testing
+const serverURL = "http://localhost:8000"; //for local testing
+//const serverURL = "http://124.221.96.133:8000"; //for deployment testing
 
 function getAPI(prefix, suffix) {
     // Ensure the prefix ends with a slash and the suffix doesn't start with one
@@ -13,6 +13,8 @@ function getAPI(prefix, suffix) {
     return prefix + suffix;
 }
 
+// 返回当前日期时间
+// yyyy/mm/dd xx:dd:dd
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -24,6 +26,7 @@ const formatTime = date => {
   return `${[year, month, day].map(formatNumber).join('/')} ${[hour, minute, second].map(formatNumber).join(':')}`
 }
 
+// 返回当前日期
 const formatDate = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
