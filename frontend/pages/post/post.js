@@ -82,16 +82,20 @@ Page({
   createPost: function(title, content) {
     const username = wx.getStorageSync('username'); 
 
+    console.log(title);
+    console.log(content);
+    console.log(username);
+
     // 发送请求到服务器，创建帖子
     wx.request({
-      //url: 'http://your-server.com/api/posts', // 修正了URL
-      url: 'http://124.221.96.133:8000/api/share/posts', // 修正了URL
+      //url: 'http://124.221.96.133:8000/api/users/share/posts', // 修正了URL
+      url: global.utils.getAPI(global.utils.serverURL, '/api/users/share/posts'),
       method: 'POST',
       data: {
         title: title,
         content: content,
         username: username,
-        images: images // 假设服务器接受一个图片数组
+        //images: images // 假设服务器接受一个图片数组
       },
       success: function(res) {
         if (res.statusCode === 200) {
