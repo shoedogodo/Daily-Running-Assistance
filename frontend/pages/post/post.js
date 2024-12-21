@@ -24,6 +24,51 @@ Page({
             titleInput: e.detail.value,
         });
     },
+    inputContent: function(e) {
+        this.setData({
+            contentInput: e.detail.value,
+        });
+    },
+
+    /**
+     * 处理发布帖子的函数
+     */
+    publishPost: function () {
+        // 获取标题和正文
+        const title = this.data.titleInput; 
+        const content = this.data.contentInput;
+
+        // 获取图片URL数组
+        const images = this.data.imagePreview;
+
+        // 发布帖子的逻辑
+        this.createPost(title, content, images);
+    },
+    /**
+     * 用户上传图片
+     * 调用wx.chooseImage()接口
+     */
+    uploadImage: function () {
+        const that = this; // 保存当前页面的this引用
+        wx.chooseImage({
+            count: 1,
+            sizeType: ['compressed'],
+            sourceType: ['album', 'camera'],
+            success: function (res) {
+                if (!Array.isArray(that.data.imagePreview)) {
+                    that.setData({
+                        imagePreview: []
+                    }); // 确保imagePreview是数组
+                }
+                // 使用that引用页面data，避免this指向问题
+                const newImages = that.data.imagePreview.concat(res.tempFilePaths);
+                that.setData({
+                    imagePreview: newImages,
+                });
+            }
+        });
+    },
+
 
     showDeleteModal: function (e) {
         const that = this; // 保存当前页面的this引用
@@ -60,10 +105,11 @@ Page({
         console.log(content);
         console.log(username);
 
+        const that = this // 保存对post页面的引用
         // 发送请求到服务器，创建帖子
         wx.request({
-            //url: 'http://124.221.96.133:8000/api/users/share/posts', // 修正了URL
-            url: global.utils.getAPI(global.utils.serverURL, '/api/users/share/posts'),
+            url: 'http://124.221.96.133:8000/api/users/share/posts', // 修正了URL
+            //url: global.utils.getAPI(global.utils.serverURL, '/api/users/share/posts'),
             method: 'POST',
             data: {
                 title: title,
@@ -80,10 +126,13 @@ Page({
                         duration: 2000
                     });
                     // 清空输入和图片预览
-                    this.setData({
+                    that.setData({
                         titleInput: '',
-                        contentTextarea: '',
+                        contentInput: '',
                         imagePreview: [],
+                    });
+                    wx.navigateTo({
+                      url: '../share/share',
                     });
                 } else {
                     // 发布失败的处理
