@@ -554,7 +554,18 @@ const createPost = async (req, res) => {
                 imageIds.push(uploadStream.id);
             }
         }
-        
+/*
+        // Create upload stream
+        const uploadStream = gfs.openUploadStream(username + '-profile-picture' , {
+            contentType: req.file.mimetype
+        });
+
+        // Write file to GridFS
+        uploadStream.end(req.file.buffer);
+
+        // Update user's profilePicture field with the new file ID
+        user.profilePicture = uploadStream.id;
+        */
         // 创建帖子并保存到数据库
         const newPost = new Post({
             title: title,
@@ -567,7 +578,7 @@ const createPost = async (req, res) => {
         user.posts.push(newPost._id);
         await user.save();
         
-        return res.status(201).json({ message: "Post created successfully",post: newPost });
+        return res.status(200).json({ message: "Post created successfully",post: newPost });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -576,8 +587,18 @@ const createPost = async (req, res) => {
 const getPosts = async (req, res) => {
     try {
         // 查询数据库中的所有帖子
-        const posts = await Post.find({}).populate('author', 'username'); // 假设我们需要返回作者的username
+        //const posts = await Post.find({}).populate('author', 'username'); // 假设我们需要返回作者的username
 
+        const posts = await Post.find({})
+            .populate('author','nickname') // 加载作者
+            .populate({
+                path: 'comments', // 加载帖子的评论
+                populate: {
+                    path: 'author', // 加载评论的作者信息
+                    select: 'nickname'
+                }
+            });
+        
         // 如果没有找到帖子，返回404状态
         if (!posts || posts.length === 0) {
             return res.status(404).json({ message: "No posts found" });
@@ -596,7 +617,16 @@ const getPostById = async (req, res) => {
         // 从请求参数中获取postId
         const { postId } = req.params;
 
-        const post = await Post.findOne({ postId: postId });
+        //const post = await Post.findOne({ postId: postId }).populate('author','nickname');
+        const post = await Post.findOne({ postId: postId })
+        .populate('author','nickname') // 加载作者
+        .populate({
+            path: 'comments', // 加载帖子的评论
+            populate: {
+                path: 'author', // 加载评论的作者信息
+                select: 'nickname'
+            }
+        });
         // 如果没有找到帖子，返回404状态
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
@@ -623,7 +653,15 @@ const getPostByUsername = async (req, res) => {
         }
 
         // 查找所有属于该用户的帖子，并填充作者信息
-        const posts = await Post.find({ author: user._id }).populate('author', 'username');
+        const posts = await Post.find({ author: user._id })
+            .populate('author','nickname') // 加载作者
+            .populate({
+                path: 'comments', // 加载帖子的评论
+                populate: {
+                    path: 'author', // 加载评论的作者信息
+                    select: 'nickname'
+                }
+            });
 
         // 返回帖子列表
         res.status(200).json(posts);

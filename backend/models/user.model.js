@@ -17,7 +17,6 @@ const RunDataSchema = mongoose.Schema({
 
 // commentSchema
 const CommentSchema = new mongoose.Schema({
-    //commentId: Number,
     commentId: { type: Number, unique: true },
     content: { type: String, required: [true, "Please enter a comment"] },
     author: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -35,7 +34,8 @@ const PostSchema = mongoose.Schema({
     author: { type: Schema.Types.ObjectId, ref: 'User' },
     images: [{ 
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'uploads.files' 
+        ref: 'uploads.files' ,
+        default: null
     }],
     
     comments: [{
