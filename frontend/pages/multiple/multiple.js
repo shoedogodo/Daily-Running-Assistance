@@ -3,16 +3,13 @@ const app = require('../../app.js');
 const util = require('../../utils/util.js');
 
 Page({
-
     /**
      * 页面的初始数据
      */
     data: {
         username: '',
-
         roomID: '',
         password: '',
-
         verifiedRoomID: '', // this is the roomID passed onto multipl_run
     },
 
@@ -55,7 +52,7 @@ Page({
         }
 
         wx.request({
-            url: global.utils.getAPI(global.utils.serverURL, '/api/runRoom/create'),
+            url: `http://124.221.96.133:8000/api/runRoom/create`,
             method: 'POST',
             data: data,
             success: (res) => {
@@ -112,7 +109,7 @@ Page({
         }
 
         wx.request({
-            url: global.utils.getAPI(global.utils.serverURL, '/api/runRoom/join'),
+            url: `http://124.221.96.133:8000/api/runRoom/join`,
             method: 'POST',
             data: data,
             success: (res) => {
